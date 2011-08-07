@@ -126,12 +126,12 @@
 				return window.console;
 			}
 			if (!fakeConsole) {
-				fakeConsole = {
-					info: $.noop,
-					warn: $.noop,
-					error: $.noop,
-					log: $.noop
-				};
+				fakeConsole = {};
+				$.each(("assert,count,debug,dir,dirxml,error,exception,\
+				group,groupCollapsed,groupEnd,info,log,markTimeline,\
+				profile,profileEnd,time,timeEnd,trace,warn").split(","), function() {
+					fakeConsole[this] = $.noop;
+				});
 			}
 			return fakeConsole;
 		},
