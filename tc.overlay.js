@@ -115,7 +115,7 @@
 				return $( '<div class="mask" style="position:fixed; top:0; left:0; width:100%; height:100%;">\
 				</div>' );
 			},
-			closeButton:function(){
+			closeBtn:function(){
 				var $btn;
 				$btn = $( "<a href='#' class='btn-close'><span>Close</span></a>" );
 				if (instance) {
