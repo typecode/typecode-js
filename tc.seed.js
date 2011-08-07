@@ -90,6 +90,19 @@
 		}
 	};
 	
+	NI.Logging = function(options) {
+		var o = $.extend({
+			moduleName:"Logging",
+			enabled:true
+		}, options);
+		
+		this.out = ((o.enabled && window.console && window.console.info) ? 
+			window.console.info : $.noop);
+			
+		this.dump = ((o.enabled && window.console && window.console.log) ? 
+			window.console.log : $.noop);
+	};
+	
 	NI.app = {
 		
 		bootstrap: function(app, options) {
@@ -100,7 +113,7 @@
 			
 			app.console = NI.app.getConsole(o.debug);
 			app.instances = {};
-			app.events = $({});
+			NI.fn.eventPool(app);
 			
 			$.ajaxSetup({
 				cache: false,

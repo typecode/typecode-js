@@ -25,10 +25,10 @@
 (function(window, $) {
 	
 	var NI = window.NI,
-			log = new NI.Logging({
-				moduleName:'Dialog',
-				enabled:true
-			});
+	    log = new NI.Logging({
+		moduleName:'Dialog',
+		enabled:true
+	});
 	
 	function Dialog(options) {
 		var overlay, o;
