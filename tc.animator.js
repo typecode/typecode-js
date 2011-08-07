@@ -24,12 +24,8 @@
 
 (function(window, $) {
 	
-	var NI = window.NI,
-			log = new NI.Logging({
-				moduleName:'Animator',
-				enabled:true
-			});
-	
+	var NI = window.NI;
+	    
 	function Animator(options) {
 		var o, internal, animations, running;
 		

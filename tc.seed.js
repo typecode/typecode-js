@@ -90,6 +90,7 @@
 		}
 	};
 	
+	// TODO
 	NI.Logging = function(options) {
 		var o = $.extend({
 			moduleName:"Logging",

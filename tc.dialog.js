@@ -22,13 +22,12 @@
                              TYPE/CODE        
                          From 2010 till ∞     */
 
+// Dependencies:
+// NI.Overlay
+
 (function(window, $) {
 	
-	var NI = window.NI,
-	    log = new NI.Logging({
-		moduleName:'Dialog',
-		enabled:true
-	});
+	var NI = window.NI;
 	
 	function Dialog(options) {
 		var overlay, o;

@@ -24,11 +24,7 @@
 
 (function(window, $) {
 	
-	var NI = window.NI,
-			log = new NI.Logging({
-				moduleName:'Overlay',
-				enabled:true
-			});
+	var NI = window.NI;
 	
 	function Overlay(options) {
 		var o, $c, $m, open, $elements;
@@ -44,7 +40,6 @@
 		}, options);
 		
 		function init(me){
-			//log.out('Overlay.init');
 			$c = generate.overlay().hide().appendTo(o.context);
 			$m = generate.mask().hide();
 			$c.before($m);
@@ -82,7 +77,6 @@
 		
 		var events = {
 			keydown: function(e) {
-				//log.out('Overlay events.keydown');
 				var key;
 				key = e.keyCode || e.which;
 				switch (key) {
@@ -97,7 +91,6 @@
 				}
 			},
 			clickClose: function(e) {
-				//log.out('Overlay events.clickClose');
 				e.preventDefault();
 				e.data.instance.close();
 			}
@@ -139,7 +132,6 @@
 		};
 		
 		this.open = function(options) {
-			//log.out('Overlay.open');
 			var _o;
 			_o = $.extend({
 				hd:null,
@@ -167,7 +159,6 @@
 		};
 		
 		this.close = function() {
-			//log.out('Overlay.close');
 			if (!open) { return this; }
 			$m.fadeOut();
 			$c.hide().blur();
@@ -180,7 +171,6 @@
 		};
 		
 		this.destroy = function() {
-			//log.out('Overlay.destroy');
 			$c.blur().remove();
 			$m.remove();
 		};
