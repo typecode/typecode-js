@@ -155,29 +155,6 @@
 					}
 				});
 			}
-		},
-		
-		eventPool: function() {
-			var handlers;
-			handlers = [];
-			
-			this.bind = function(fn) {
-				if ($.isFunction(fn)) {
-					handlers.push(fn);
-				}
-			};
-			
-			this.trigger = function(e, d) {
-				$.each(handlers, function(i, handler) {
-					if (e) {
-						handler.call(e.target, e, d);
-					} else {
-						handler(d);
-					}
-				});
-			};
-			
-			return this;
 		}
 	};
 
@@ -213,6 +190,20 @@
 					}
 				}
 			}
+		},
+		
+		eventPool: function(target) {
+			var events = $({});
+			target.bind = function() {
+				events.bind.apply(events, arguments);
+			};
+			target.unbind = function() {
+				events.unbind.apply(events, arguments);
+			};
+			target.trigger = function() {
+				events.trigger.apply(events, arguments);
+			};
+			return target;
 		}
 	};
 
