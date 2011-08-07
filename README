@@ -1,1 +1,4 @@
 typecode-js lib
+
+All components require jQuery and the seed file (tc.seed.js) to be loaded first.
+If a component has other dependencies, they are listed in that component's source file.

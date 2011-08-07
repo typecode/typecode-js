@@ -91,6 +91,7 @@
 	};
 	
 	// TODO
+	// consolidate with NI.app.getConsole
 	NI.Logging = function(options) {
 		var o = $.extend({
 			moduleName:"Logging",
@@ -113,18 +114,9 @@
 			}, options);
 			
 			app.console = NI.app.getConsole(o.debug);
-			app.instances = {};
+			app.classes = {};
+			app.runtime = {};
 			NI.fn.eventPool(app);
-			
-			$.ajaxSetup({
-				cache: false,
-				error: function(xhr, status, error) {
-					app.console.warn(status);
-					if (error) {
-						throw new Error(error);
-					}
-				}
-			});
 			
 			app.console.info("::::::::::::: Starting application :::::::::::::");
 			app.console.info((app.name || "") + " " + (app.version || ""));
@@ -157,15 +149,15 @@
 		 * which invokes app[foo](options)
 		 */
 		initAppFeatures: function(app, env) {
-			if (!app.instances) {
-				app.instances = {};
+			if (!app.runtime) {
+				app.runtime = {};
 			}
 			if ($.isArray(env.features)) {
 				$.each(env.features, function(i, o) {
-					if (app.instances[o.feature]) {
+					if (app.runtime[o.feature]) {
 						NI.app.getConsole(true).warn(o.feature +" already initialized");
 					} else if ($.isFunction(app[o.feature])) {
-						app.instances[o.feature] = app[o.feature].call(app, o.options);
+						app.runtime[o.feature] = app[o.feature].call(app, o.options);
 					}
 				});
 			}
