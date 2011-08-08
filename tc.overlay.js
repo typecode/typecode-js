@@ -55,15 +55,15 @@
 				});
 			}
 			
-			if (o.maskClick) {
-				$c.bind("click", {instance:me}, events.clickClose);
-			}
-			
 			$elements = {
 				hd:$c.find(".hd"),
 				bd:$c.find(".bd"),
 				ft:$c.find(".ft")
 			};
+			
+			if (o.maskClick) {
+				$c.bind("click", {instance:me}, events.clickClose);
+			}
 			
 			$c.bind("focus", {instance:me, escape:o.escape, $c:$c}, function(e) {
 				$(window.document).bind("keydown.overlay", {instance:e.data.instance, escape:e.data.escape, $c:e.data.$c}, events.keydown);
