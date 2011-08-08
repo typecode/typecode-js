@@ -31,6 +31,7 @@
 		
 		o = $.extend({
 			context: "body", // Selector to element where overlay will be inserted.
+			autoflush: true, // If true, the Overlay automatically flushes its content when it is closed.
 			flavor: null, // Additional classnames for Mask and Overlay.
 			maskClick: true, // Hide Overlay if Mask is Clicked.
 			maskFadeOutSpeed: 100, // Delay for mask Fade Out Animation.
@@ -44,7 +45,6 @@
 			$m = generate.mask().hide();
 			$c.before($m);
 			
-			//Apply additional classes to both the Mask and Overlay.
 			if (typeof o.flavor === "string") {
 				$c.addClass(o.flavor);
 				$m.addClass(o.flavor);
@@ -56,7 +56,6 @@
 			}
 			
 			if (o.maskClick) {
-				//If o.maskClick == true, bind event to mask to enable closing.
 				$c.bind("click", {instance:me}, events.clickClose);
 			}
 			
@@ -115,7 +114,7 @@
 				return $( '<div class="mask" style="position:fixed; top:0; left:0; width:100%; height:100%;">\
 				</div>' );
 			},
-			closeBtn:function(){
+			closeBtn:function(instance){
 				var $btn;
 				$btn = $( "<a href='#' class='btn-close'><span>Close</span></a>" );
 				if (instance) {
@@ -125,7 +124,7 @@
 			}
 		};
 		
-		function flush() {
+		this.flush = function() {
 			$elements.hd.empty();
 			$elements.bd.empty();
 			$elements.ft.empty();
@@ -138,17 +137,14 @@
 				bd:null,
 				ft:null
 			},options);
+						
+			if (_o.hd) { $elements.hd.empty().append(_o.hd); }
+			if (_o.bd) { $elements.bd.empty().append(_o.bd); }
+			if (_o.ft) { $elements.ft.empty().append(_o.ft); }
 			
-			if (open) {
-				flush();
-			}
-			if (o.closeBtn) {
+			if (o.closeBtn && !($elements.hd.find(".btn-close").length)) {
 				$elements.hd.append(generate.closeBtn(this));
 			}
-			
-			if (_o.hd) { $elements.hd.append(options.hd); }
-			if (_o.bd) { $elements.bd.append(options.bd); }
-			if (_o.ft) { $elements.ft.append(options.ft); }
 			
 			$m.show();
 			$c.show().scrollTop(0).focus();
@@ -162,7 +158,9 @@
 			if (!open) { return this; }
 			$m.fadeOut();
 			$c.hide().blur();
-			flush();
+			if (o.autoflush === true) {
+				this.flush();
+			}
 			open = false;
 			if ($.isFunction(o.onClose)) {
 				o.onClose(this);
