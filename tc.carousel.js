@@ -29,21 +29,50 @@
 	
 	generate = {
 		carousel: function() {
-			return $("<div class='carousel' style=''><div class='scroll' style=''></div></div>");
+			return $("<div class='carousel' style=''>\
+				<div class='viewport' style='overflow:hidden; position:relative;'>\
+					<div class='scroll' style='position:absolute;'></div>\
+				</div>\
+			</div>");
+		},
+		prevBtn: function(instance) {
+			var $btn;
+			$btn = $("<a href='#' class='btn btn-prev'><span>Previous</span></a>");
+			if (instance) {
+				$btn.click(function(e) {
+					e.preventDefault();
+					instance.prev();
+				});
+			}
+			return $btn;
+		},
+		nextBtn: function(instance) {
+			var $btn;
+			$btn = $("<a href='#' class='btn btn-next'><span>Next</span></a>");
+			if (instance) {
+				$btn.click(function(e) {
+					e.preventDefault();
+					instance.next();
+				});
+			}
+			return $btn;
 		}
 	};
 	
 	function Carousel(options) {
-		var o, $c, $elements;
+		var me, o, $c, $elements;
 		
+		me = this;
 		o = $.extend({
 			container: null,
 			panelSelector: ".panel",
 			activeClass: "state-active",
-			o.speed: 400
+			disabledClass: "state-disabled",
+			speed: 400,
+			onMove: function(instance, info) {}
 		}, options);
 		
-		function init(me) {
+		function init() {
 			if (o.container) {
 				if (typeof o.container === "string") {
 					o.container = $(o.container);
@@ -53,7 +82,8 @@
 				$c = generate.carousel();
 			}
 			$elements = {
-				scroll: $c.find(".scroll")
+				viewport: $c.find(".viewport"),
+				scroll: $elements.viewport.find(".scroll")
 			};
 			moveTo($elements.scroll.children(o.panelSelector).first(), 0);
 		}
@@ -61,20 +91,41 @@
 		function moveTo($panel, speed) {
 			$elements.scroll.animate({left: -($panel.position().left)}, 
 				speed, "swing", function() {
+					var index, total;
 					$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
+					
+					index = me.getCurrentIndex();
+					total = me.getTotal();
+					
+					if (index === 0) {
+						$c.find(".btn-prev").addClass(o.disabledClass);
+					} else {
+						$c.find(".btn-prev").removeClass(o.disabledClass);
+					}
+					if (index === total-1) {
+						$c.find(".btn-next").addClass(o.disabledClass);
+					} else {
+						$c.find(".btn-next").removeClass(o.disabledClass);
+					}
+					
+					if ($.isFunction(o.onMove)) {
+						o.onMove(me, {index: index, total: total});
+					}
 				}
 			);
 		}
 		
-		this.add = function($panel) {
-			$elements.scroll.append($panel.addClass(o.panelSelector));
-			return this;
+		this.getTotal = function() {
+			return $elements.scroll.children(o.panelSelector).length;
+		};
+		
+		this.getCurrentIndex = function() {
+			return $elements.scroll.children(o.panelSelector).filter("."+ o.activeClass).index();
 		};
 		
 		this.next = function() {
-			var $current, $next;
-			$current = $elements.scroll.children(o.panelSelector).filter("."+ o.activeClass);
-			$next = $current.next(o.panelSelector);
+			var $next;
+			$next = $elements.scroll.children(o.panelSelector).filter("."+ o.activeClass).next(o.panelSelector);
 			if ($next.length) {
 				moveTo($next, o.speed);
 			}
@@ -82,16 +133,15 @@
 		};
 		
 		this.prev = function() {
-			var $current, $prev;
-			$current = $elements.scroll.children(o.panelSelector).filter("."+ o.activeClass);
-			$prev = $current.prev(o.panelSelector);
+			var $prev;
+			$prev = $elements.scroll.children(o.panelSelector).filter("."+ o.activeClass).prev(o.panelSelector);
 			if ($prev.length) {
 				moveTo($prev, o.speed);
 			}
 			return this;
 		};
 		
-		init(this);
+		init();
 	}
 	
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
