@@ -94,9 +94,11 @@
 				}
 			},
 			clickClose: function(e) {
+				var pane;
 				e.preventDefault();
 				if (e.data.$pane && e.data.allowPaneClick) {
-					if (!$.contains(e.data.$pane[0], e.target)) {
+					pane = e.data.$pane[0];
+					if (!$.contains(pane, e.target) && (pane != e.target)) {
 						e.data.instance.close();
 					}
 				} else {
