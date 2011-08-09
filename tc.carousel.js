@@ -110,7 +110,7 @@
 				});
 			}
 			
-			moveTo($elements.scroll.children("."+o.panelClass).first(), 0);
+			this.begin(false);
 		}
 		
 		function moveTo($panel, speed) {
@@ -148,20 +148,38 @@
 			return $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).index();
 		};
 		
-		this.next = function() {
-			var $next;
-			$next = $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).next("."+o.panelClass);
-			if ($next.length) {
-				moveTo($next, o.speed);
+		this.begin = function(animate) {
+			var $first;
+			if (animate !== false) {
+				animate = true;
+			}
+			$first = $elements.scroll.children("."+o.panelClass).first();
+			if ($first.length) {
+				moveTo($first, animate ? o.speed : 0);
 			}
 			return this;
 		};
 		
-		this.prev = function() {
+		this.next = function(animate) {
+			var $next;
+			if (animate !== false) {
+				animate = true;
+			}
+			$next = $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).next("."+o.panelClass);
+			if ($next.length) {
+				moveTo($next, animate ? o.speed : 0);
+			}
+			return this;
+		};
+		
+		this.prev = function(animate) {
 			var $prev;
+			if (animate !== false) {
+				animate = true;
+			}
 			$prev = $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).prev("."+o.panelClass);
 			if ($prev.length) {
-				moveTo($prev, o.speed);
+				moveTo($prev, animate ? o.speed : 0);
 			}
 			return this;
 		};

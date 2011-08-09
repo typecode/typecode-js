@@ -140,6 +140,22 @@
 			$elements.hd.empty();
 			$elements.bd.empty();
 			$elements.ft.empty();
+			return this;
+		};
+		
+		this.setHeader = function($hd) {
+			$elements.hd.empty().append($hd);
+			return this;
+		};
+		
+		this.setBody = function($bd) {
+			$elements.bd.empty().append($bd);
+			return this;
+		};
+		
+		this.setFooter = function($ft) {
+			$elements.ft.empty().append($ft);
+			return this;
 		};
 		
 		this.open = function(options) {
@@ -150,9 +166,9 @@
 				ft:null
 			},options);
 						
-			if (_o.hd) { $elements.hd.empty().append(_o.hd); }
-			if (_o.bd) { $elements.bd.empty().append(_o.bd); }
-			if (_o.ft) { $elements.ft.empty().append(_o.ft); }
+			if (_o.hd) { this.setHeader(_o.hd); }
+			if (_o.bd) { this.setBody(_o.bd); }
+			if (_o.ft) { this.setFooter(_o.ft); }
 			
 			if (o.closeBtn && !($elements.hd.find(".btn-close").length)) {
 				$elements.hd.append(generate.closeBtn(this));
