@@ -188,7 +188,6 @@
 					}
 				},
 				tooltip_mouseout:function(e){
-					console.log('tooltip_mouseout');
 					var t, rt;
 					t = e.target;
 					rt = (e.relatedTarget) ? e.relatedTarget : e.toElement;
