@@ -24,17 +24,14 @@
 
 (function(window, $) {
 	
-	var NI = window.NI,
-			log = new NI.Logging({
-				moduleName:'Overlay',
-				enabled:true
-			});
+	var NI = window.NI;
 	
 	function Overlay(options) {
 		var o, $c, $m, open, $elements;
 		
 		o = $.extend({
 			context: "body", // Selector to element where overlay will be inserted.
+			autoflush: true, // If true, the Overlay automatically flushes its content when it is closed.
 			flavor: null, // Additional classnames for Mask and Overlay.
 			maskClick: true, // Hide Overlay if Mask is Clicked.
 			maskFadeOutSpeed: 100, // Delay for mask Fade Out Animation.
@@ -44,12 +41,10 @@
 		}, options);
 		
 		function init(me){
-			//log.out('Overlay.init');
 			$c = generate.overlay().hide().appendTo(o.context);
 			$m = generate.mask().hide();
 			$c.before($m);
 			
-			//Apply additional classes to both the Mask and Overlay.
 			if (typeof o.flavor === "string") {
 				$c.addClass(o.flavor);
 				$m.addClass(o.flavor);
@@ -60,16 +55,15 @@
 				});
 			}
 			
-			if (o.maskClick) {
-				//If o.maskClick == true, bind event to mask to enable closing.
-				$c.bind("click", {instance:me}, events.clickClose);
-			}
-			
 			$elements = {
 				hd:$c.find(".hd"),
 				bd:$c.find(".bd"),
 				ft:$c.find(".ft")
 			};
+			
+			if (o.maskClick) {
+				$c.bind("click", {instance:me}, events.clickClose);
+			}
 			
 			$c.bind("focus", {instance:me, escape:o.escape, $c:$c}, function(e) {
 				$(window.document).bind("keydown.overlay", {instance:e.data.instance, escape:e.data.escape, $c:e.data.$c}, events.keydown);
@@ -82,7 +76,6 @@
 		
 		var events = {
 			keydown: function(e) {
-				//log.out('Overlay events.keydown');
 				var key;
 				key = e.keyCode || e.which;
 				switch (key) {
@@ -97,7 +90,6 @@
 				}
 			},
 			clickClose: function(e) {
-				//log.out('Overlay events.clickClose');
 				e.preventDefault();
 				e.data.instance.close();
 			}
@@ -122,7 +114,7 @@
 				return $( '<div class="mask" style="position:fixed; top:0; left:0; width:100%; height:100%;">\
 				</div>' );
 			},
-			closeButton:function(){
+			closeBtn:function(instance){
 				var $btn;
 				$btn = $( "<a href='#' class='btn-close'><span>Close</span></a>" );
 				if (instance) {
@@ -132,31 +124,27 @@
 			}
 		};
 		
-		function flush() {
+		this.flush = function() {
 			$elements.hd.empty();
 			$elements.bd.empty();
 			$elements.ft.empty();
 		};
 		
 		this.open = function(options) {
-			//log.out('Overlay.open');
 			var _o;
 			_o = $.extend({
 				hd:null,
 				bd:null,
 				ft:null
 			},options);
+						
+			if (_o.hd) { $elements.hd.empty().append(_o.hd); }
+			if (_o.bd) { $elements.bd.empty().append(_o.bd); }
+			if (_o.ft) { $elements.ft.empty().append(_o.ft); }
 			
-			if (open) {
-				flush();
-			}
-			if (o.closeBtn) {
+			if (o.closeBtn && !($elements.hd.find(".btn-close").length)) {
 				$elements.hd.append(generate.closeBtn(this));
 			}
-			
-			if (_o.hd) { $elements.hd.append(options.hd); }
-			if (_o.bd) { $elements.bd.append(options.bd); }
-			if (_o.ft) { $elements.ft.append(options.ft); }
 			
 			$m.show();
 			$c.show().scrollTop(0).focus();
@@ -167,11 +155,12 @@
 		};
 		
 		this.close = function() {
-			//log.out('Overlay.close');
 			if (!open) { return this; }
 			$m.fadeOut();
 			$c.hide().blur();
-			flush();
+			if (o.autoflush === true) {
+				this.flush();
+			}
 			open = false;
 			if ($.isFunction(o.onClose)) {
 				o.onClose(this);
@@ -180,7 +169,6 @@
 		};
 		
 		this.destroy = function() {
-			//log.out('Overlay.destroy');
 			$c.blur().remove();
 			$m.remove();
 		};
@@ -188,140 +176,8 @@
 		init(this);
 	}
 	
-	function Dialog(options) {
-		var overlay, o;
-		
-		o = $.extend({
-			context: "body",
-			escape: true
-		}, options);
-		
-		overlay = new Overlay({
-			context: o.context,
-			flavor: "dialog",
-			maskClick: false,
-			escape: o.escape
-		});
-		
-		var generate = {
-			button:function(label, flavor) {
-				if (!flavor) { flavor = ""; }
-				return $( "<a class='button "+ flavor +"' href='#'><span>"+ label + "</span></a>" );
-			},
-			dialogControls:function($yesBtn, $noBtn) {
-				var $dom = $("<div class='controls'></div>");
-				$dom.prepend($yesBtn).prepend($noBtn);
-				return $dom;
-			},
-			fields:function(){
-				var $dom = $("<div class='input-pane'></div>");
-				$.each(fields, function(i, field) {
-					$dom.append(field.$f);
-				});
-				return $dom;
-			}
-		};
-		
-		function open(message, action, yes, no) {
-			//log.out('Dialog open');
-			var $yesBtn, $noBtn;
-
-			$yesBtn = generate.button(action, "ca");
-			$yesBtn.bind("click", {overlay:overlay}, function(e) {
-				e.preventDefault();
-				if ($.isFunction(yes)) {
-					if (yes() !== false) {
-						e.data.overlay.close();
-					}
-				} else {
-					e.data.overlay.close();
-				}
-			});
-			
-			if (no !== false) {
-				$noBtn = generate.button("Cancel");
-				$noBtn.bind("click", {overlay:overlay}, function(e) {
-					e.preventDefault();
-					if ($.isFunction(no)) {
-						no();
-					}
-					e.data.overlay.close();
-				});
-			}
-			
-			overlay.open({
-				bd: "<p>"+ message +"</p>",
-				ft: generate.dialogControls($yesBtn, $noBtn)
-			});
-			
-			return this;
-		};
-		
-		this.confirm = function(message, action, yes, no) {
-			//log.out('Dialog.confirm');
-			return open(message, action, yes, no);
-		};
-		
-		this.alert = function(message) {
-			//log.out('Dialog.alert');
-			return open(message, "Okay", null, false);
-		};
-		
-		this.prompt = function(message, action, fields, fn) {
-			//log.out('Dialog.prompt');
-			var $submitBtn, submit, keyHandler;
-			
-			submit = function() {
-				var m = fn(fields, overlay);
-				if (m) {
-					$(window.document).unbind("keydown", keyHandler);
-					overlay.close();
-				}
-			};
-			
-			keyHandler = function(e) {
-				var key;
-				key = e.keyCode || e.which;
-				switch (key) {
-					case NI.co.keyboard.ENTER:
-						submit();
-						break;
-				}
-			};
-			
-			if (!action) { action = "Submit"; }
-			
-			$submitBtn = generate.button(action, "ca");
-			$submitBtn.bind("click", {fn:submit}, function(e) {
-				e.preventDefault();
-				e.data.fn();
-			});
-			
-			$(window.document).bind("keydown", keyHandler);
-			
-			overlay.open({
-				hd: "<h1>"+ message +"</h1>",
-				bd: generate.fields(fields),
-				ft: generate.dialogControls($submitBtn)
-			});
-			
-			if ($.isArray(fields)) {
-				fields[0].focus();
-			}
-			
-			return this;
-		};
-		
-		this.destroy = function() {
-			overlay.destroy();
-		};
-		
-		return this;
-	}
-
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		
 	NI.Overlay = Overlay;
-	NI.Dialog = Dialog;
 	
 }(this, this.jQuery));

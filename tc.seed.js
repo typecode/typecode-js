@@ -90,6 +90,21 @@
 		}
 	};
 	
+	// TODO
+	// consolidate with NI.app.getConsole
+	NI.Logging = function(options) {
+		var o = $.extend({
+			moduleName:"Logging",
+			enabled:true
+		}, options);
+		
+		this.out = ((o.enabled && window.console && window.console.info) ? 
+			window.console.info : $.noop);
+			
+		this.dump = ((o.enabled && window.console && window.console.log) ? 
+			window.console.log : $.noop);
+	};
+	
 	NI.app = {
 		
 		bootstrap: function(app, options) {
@@ -99,18 +114,9 @@
 			}, options);
 			
 			app.console = NI.app.getConsole(o.debug);
-			app.instances = {};
-			app.events = $({});
-			
-			$.ajaxSetup({
-				cache: false,
-				error: function(xhr, status, error) {
-					app.console.warn(status);
-					if (error) {
-						throw new Error(error);
-					}
-				}
-			});
+			app.classes = {};
+			app.runtime = {};
+			NI.fn.eventPool(app);
 			
 			app.console.info("::::::::::::: Starting application :::::::::::::");
 			app.console.info((app.name || "") + " " + (app.version || ""));
@@ -126,12 +132,12 @@
 				return window.console;
 			}
 			if (!fakeConsole) {
-				fakeConsole = {
-					info: $.noop,
-					warn: $.noop,
-					error: $.noop,
-					log: $.noop
-				};
+				fakeConsole = {};
+				$.each(("assert,count,debug,dir,dirxml,error,exception,\
+				group,groupCollapsed,groupEnd,info,log,markTimeline,\
+				profile,profileEnd,time,timeEnd,trace,warn").split(","), function() {
+					fakeConsole[this] = $.noop;
+				});
 			}
 			return fakeConsole;
 		},
@@ -143,41 +149,18 @@
 		 * which invokes app[foo](options)
 		 */
 		initAppFeatures: function(app, env) {
-			if (!app.instances) {
-				app.instances = {};
+			if (!app.runtime) {
+				app.runtime = {};
 			}
 			if ($.isArray(env.features)) {
 				$.each(env.features, function(i, o) {
-					if (app.instances[o.feature]) {
+					if (app.runtime[o.feature]) {
 						NI.app.getConsole(true).warn(o.feature +" already initialized");
 					} else if ($.isFunction(app[o.feature])) {
-						app.instances[o.feature] = app[o.feature].call(app, o.options);
+						app.runtime[o.feature] = app[o.feature].call(app, o.options);
 					}
 				});
 			}
-		},
-		
-		eventPool: function() {
-			var handlers;
-			handlers = [];
-			
-			this.bind = function(fn) {
-				if ($.isFunction(fn)) {
-					handlers.push(fn);
-				}
-			};
-			
-			this.trigger = function(e, d) {
-				$.each(handlers, function(i, handler) {
-					if (e) {
-						handler.call(e.target, e, d);
-					} else {
-						handler(d);
-					}
-				});
-			};
-			
-			return this;
 		}
 	};
 
@@ -213,6 +196,20 @@
 					}
 				}
 			}
+		},
+		
+		eventPool: function(target) {
+			var events = $({});
+			target.bind = function() {
+				events.bind.apply(events, arguments);
+			};
+			target.unbind = function() {
+				events.unbind.apply(events, arguments);
+			};
+			target.trigger = function() {
+				events.trigger.apply(events, arguments);
+			};
+			return target;
 		}
 	};
 
