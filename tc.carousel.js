@@ -65,14 +65,19 @@
 		me = this;
 		o = $.extend({
 			container: null,
-			panelSelector: ".panel",
+			viewportDimensions: null, // { width: null, height: null },
+			panels: [],
+			panelClass: "panel",
 			activeClass: "state-active",
 			disabledClass: "state-disabled",
 			speed: 400,
+			easing: "swing",
 			onMove: function(instance, info) {}
 		}, options);
 		
 		function init() {
+			var $viewport;
+			
 			if (o.container) {
 				if (typeof o.container === "string") {
 					o.container = $(o.container);
@@ -81,16 +86,36 @@
 			} else {
 				$c = generate.carousel();
 			}
+			
+			$viewport = $c.find(".viewport");
 			$elements = {
-				viewport: $c.find(".viewport"),
-				scroll: $elements.viewport.find(".scroll")
+				viewport: $viewport,
+				scroll: $viewport.children(".scroll")
 			};
-			moveTo($elements.scroll.children(o.panelSelector).first(), 0);
+			
+			if (o.viewportDimensions) {
+				if (typeof o.viewportDimensions.width === "number") {
+					$elements.viewport.width(o.viewportDimensions.width);
+					
+				}
+				if (typeof o.viewportDimensions.height === "number") {
+					$elements.viewport.height(o.viewportDimensions.height);
+				}
+			}
+			
+			if (o.panels && o.panels.length) {
+				$.each(o.panels, function(i, $panel) {
+					$panel.addClass(o.panelClass);
+					$elements.scroll.append($panel);
+				});
+			}
+			
+			moveTo($elements.scroll.children("."+o.panelClass).first(), 0);
 		}
 		
 		function moveTo($panel, speed) {
 			$elements.scroll.animate({left: -($panel.position().left)}, 
-				speed, "swing", function() {
+				speed, o.easing, function() {
 					var index, total;
 					$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
 					
@@ -116,16 +141,16 @@
 		}
 		
 		this.getTotal = function() {
-			return $elements.scroll.children(o.panelSelector).length;
+			return $elements.scroll.children("."+o.panelClass).length;
 		};
 		
 		this.getCurrentIndex = function() {
-			return $elements.scroll.children(o.panelSelector).filter("."+ o.activeClass).index();
+			return $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).index();
 		};
 		
 		this.next = function() {
 			var $next;
-			$next = $elements.scroll.children(o.panelSelector).filter("."+ o.activeClass).next(o.panelSelector);
+			$next = $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).next("."+o.panelClass);
 			if ($next.length) {
 				moveTo($next, o.speed);
 			}
@@ -134,16 +159,29 @@
 		
 		this.prev = function() {
 			var $prev;
-			$prev = $elements.scroll.children(o.panelSelector).filter("."+ o.activeClass).prev(o.panelSelector);
+			$prev = $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).prev("."+o.panelClass);
 			if ($prev.length) {
 				moveTo($prev, o.speed);
 			}
 			return this;
 		};
 		
+		//TODO
+		this.destroy = function() {
+			
+		};
+		
 		init();
 	}
+		
+	Carousel.generatePrevBtn = function(instance) {
+		return generate.prevBtn(instance);
+	};
 	
+	Carousel.generateNextBtn = function(instance) {
+		return generate.nextBtn(instance);
+	};
+
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		
 	NI.Carousel = Carousel;
