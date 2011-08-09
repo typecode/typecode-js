@@ -76,6 +76,8 @@
 		}, options);
 		
 		function init() {
+			var $viewport;
+			
 			if (o.container) {
 				if (typeof o.container === "string") {
 					o.container = $(o.container);
@@ -85,9 +87,10 @@
 				$c = generate.carousel();
 			}
 			
+			$viewport = $c.find(".viewport");
 			$elements = {
-				viewport: $c.find(".viewport"),
-				scroll: $elements.viewport.children(".scroll")
+				viewport: $viewport,
+				scroll: $viewport.children(".scroll")
 			};
 			
 			if (o.viewportDimensions) {

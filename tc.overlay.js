@@ -41,6 +41,8 @@
 		}, options);
 		
 		function init(me){
+			var $pane;
+			
 			$c = generate.overlay().hide().appendTo(o.context);
 			$m = generate.mask().hide();
 			$c.before($m);
@@ -55,11 +57,12 @@
 				});
 			}
 			
+			$pane = $c.find(">.tier > .tier > .pane");
 			$elements = {
-				pane:$c.find(">.tier > .tier > .pane"),
-				hd:$elements.pane.children(".hd"),
-				bd:$elements.pane.children(".bd"),
-				ft:$elements.pane.children(".ft")
+				pane: $pane,
+				hd: $pane.children(".hd"),
+				bd: $pane.children(".bd"),
+				ft: $pane.children(".ft")
 			};
 			
 			if (o.maskClick) {
