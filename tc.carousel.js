@@ -31,7 +31,7 @@
 		carousel: function() {
 			return $("<div class='carousel' style=''>\
 				<div class='viewport' style='overflow:hidden; position:relative;'>\
-					<div class='scroll' style='position:absolute;'></div>\
+					<div class='scroll' style='position:absolute; width:20000em;'></div>\
 				</div>\
 			</div>");
 		},
@@ -144,7 +144,16 @@
 		};
 		
 		this.add = function($panel) {
-			$panel.addClass(o.panelClass);
+			$panel.css("float", "left").addClass(o.panelClass);
+			if (o.viewportDimensions) {
+				if (typeof o.viewportDimensions.width === "number") {
+					$panel.width(o.viewportDimensions.width);
+					
+				}
+				if (typeof o.viewportDimensions.height === "number") {
+					$panel.height(o.viewportDimensions.height);
+				}
+			}
 			$elements.scroll.append($panel);
 		};
 		
