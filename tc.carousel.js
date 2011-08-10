@@ -110,7 +110,7 @@
 				});
 			}
 			
-			this.begin(false);
+			me.begin(false);
 		}
 		
 		function moveTo($panel, speed) {
