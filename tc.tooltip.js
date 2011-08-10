@@ -36,8 +36,10 @@
 			animate_slide:false,
 			animate_opacity:true,
 			offset_left:0,
-			offset_top:0,
-			use_mousepos:true
+			offset_top:10,
+			use_mousepos:true,
+			positions:['top','right','bottom','left'],
+			container:$(window)
 		}, options);
 		
 		var internal = {
@@ -50,7 +52,7 @@
 			cache:{},
 			animating:false,
 			visible:false,
-			mousepos:null
+			mousepos:null,
 		}
 		
 		function init(me){
@@ -88,43 +90,117 @@
 			}
 			internal.tooltip.html(internal.cache[internal.current_trigger_id]);
 			
-			move_to_target((function(){
-				var source_position, target_position;
-				if(o.use_mousepos){
-					source_position = {
-						top: internal.mousepos.y,
-						left: internal.mousepos.x
-					}
-				} else {
-					source_position = {
-						left: internal.current_trigger.offset().left,
-						top: internal.current_trigger.offset().top
-					}
-					source_position.left += ((internal.current_trigger.get(0).getBoundingClientRect().right - internal.current_trigger.get(0).getBoundingClientRect().left) / 2);
-				}
-				
-				target_position = {
-					tooltip_orientation:'top',
-					top: (source_position.top - internal.tooltip.height() + o.offset_top),
-					left: (source_position.left - (internal.tooltip.width()/2) + o.offset_left)
-				};
-				//target_position.left = (internal.current_trigger.offset().left + ((internal.current_trigger.get(0).getBoundingClientRect().right - internal.current_trigger.get(0).getBoundingClientRect().left) / 2) - (internal.tooltip.width()/2)
-				//	+ o.offset_left
-				//);
-				
-				//if((internal.current_trigger.offset().top - internal.window.scrollTop()) < internal.tooltip.height()){
-				//	target_position.tooltip_orientation = 'bottom';
-				//	target_position.top = (	source_position.top
-				//		+ (internal.current_trigger.get(0).getBoundingClientRect().bottom - internal.current_trigger.get(0).getBoundingClientRect().top)
-				//		- o.offset_top
-				//	);
-				//} else {
-				//	
-				//}
-				
-				return target_position;
-			})());
+			move_to_target(calculate_target_position());
 		};
+		
+		function get_source_position(){
+			if(o.use_mousepos){
+				return {
+					top: internal.mousepos.y,
+					left: internal.mousepos.x
+				};
+			} else {
+				return {
+					left: internal.current_trigger.offset().left,
+					top: internal.current_trigger.offset().top
+				};
+			}
+		}
+		
+		function get_trigger_size(){
+			if(o.use_mousepos){
+				return {
+					width:0,
+					height:0
+				};
+			} else {
+				return {
+					left: internal.current_trigger.width(),
+					top: internal.current_trigger.heigh()
+				};
+			}
+		}
+		
+		function get_tooltip_size(){
+			return {
+				height:internal.tooltip.height(),
+				width:internal.tooltip.width()
+			}
+		}
+		
+		var calculate_position = {
+			top:function(sp,trs,tts){
+				return {
+					top:(sp.top - (tts.height) - o.offset_top),
+					left:((sp.left + (trs.width/2)) - (tts.width/2) + o.offset_left)
+				};
+			},
+			bottom:function(sp,trs,tts){
+				return {
+					top:(sp.top + trs.height + o.offset_top),
+					left:((sp.left + (trs.width/2)) - (tts.width/2) + o.offset_left)
+				};
+			},
+			right:function(sp,trs,tts){
+				var pos;
+				pos = {
+					top: (sp.top + (trs.height/2) - (tts.height/2)),
+					left: (sp.left + (trs.width) + o.offset_top)
+				}
+				return pos;
+			},
+			left:function(sp,trs,tts){
+				var pos;
+				pos = {
+					top: (sp.top + (trs.height/2) - (tts.height/2)),
+					left: (sp.left - (tts.width) - o.offset_top)
+				}
+				return pos;
+			}
+		}
+		
+		function get_edge_collisions(tp, tts){
+			var collisions;
+			collisions = [];
+			
+			//check top
+			if((tp.top - internal.window.scrollTop()) < 0){
+				collisions.push('top');
+			}
+			
+			//check bottom
+			if((tp.top + tts.height) > internal.window.height()){
+				collisions.push('bottom');
+			}
+			
+			//check left
+			if((tp.left - internal.window.scrollLeft()) < 0){
+				collisions.push('left');
+			}
+			
+			//check right
+			if((tp.left + tts.width) > internal.window.width()){
+				collisions.push('right');
+			}
+			
+			return collisions;
+		}
+		
+		function calculate_target_position(){
+			var source_position, trigger_size, tooltip_size, i, target_position;
+			source_position = get_source_position();
+			trigger_size = get_trigger_size();
+			tooltip_size = get_tooltip_size();
+			for(i in o.positions){
+				if($.isFunction(calculate_position[o.positions[i]])){
+					target_position = calculate_position[o.positions[i]](source_position, trigger_size, tooltip_size);
+				}
+				if(!get_edge_collisions(target_position, tooltip_size).length){
+					return target_position;
+				}
+			}
+			return target_position;
+		}
 		
 		function move_to_target(target_pos){
 			var me, css_change, animate_change;
@@ -201,9 +277,14 @@
 					}
 				},
 				tooltip_mouseout:function(e,d){
-					if(!((this == e.target) && (this == e.relatedTarget)) && !($.contains(this,e.target) || $.contains(this,e.relatedTarget))){
-						hide();
+					
+					if(!((this == e.target) && (this == e.relatedTarget))){
+						if((!$.contains(this,e.target) && $.contains(this,e.relatedTarget)) ||
+								($.contains(this,e.target) && !$.contains(this,e.relatedTarget))){
+							hide();	
+						}
 					}
+						
 				}
 		};
 		
