@@ -37,7 +37,8 @@
 			maskFadeOutSpeed: 100, // Delay for mask Fade Out Animation.
 			escape: true, //ESC Keypress closes Overlay.
 			closeBtn: false, // Appends Close Button to Overlay.
-			onClose: function(instance) {} // Callback After Overlay is hidden and content removed.
+			onOpen: function(instance) {}, // Callback after Overlay is opened.
+			onClose: function(instance) {} // Callback after Overlay is hidden.
 		}, options);
 		
 		function init(me){
@@ -178,7 +179,9 @@
 			$c.show().scrollTop(0).focus();
 			
 			open = true;
-			
+			if ($.isFunction(o.onOpen)) {
+				o.onOpen(this);
+			}			
 			return this;
 		};
 		

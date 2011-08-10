@@ -105,8 +105,7 @@
 			
 			if (o.panels && o.panels.length) {
 				$.each(o.panels, function(i, $panel) {
-					$panel.addClass(o.panelClass);
-					$elements.scroll.append($panel);
+					me.add($panel);
 				});
 			}
 			
@@ -140,6 +139,15 @@
 			);
 		}
 		
+		this.get = function() {
+			return $c;
+		};
+		
+		this.add = function($panel) {
+			$panel.addClass(o.panelClass);
+			$elements.scroll.append($panel);
+		};
+		
 		this.getTotal = function() {
 			return $elements.scroll.children("."+o.panelClass).length;
 		};
@@ -147,7 +155,7 @@
 		this.getCurrentIndex = function() {
 			return $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).index();
 		};
-		
+				
 		this.begin = function(animate) {
 			var $first;
 			if (animate !== false) {
