@@ -36,7 +36,8 @@
 			animate_slide:false,
 			animate_opacity:true,
 			offset_left:0,
-			offset_top:0
+			offset_top:0,
+			use_mousepos:true
 		}, options);
 		
 		var internal = {
@@ -48,7 +49,8 @@
 			current_trigger_id:null,
 			cache:{},
 			animating:false,
-			visible:false
+			visible:false,
+			mousepos:null
 		}
 		
 		function init(me){
@@ -56,6 +58,18 @@
 			internal.triggers.bind('mouseout',{me:this},handlers.trigger_mouseout);
 			internal.tooltip.bind('mouseover',{me:this},handlers.tooltip_mouseover);
 			internal.tooltip.bind('mouseout',{me:this},handlers.tooltip_mouseout);
+			if(o.use_mousepos){
+				$(document).bind('mousemove',function(e,d){
+					if(d && d.mousepos){
+						internal.mousepos = d.mousepos;
+					} else {
+						internal.mousepos = {
+							x:e.pageX,
+							y:e.pageY
+						};
+					}
+				});
+			}
 		};
 		
 		function markup_generator(data){
@@ -75,30 +89,38 @@
 			internal.tooltip.html(internal.cache[internal.current_trigger_id]);
 			
 			move_to_target((function(){
-				var target_position;
+				var source_position, target_position;
+				if(o.use_mousepos){
+					source_position = {
+						top: internal.mousepos.y,
+						left: internal.mousepos.x
+					}
+				} else {
+					source_position = {
+						left: internal.current_trigger.offset().left,
+						top: internal.current_trigger.offset().top
+					}
+					source_position.left += ((internal.current_trigger.get(0).getBoundingClientRect().right - internal.current_trigger.get(0).getBoundingClientRect().left) / 2);
+				}
+				
 				target_position = {
 					tooltip_orientation:'top',
-					top:0,
-					left:0
+					top: (source_position.top - internal.tooltip.height() + o.offset_top),
+					left: (source_position.left - (internal.tooltip.width()/2) + o.offset_left)
 				};
-				target_position.left = (internal.current_trigger.offset().left
-					+ ((internal.current_trigger.get(0).getBoundingClientRect().right - internal.current_trigger.get(0).getBoundingClientRect().left) / 2) - (internal.tooltip.width()/2)
-					+ o.offset_left
-				);
+				//target_position.left = (internal.current_trigger.offset().left + ((internal.current_trigger.get(0).getBoundingClientRect().right - internal.current_trigger.get(0).getBoundingClientRect().left) / 2) - (internal.tooltip.width()/2)
+				//	+ o.offset_left
+				//);
 				
-				if((internal.current_trigger.offset().top - internal.window.scrollTop()) < internal.tooltip.height()){
-					target_position.tooltip_orientation = 'bottom';
-					target_position.top = (	internal.current_trigger.offset().top
-						+ (internal.current_trigger.get(0).getBoundingClientRect().bottom - internal.current_trigger.get(0).getBoundingClientRect().top)
-						- o.offset_top
-					);
-				} else {
-					target_position.tooltip_orientation = 'top';
-					target_position.top = (internal.current_trigger.offset().top
-						- internal.tooltip.height()
-						+ o.offset_top
-					);
-				}
+				//if((internal.current_trigger.offset().top - internal.window.scrollTop()) < internal.tooltip.height()){
+				//	target_position.tooltip_orientation = 'bottom';
+				//	target_position.top = (	source_position.top
+				//		+ (internal.current_trigger.get(0).getBoundingClientRect().bottom - internal.current_trigger.get(0).getBoundingClientRect().top)
+				//		- o.offset_top
+				//	);
+				//} else {
+				//	
+				//}
 				
 				return target_position;
 			})());
@@ -169,44 +191,25 @@
 					show();
 				},
 				trigger_mouseout:function(e){
-					var t, rt;
-					t = e.target;
-					rt = (e.relatedTarget) ? e.relatedTarget : e.toElement;
-					if(rt){
-						while(rt != t && rt.nodeName != 'BODY'){
-							rt = rt.parentNode;
-							if(!rt || rt == t){
-								return;
-							}
-						}
+					if(!$.contains(this,e.target)){
+						hide();
 					}
-					hide();
 				},
 				tooltip_mouseover:function(e){
-					if(internal.current_trigger && !internal.visible){
+					if(!o.use_mousepos && internal.current_trigger && !internal.visible){
 						show();
 					}
 				},
-				tooltip_mouseout:function(e){
-					var t, rt;
-					t = e.target;
-					rt = (e.relatedTarget) ? e.relatedTarget : e.toElement;
-					if(rt){
-						while(rt != t && rt.nodeName != 'BODY'){
-							rt = rt.parentNode;
-							if(!rt || rt == t){
-								return;
-							}
-						}
+				tooltip_mouseout:function(e,d){
+					if(!((this == e.target) && (this == e.relatedTarget)) && !($.contains(this,e.target) || $.contains(this,e.relatedTarget))){
+						hide();
 					}
-					hide();
 				}
 		};
 		
 		this.add_trigger = function(trigger){
 			trigger.bind('mouseover', {me:this}, this.handlers.trigger_mouseover);
 			trigger.bind('mouseout', {me:this}, this.handlers.trigger_mouseout);
-			tc.util.dump(trigger);
 			if(!internal.triggers.length){
 				internal.triggers = trigger;
 			} else {
@@ -239,6 +242,10 @@
 		this.hide_tooltip = function(){
 			internal.tooltip.stop();
 			hide();
+		}
+		
+		this.get_tooltip = function(){
+			return internal.tooltip;
 		}
 		
 		init(this);

@@ -37,7 +37,7 @@
 			escape: true
 		}, options);
 		
-		overlay = new Overlay({
+		overlay = new NI.Overlay({
 			context: o.context,
 			flavor: "dialog",
 			maskClick: false,
