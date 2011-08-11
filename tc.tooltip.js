@@ -81,15 +81,7 @@
 		};
 		
 		function show(data){
-			if(internal.current_trigger.attr('id') != internal.current_trigger_id){
-				internal.current_trigger_id = internal.current_trigger.attr('id');
-			}
-			
-			if(!internal.cache[internal.current_trigger_id]){
-				internal.cache[internal.current_trigger_id] = ($.isFunction(o.markup_generator) ? o.markup_generator(data) : markup_generator(data));
-			}
-			internal.tooltip.html(internal.cache[internal.current_trigger_id]);
-			
+			internal.tooltip.html(($.isFunction(o.markup_generator) ? o.markup_generator(data) : markup_generator(data)));
 			move_to_target(calculate_target_position());
 		};
 		
