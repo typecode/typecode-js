@@ -52,7 +52,7 @@
 			cache:{},
 			animating:false,
 			visible:false,
-			mousepos:null,
+			mousepos:null
 		}
 		
 		function init(me){

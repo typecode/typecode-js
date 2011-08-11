@@ -31,7 +31,7 @@
 		carousel: function() {
 			return $("<div class='carousel' style=''>\
 				<div class='viewport' style='overflow:hidden; position:relative;'>\
-					<div class='scroll' style='position:absolute;'></div>\
+					<div class='scroll' style='position:absolute; width:20000em;'></div>\
 				</div>\
 			</div>");
 		},
@@ -105,13 +105,31 @@
 			
 			if (o.panels && o.panels.length) {
 				$.each(o.panels, function(i, $panel) {
-					$panel.addClass(o.panelClass);
-					$elements.scroll.append($panel);
+					me.add($panel);
 				});
 			}
 			
+			$(window.document).bind("keydown.carousel", {instance:me}, events.keydown);
+			
 			me.begin(false);
 		}
+		
+		var events = {
+			keydown: function(e) {
+				var key;
+				key = e.keyCode || e.which;
+				switch (key) {
+					case NI.co.keyboard.LEFT:
+						e.preventDefault();
+						e.data.instance.prev();
+						break;
+					case NI.co.keyboard.RIGHT:
+						e.preventDefault();
+						e.data.instance.next();
+						break;
+				}
+			}
+		};
 		
 		function moveTo($panel, speed) {
 			$elements.scroll.animate({left: -($panel.position().left)}, 
@@ -132,13 +150,31 @@
 					} else {
 						$c.find(".btn-next").removeClass(o.disabledClass);
 					}
-					
+										
 					if ($.isFunction(o.onMove)) {
 						o.onMove(me, {index: index, total: total});
 					}
 				}
 			);
 		}
+		
+		this.get = function() {
+			return $c;
+		};
+		
+		this.add = function($panel) {
+			$panel.css("float", "left").addClass(o.panelClass);
+			if (o.viewportDimensions) {
+				if (typeof o.viewportDimensions.width === "number") {
+					$panel.width(o.viewportDimensions.width);
+					
+				}
+				if (typeof o.viewportDimensions.height === "number") {
+					$panel.height(o.viewportDimensions.height);
+				}
+			}
+			$elements.scroll.append($panel);
+		};
 		
 		this.getTotal = function() {
 			return $elements.scroll.children("."+o.panelClass).length;
@@ -147,7 +183,7 @@
 		this.getCurrentIndex = function() {
 			return $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).index();
 		};
-		
+				
 		this.begin = function(animate) {
 			var $first;
 			if (animate !== false) {
