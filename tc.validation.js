@@ -305,7 +305,7 @@
 		}, options);
 		
 		this.fields = [];
-		$.each(o.spec, function(i, item) {
+		$.each(this.o.spec, function(i, item) {
 			var field;
 			field = typeof item.element === "string" ? $(item.element) : item.element;
 			if (!field.length || !item.validators) {
