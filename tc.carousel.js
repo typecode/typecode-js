@@ -109,13 +109,7 @@
 				});
 			}
 			
-			$c.bind("focus", {instance:me}, function(e) {
-				$(window.document).bind("keydown.carousel", {instance:e.data.instance}, events.keydown);
-			}).bind("blur", {instance:me}, function(e) {
-				$(window.document).unbind("keydown.carousel", events.keydown);
-			}).bind("click", {me: $c}, function(e) {
-				e.data.me.focus();
-			});
+			$(window.document).bind("keydown.carousel", {instance:me}, events.keydown);
 			
 			me.begin(false);
 		}
@@ -156,7 +150,7 @@
 					} else {
 						$c.find(".btn-next").removeClass(o.disabledClass);
 					}
-					
+										
 					if ($.isFunction(o.onMove)) {
 						o.onMove(me, {index: index, total: total});
 					}
@@ -199,7 +193,6 @@
 			if ($first.length) {
 				moveTo($first, animate ? o.speed : 0);
 			}
-			$c.focus();
 			return this;
 		};
 		
@@ -229,7 +222,7 @@
 		
 		//TODO
 		this.destroy = function() {
-			$c.blur();
+			
 		};
 		
 		init();
