@@ -26,8 +26,6 @@
 	
 	var NI = window.NI;
 	
-	//console.log(_gat)
-	    
 	function GoogleAnalytics(options) {
 		var o;
 		
