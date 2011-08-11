@@ -121,12 +121,16 @@
 	var events = {
 		fieldValidationPass: function(e, d) {
 			$(e.target).removeClass("state-invalid").addClass("state-valid");
-			e.data.manager.$c.trigger("validationPass", d);
+			if (e.data.manager.o.$mother instanceof $) {
+				e.data.manager.o.$mother.trigger("validationPass", d);
+			}
 			return false;
 		},
 		fieldValidationFail: function(e, d) {
 			$(e.target).removeClass("state-valid").addClass("state-invalid");
-			e.data.manager.$c.trigger("validationFail", d);
+			if (e.data.manager.o.$mother instanceof $) {
+				e.data.manager.o.$mother.trigger("validationFail", d);
+			}
 			return false;
 		},
 		fieldValidationReset: function(e, d) {
@@ -291,28 +295,24 @@
 	
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
-	/**
-	 * @param $c jQuery object that contains the fields to be validated.
-	 * @param spec object literal that maps field selectors to an array of validators
-	 *             e.g { "#my-input": ["required", "alphanumeric"] }
-	 */
-	function ValidationManager($c, spec, options) {
+	function ValidationManager(options) {
 		var me = this;
-		
-		NI.ex.checkJQ($c);
-		
+				
 		this.o = $.extend({
+			$mother: null,
+			spec: [],
 			watchKeypress: false
 		}, options);
 		
 		this.fields = [];
-		$.each(spec, function(selector, validators) {
-			var field = $(selector, $c);
-			if (!field.length) {
+		$.each(o.spec, function(i, item) {
+			var field;
+			field = typeof item.element === "string" ? $(item.element) : item.element;
+			if (!field.length || !item.validators) {
 				return true;
 			}
 			
-			field.data("validators", validators);
+			field.data("validators", item.validators);
 			field.data("vtoken", new ValidationToken());
 			
 			field.bind("validationPass", { manager:me }, events.fieldValidationPass)
@@ -326,10 +326,10 @@
 			me.fields.push(field);
 		});
 		
-		$c.bind("validationPass", { manager:this }, events.managedFieldPass)
-		  .bind("validationFail", { manager:this }, events.managedFieldFail);
-		
-		this.$c = $c;
+		if (this.o.$mother instanceof $) {	
+			this.o.$mother.bind("validationPass", { manager:this }, events.managedFieldPass)
+			  .bind("validationFail", { manager:this }, events.managedFieldFail);
+		}		
 	}
 	ValidationManager.prototype = {
 		validate: function() {
@@ -358,7 +358,9 @@
 				field.data("vtoken").clean();
 				field.trigger("validationReset");
 			});
-			this.$c.removeClass("state-valid state-invalid");
+			if (this.o.$mother instanceof $) {
+				this.$c.removeClass("state-valid state-invalid");
+			}
 			this.invalidFieldCount = 0;
 			return this;
 		}
