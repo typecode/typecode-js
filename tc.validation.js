@@ -72,7 +72,7 @@
 		date: function(s) {
 			var day, month, year, buf, date;
 			if (s) {
-				buf = str.split("/");
+				buf = s.split("/");
 				if (buf.length == 3) {
 					month = buf[0].replace(/^0+/,'');
 					day = buf[1].replace(/^0+/,'');
@@ -84,7 +84,6 @@
 						if (date.getMonth() == month && 
 						    date.getDate() == day && 
 						    date.getFullYear() == year) {
-							
 								return true;
 							}
 					} catch(err) {
