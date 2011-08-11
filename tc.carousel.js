@@ -109,8 +109,27 @@
 				});
 			}
 			
+			$(window.document).bind("keydown.carousel", {instance:me}, events.keydown);
+			
 			me.begin(false);
 		}
+		
+		var events = {
+			keydown: function(e) {
+				var key;
+				key = e.keyCode || e.which;
+				switch (key) {
+					case NI.co.keyboard.LEFT:
+						e.preventDefault();
+						e.data.instance.prev();
+						break;
+					case NI.co.keyboard.RIGHT:
+						e.preventDefault();
+						e.data.instance.next();
+						break;
+				}
+			}
+		};
 		
 		function moveTo($panel, speed) {
 			$elements.scroll.animate({left: -($panel.position().left)}, 
@@ -131,7 +150,7 @@
 					} else {
 						$c.find(".btn-next").removeClass(o.disabledClass);
 					}
-					
+										
 					if ($.isFunction(o.onMove)) {
 						o.onMove(me, {index: index, total: total});
 					}

@@ -1,0 +1,369 @@
+/*    _____                    _____          
+     /\    \                  /\    \         
+    /::\    \                /::\    \        
+    \:::\    f\              /::::\    \       
+     \:::\    \            /::::::\    \      
+      \:::\    \          /:::/\:::\    \     
+       \:::\    \        /:::/  \:::\    \    
+       /::::\    \      /:::/    \:::\    \   
+      /::::::\    \    /:::/    / \:::\    \  
+     /:::/\:::\    \  /:::/    /   \:::\    \ 
+    /:::/  \:::\____\/:::/____/     \:::\____\
+   /:::/    \::/    /\:::\    \      \::/    /
+  /:::/    / \/____/  \:::\    \      \/____/ 
+ /:::/    /            \:::\    \             
+/:::/    /              \:::\    \            
+\::/    /                \:::\    \           
+ \/____/                  \:::\    \          
+                           \:::\    \         
+                            \:::\____\        
+                             \::/    /        
+                              \/____/         
+                             TYPE/CODE        
+                         From 2010 till ∞     */
+
+(function(window, $) {
+
+	var NI = window.NI,
+	    console = NI.app.getConsole(true);
+
+	var regex = {
+		email: /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i,
+		
+		url: /^((ht|f)tps?:\/\/)?[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\%"\,\{\}\\|\\\^\[\]`]+)?$/,
+		
+		alphanumeric:  /^\s*[a-z\d\.]+([a-z\d\.]*\.|\s*\-\s*[a-z\d\.]+)?(\s+[a-z\d\.]+(\.|\s*\-\s*[a-z\d\.]+)?)*\s*$/i,
+		
+		number: /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/
+	};
+	
+	function regTest(s, key) {
+		return regex[key].test(s);
+	}
+	
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	function isAlphaNumeric(s) {
+		return regTest(s, "alphanumeric");
+	}
+
+	function isEmail(s) {
+		return regTest(s, "email");
+	}
+	
+	function isURL(s) {
+		return regTest(s, "url");
+	}
+	
+	function isNum(s) {
+		//return !isNaN(Number(s));
+		return regTest(s, "number");
+	}
+	
+	function isNumNonNegative(s) {
+		return isNum(s) && Number(s) >= 0;
+	}
+	
+	function isNumPositive(s) {
+		return isNum(s) && Number(s) > 0;
+	}
+	
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	function ValidationToken() {
+		this.clean();
+	}
+	ValidationToken.prototype = {
+		errors: function() {
+			return this.errs.length ?
+				this.errs : false;
+		},
+		addError: function(str) {
+			this.errs.push(str);
+			return this;
+		},
+		clean: function() {
+			this.errs = [];
+			return this;
+		}
+	};
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	var events = {
+		fieldValidationPass: function(e, d) {
+			$(e.target).removeClass("state-invalid").addClass("state-valid");
+			e.data.manager.$c.trigger("validationPass", d);
+			return false;
+		},
+		fieldValidationFail: function(e, d) {
+			$(e.target).removeClass("state-valid").addClass("state-invalid");
+			e.data.manager.$c.trigger("validationFail", d);
+			return false;
+		},
+		fieldValidationReset: function(e, d) {
+			$(e.target).removeClass("state-valid state-invalid");
+			return false;
+		},
+		fieldChange: function(e, d) {
+			validate($(e.target));
+		},
+		fieldKeyup: function(e, d) {
+			validate($(e.target));
+		},
+		managedFieldPass: function(e, d) {
+			if (e.data.manager.isValid()) {
+				$(e.target).removeClass("state-invalid").addClass("state-valid");
+			}
+			return false;
+		},
+		managedFieldFail: function(e, d) {
+			$(e.target).removeClass("state-valid").addClass("state-invalid");
+			return false;
+		}
+	};
+	
+	function validate(field) {
+		var value, 
+		    validators, 
+		    token, 
+		    errors,
+		    type;
+		
+		switch (field[0].nodeName.toLowerCase()) {
+			case "input":
+				switch (field.attr("type")) {
+					case "radio":
+					case "checkbox":
+						type = "bool";
+						if (field.attr("checked")) {
+							value = "true";
+						} else {
+							value = "false";
+						}
+						break;
+					default:
+						value = field.val();
+						break;
+				}
+				break;
+			case "textarea":
+				value = field.val();
+				break;
+			case "select":
+				type = "select";
+				value = field.find("option:selected").attr("value");
+				break;
+			default:
+				value = false;
+				break;
+		}
+		NI.ex.checkStr(value);
+		
+		validators = field.data("validators");
+		token = field.data("vtoken");
+		
+		if (!validators || !token) {
+			throw new Error("Field not prepared for validation");
+		}
+		token.clean();
+
+		$.each(validators, function(j, v) {
+			var t, validation;
+			t = typeof v;
+			if (t === "string") {
+				v = v.toLowerCase();
+				if ($.isFunction(ValidationManager.validators[v])) {
+					validation = ValidationManager.validators[v](value);
+					if (validation && validation.errors && validation.errors.length) {
+						$.each(validation.errors, function(k, err) {
+							token.addError(err);
+						});
+					}
+				} else if (v.indexOf("maxlen") === 0) {
+					(function(max) {
+						if (value.length > max) {
+							token.addError("This cannot exceed "+ max +" characters");
+						}
+					}(v.split("=")[1]));
+				} else if (v.indexOf("minlen") === 0) {
+					(function(min) {
+						if (value.length < min) {
+							token.addError("This must be at least "+ min +" characters");
+						}
+					}(v.split("=")[1]));
+				} else {
+					switch (v) {
+						case "required":
+							(function() {
+								var err;
+								err = "This is a required field";
+								if (type === "bool") {
+									if (value === "false") {
+										token.addError(err);
+									}
+								} else if (type === "select") {
+									if (value === "-1") {
+										token.addError(err);
+									}
+								} else {
+									if (NI.ex.isEmpty(value)) {
+										token.addError(err);
+									}
+								}
+							}());
+							break;
+						case "alphanumeric":
+							if (!isAlphaNumeric(value)) {
+								token.addError("This is not a valid alpha-numeric value");
+							}
+							break;
+						case "email":
+							if (!isEmail(value)) {
+								token.addError("This is not a valid Email address");
+							}
+							break;
+						case "url":
+							if (!isURL(value)) {
+								token.addError("This is not a valid URL");
+							}
+							break;
+						case "number":
+							if (!isNum(value)) {
+								token.addError("This is not a valid number");
+							}
+							break;
+						default:
+							break;
+					}
+				}
+			} else if (t === "function") {
+				validation = v(value);
+				if (validation.errors && validation.errors.length) {
+					$.each(validation.errors, function(k, err) {
+						token.addError(err);
+					});
+				}
+			}
+		});
+		
+		errors = token.errors();
+		if (errors) {
+			field.trigger("validationFail", { errors: errors });
+			return { valid: false, errors: errors };
+		}
+		field.trigger("validationPass");
+		return { valid: true };
+	}
+	
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
+	/**
+	 * @param $c jQuery object that contains the fields to be validated.
+	 * @param spec object literal that maps field selectors to an array of validators
+	 *             e.g { "#my-input": ["required", "alphanumeric"] }
+	 */
+	function ValidationManager($c, spec, options) {
+		var me = this;
+		
+		NI.ex.checkJQ($c);
+		
+		this.o = $.extend({
+			watchKeypress: false
+		}, options);
+		
+		this.fields = [];
+		$.each(spec, function(selector, validators) {
+			var field = $(selector, $c);
+			if (!field.length) {
+				return true;
+			}
+			
+			field.data("validators", validators);
+			field.data("vtoken", new ValidationToken());
+			
+			field.bind("validationPass", { manager:me }, events.fieldValidationPass)
+			     .bind("validationFail", { manager:me }, events.fieldValidationFail)
+			     .bind("validationReset", { manager:me }, events.fieldValidationReset)
+			     .bind("change", { manager:me }, events.fieldChange);
+			if (me.o.watchKeypress) {
+				field.bind("keyup", { manager:me }, events.fieldKeyup);
+			}
+			
+			me.fields.push(field);
+		});
+		
+		$c.bind("validationPass", { manager:this }, events.managedFieldPass)
+		  .bind("validationFail", { manager:this }, events.managedFieldFail);
+		
+		this.$c = $c;
+	}
+	ValidationManager.prototype = {
+		validate: function() {
+			var errorCount = 0;
+			 
+			$.each(this.fields, function(i, field) {
+				var validation = validate(field);
+				if (!validation.valid) {
+					errorCount += validation.errors.length;
+				}
+			});
+			
+			return errorCount === 0;
+		},
+		isValid: function() {
+			var i;
+			for (i = 0; i < this.fields.length; i += 1) {
+				if (this.fields[i].data("vtoken").errors()) {
+					return false;
+				}
+			}
+			return true;
+		},
+		reset: function() {
+			$.each(this.fields, function(i, field) {
+				field.data("vtoken").clean();
+				field.trigger("validationReset");
+			});
+			this.$c.removeClass("state-valid state-invalid");
+			this.invalidFieldCount = 0;
+			return this;
+		}
+	};
+	
+	var RESERVED_KEYS =
+		["required",
+		"alphanumeric",
+		"email",
+		"url",
+		"number"];
+	
+	ValidationManager.validators = {};
+	
+	ValidationManager.registerValidator = function(key, fn) {
+		NI.ex.checkStr(key);
+		NI.ex.checkFn(fn);
+		key = key.toLowerCase();
+		if (RESERVED_KEYS.indexOf(key) === -1) {
+			ValidationManager.validators[key] = fn;
+		} else {
+			console.warn("Cannot override the built-in validator: "+ key);
+		}
+	};
+	
+	ValidationManager.makeRangeValidator = function(low, high, note) {
+		note = note || "This must be between "+ low +" and "+ high;
+		return function(value) {
+			value = Number(value);
+			if (value < low || value > high) {
+				return { valid: false, errors: [note] };
+			}
+			return { valid: true };
+		};
+	};
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
+	NI.ValidationManager = ValidationManager;
+	
+}(this, this.jQuery));
