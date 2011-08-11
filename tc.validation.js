@@ -42,31 +42,60 @@
 	}
 	
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
+	var is = {
+		
+		alphaNumeric: function(s) {
+			return regTest(s, "alphanumeric");
+		},
 
-	function isAlphaNumeric(s) {
-		return regTest(s, "alphanumeric");
-	}
-
-	function isEmail(s) {
-		return regTest(s, "email");
-	}
+		email: function(s) {
+			return regTest(s, "email");
+		},
 	
-	function isURL(s) {
-		return regTest(s, "url");
-	}
+		URL: function(s) {
+			return regTest(s, "url");
+		},
 	
-	function isNum(s) {
-		//return !isNaN(Number(s));
-		return regTest(s, "number");
-	}
+		num: function(s) {
+			return regTest(s, "number");
+		},
 	
-	function isNumNonNegative(s) {
-		return isNum(s) && Number(s) >= 0;
-	}
+		numNonNegative: function(s) {
+			return isNum(s) && Number(s) >= 0;
+		},
 	
-	function isNumPositive(s) {
-		return isNum(s) && Number(s) > 0;
-	}
+		numPositive: function(s) {
+			return isNum(s) && Number(s) > 0;
+		},
+	
+		date: function(s) {
+			var day, month, year, buf, date;
+			if (s) {
+				buf = str.split("/");
+				if (buf.length == 3) {
+					month = buf[0].replace(/^0+/,'');
+					day = buf[1].replace(/^0+/,'');
+					year = buf[2].replace(/^0+/,'');
+					try {
+						date = new Date();
+						month = (month*1) - 1;
+						date.setFullYear(year, month, day);					
+						if (date.getMonth() == month && 
+						    date.getDate() == day && 
+						    date.getFullYear() == year) {
+							
+								return true;
+							}
+					} catch(err) {
+						// ignore
+					}
+				}
+				return false;
+			}
+			return true;
+		}
+	};
 	
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -214,23 +243,28 @@
 							}());
 							break;
 						case "alphanumeric":
-							if (!isAlphaNumeric(value)) {
+							if (!is.alphaNumeric(value)) {
 								token.addError("This is not a valid alpha-numeric value");
 							}
 							break;
 						case "email":
-							if (!isEmail(value)) {
+							if (!is.email(value)) {
 								token.addError("This is not a valid Email address");
 							}
 							break;
 						case "url":
-							if (!isURL(value)) {
+							if (!is.URL(value)) {
 								token.addError("This is not a valid URL");
 							}
 							break;
 						case "number":
-							if (!isNum(value)) {
+							if (!is.num(value)) {
 								token.addError("This is not a valid number");
+							}
+							break;
+						case "date":
+							if (!is.date(value)) {
+								token.addError("This is not a valid date");
 							}
 							break;
 						default:
@@ -336,7 +370,8 @@
 		"alphanumeric",
 		"email",
 		"url",
-		"number"];
+		"number",
+		"date"];
 	
 	ValidationManager.validators = {};
 	
@@ -365,5 +400,6 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	NI.ValidationManager = ValidationManager;
+	NI.is = $.extend(NI.is || {}, is);
 	
 }(this, this.jQuery));
