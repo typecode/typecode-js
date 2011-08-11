@@ -109,8 +109,33 @@
 				});
 			}
 			
+			$c.bind("focus", {instance:me}, function(e) {
+				$(window.document).bind("keydown.carousel", {instance:e.data.instance}, events.keydown);
+			}).bind("blur", {instance:me}, function(e) {
+				$(window.document).unbind("keydown.carousel", events.keydown);
+			}).bind("click", {me: $c}, function(e) {
+				e.data.me.focus();
+			});
+			
 			me.begin(false);
 		}
+		
+		var events = {
+			keydown: function(e) {
+				var key;
+				key = e.keyCode || e.which;
+				switch (key) {
+					case NI.co.keyboard.LEFT:
+						e.preventDefault();
+						e.data.instance.prev();
+						break;
+					case NI.co.keyboard.RIGHT:
+						e.preventDefault();
+						e.data.instance.next();
+						break;
+				}
+			}
+		};
 		
 		function moveTo($panel, speed) {
 			$elements.scroll.animate({left: -($panel.position().left)}, 
@@ -174,6 +199,7 @@
 			if ($first.length) {
 				moveTo($first, animate ? o.speed : 0);
 			}
+			$c.focus();
 			return this;
 		};
 		
@@ -203,7 +229,7 @@
 		
 		//TODO
 		this.destroy = function() {
-			
+			$c.blur();
 		};
 		
 		init();
