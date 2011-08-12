@@ -39,7 +39,7 @@
 			offset_top:10,
 			use_mousepos:true,
 			positions:['top','right','bottom','left'],
-			container:$(window)
+			container:$('body')
 		}, options);
 		
 		var internal = {
@@ -52,8 +52,9 @@
 			cache:{},
 			animating:false,
 			visible:false,
-			mousepos:null
-		}
+			mousepos:null,
+			visibility_timer:null
+		};
 		
 		function init(me){
 			internal.triggers.bind('mouseover',{me:this},handlers.trigger_mouseover);
@@ -255,25 +256,38 @@
 		
 		var handlers = {
 				trigger_mouseover:function(e){
+					if(internal.visibility_timer){
+						clearTimeout(internal.visibility_timer);
+					};
 					internal.current_trigger = $(this);
 					show();
 				},
 				trigger_mouseout:function(e){
+					if(internal.visibility_timer){
+						clearTimeout(internal.visibility_timer);
+					};
 					if(!$.contains(this,e.target)){
-						hide();
+						internal.visibility_timer = setTimeout(hide,200);
+						//hide();
 					}
 				},
 				tooltip_mouseover:function(e){
+					if(internal.visibility_timer){
+						clearTimeout(internal.visibility_timer);
+					};
 					if(!o.use_mousepos && internal.current_trigger && !internal.visible){
 						show();
 					}
 				},
 				tooltip_mouseout:function(e,d){
-					
+					if(internal.visibility_timer){
+						clearTimeout(internal.visibility_timer);
+					};
 					if(!((this == e.target) && (this == e.relatedTarget))){
 						if((!$.contains(this,e.target) && $.contains(this,e.relatedTarget)) ||
 								($.contains(this,e.target) && !$.contains(this,e.relatedTarget))){
-							hide();	
+							internal.visibility_timer = setTimeout(hide,200);
+							//hide();	
 						}
 					}
 						
@@ -307,14 +321,25 @@
 				return false;
 			}
 			
+			if(internal.visibility_timer){
+				clearTimeout(internal.visibility_timer);
+			};
+			
 			internal.current_trigger = _o.trigger;
 			internal.tooltip.stop();
 			show(_o.data);
 		}
 		
-		this.hide_tooltip = function(){
-			internal.tooltip.stop();
-			hide();
+		this.hide_tooltip = function(delay){
+			if(internal.visibility_timer){
+				clearTimeout(internal.visibility_timer);
+			};
+			if(delay){
+				internal.visibility_timer = setTimeout(hide,delay);
+			} else {
+				internal.tooltip.stop();
+				hide();
+			}
 		}
 		
 		this.get_tooltip = function(){
