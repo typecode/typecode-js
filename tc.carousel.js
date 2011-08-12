@@ -134,22 +134,22 @@
 		};
 		
 		function moveTo($panel, speed) {
+			
 			if (!$panel.length) {
 				return me;
 			}
+			
+			if ($panel.hasClass(o.cloneClass)) {
+				if ($panel.hasClass("beginning")) {
+					$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).last();
+				} else {							
+					$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first();
+				}
+			}
+			
 			$elements.scroll.animate({left: -($panel.position().left)}, 
 				speed, o.easing, function() {
 					var index, total;
-					
-					if ($panel.hasClass(o.cloneClass)) {
-						if ($panel.hasClass("beginning")) {
-							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).last();
-							$elements.scroll.css("left", -($panel.position().left));
-						} else {
-							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first();
-							$elements.scroll.css("left", 0);
-						}
-					}
 					
 					$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
 					
@@ -168,7 +168,7 @@
 		}
 		
 		function current() {
-			return $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass);
+			return $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).filter("."+ o.activeClass);
 		}
 		
 		this.get = function() {
@@ -193,7 +193,15 @@
 		};
 		
 		this.getCurrentIndex = function() {
-			return $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).not("."+o.cloneClass).index();
+			var $panels, index;
+			$panels = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass);
+			$panels.each(function(i, panel) {
+				if ($(panel).hasClass(o.activeClass)) {
+					index = i;
+					return false;
+				}
+			});
+			return index;
 		};
 		
 		this.refreshClones = function() {
@@ -204,12 +212,12 @@
 			$panels.last().clone(false).addClass(o.cloneClass +" end").appendTo($elements.scroll);
 			return this;
 		};
-				
+			
 		this.begin = function(no_animate) {
 			if (o.circular) {
 				this.refreshClones();
 			}
-			return moveTo($elements.scroll.children("."+o.panelClass).first(), no_animate ? 0 : o.speed);
+			return moveTo($elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first(), no_animate ? 0 : o.speed);
 		};
 		
 		this.next = function(no_animate) {
