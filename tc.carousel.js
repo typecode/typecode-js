@@ -70,8 +70,10 @@
 			panelClass: "panel",
 			activeClass: "state-active",
 			disabledClass: "state-disabled",
+			cloneClass: "clone",
 			speed: 400,
 			easing: "swing",
+			circular: true,
 			onMove: function(instance, info) {}
 		}, options);
 		
@@ -111,7 +113,7 @@
 			
 			$(window.document).bind("keydown.carousel", {instance:me}, events.keydown);
 			
-			me.begin(false);
+			me.begin(true);
 		}
 		
 		var events = {
@@ -132,30 +134,41 @@
 		};
 		
 		function moveTo($panel, speed) {
+			if (!$panel.length) {
+				return me;
+			}
 			$elements.scroll.animate({left: -($panel.position().left)}, 
 				speed, o.easing, function() {
 					var index, total;
+					
+					if ($panel.hasClass(o.cloneClass)) {
+						if ($panel.hasClass("beginning")) {
+							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).last();
+							$elements.scroll.css("left", -($panel.position().left));
+						} else {
+							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first();
+							$elements.scroll.css("left", 0);
+						}
+					}
+					
 					$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
 					
 					index = me.getCurrentIndex();
 					total = me.getTotal();
 					
-					if (index === 0) {
-						$c.find(".btn-prev").addClass(o.disabledClass);
-					} else {
-						$c.find(".btn-prev").removeClass(o.disabledClass);
-					}
-					if (index === total-1) {
-						$c.find(".btn-next").addClass(o.disabledClass);
-					} else {
-						$c.find(".btn-next").removeClass(o.disabledClass);
-					}
+					$c.find(".btn-prev")[index === 0 ? "addClass" : "removeClass"](o.disabledClass);
+					$c.find(".btn-next")[index === total-1 ? "addClass" : "removeClass"](o.disabledClass);
 										
 					if ($.isFunction(o.onMove)) {
 						o.onMove(me, {index: index, total: total});
 					}
 				}
 			);
+			return me;
+		}
+		
+		function current() {
+			return $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass);
 		}
 		
 		this.get = function() {
@@ -167,7 +180,6 @@
 			if (o.viewportDimensions) {
 				if (typeof o.viewportDimensions.width === "number") {
 					$panel.width(o.viewportDimensions.width);
-					
 				}
 				if (typeof o.viewportDimensions.height === "number") {
 					$panel.height(o.viewportDimensions.height);
@@ -177,47 +189,35 @@
 		};
 		
 		this.getTotal = function() {
-			return $elements.scroll.children("."+o.panelClass).length;
+			return $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).length;
 		};
 		
 		this.getCurrentIndex = function() {
-			return $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).index();
+			return $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).not("."+o.cloneClass).index();
+		};
+		
+		this.refreshClones = function() {
+			var $panels;
+			$elements.scroll.children("."+o.cloneClass).remove();
+			$panels = $elements.scroll.children("."+o.panelClass);
+			$panels.first().clone(false).addClass(o.cloneClass +" beginning").prependTo($elements.scroll);
+			$panels.last().clone(false).addClass(o.cloneClass +" end").appendTo($elements.scroll);
+			return this;
 		};
 				
-		this.begin = function(animate) {
-			var $first;
-			if (animate !== false) {
-				animate = true;
+		this.begin = function(no_animate) {
+			if (o.circular) {
+				this.refreshClones();
 			}
-			$first = $elements.scroll.children("."+o.panelClass).first();
-			if ($first.length) {
-				moveTo($first, animate ? o.speed : 0);
-			}
-			return this;
+			return moveTo($elements.scroll.children("."+o.panelClass).first(), no_animate ? 0 : o.speed);
 		};
 		
-		this.next = function(animate) {
-			var $next;
-			if (animate !== false) {
-				animate = true;
-			}
-			$next = $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).next("."+o.panelClass);
-			if ($next.length) {
-				moveTo($next, animate ? o.speed : 0);
-			}
-			return this;
+		this.next = function(no_animate) {
+			return moveTo(current().next("."+o.panelClass), no_animate ? 0 : o.speed);
 		};
 		
-		this.prev = function(animate) {
-			var $prev;
-			if (animate !== false) {
-				animate = true;
-			}
-			$prev = $elements.scroll.children("."+o.panelClass).filter("."+ o.activeClass).prev("."+o.panelClass);
-			if ($prev.length) {
-				moveTo($prev, animate ? o.speed : 0);
-			}
-			return this;
+		this.prev = function(no_animate) {
+			return moveTo(current().prev("."+o.panelClass), no_animate ? 0 : o.speed);
 		};
 		
 		//TODO
