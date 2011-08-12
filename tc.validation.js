@@ -27,6 +27,9 @@
 	var NI = window.NI,
 	    console = NI.app.getConsole(true);
 
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// regular expressions
+
 	var regex = {
 		email: /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i,
 		
@@ -42,8 +45,13 @@
 	}
 	
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// tests
 	
 	var is = {
+		
+		empty: function(s) {
+			return NI.ex.isEmpty(s);
+		},
 		
 		alphaNumeric: function(s) {
 			return regTest(s, "alphanumeric");
@@ -53,7 +61,7 @@
 			return regTest(s, "email");
 		},
 	
-		URL: function(s) {
+		url: function(s) {
 			return regTest(s, "url");
 		},
 	
@@ -77,6 +85,9 @@
 					month = buf[0].replace(/^0+/,'');
 					day = buf[1].replace(/^0+/,'');
 					year = buf[2].replace(/^0+/,'');
+					if (!(year.length == 2 || year.length == 4)) {
+						return false;
+					}
 					try {
 						date = new Date();
 						month = (month*1) - 1;
@@ -97,6 +108,25 @@
 	};
 	
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// built-in validators
+
+	var built_ins = {
+		
+		required: "This is a required field",
+		
+		alphanumeric: "This is not a valid alpha-numeeric value",
+		
+		email: "This is not a valid Email address",
+		
+		url: "This is not a valid URL",
+		
+		number: "This is not a valid number",
+		
+		date: "This is not a valid date"
+	};
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// field validation	
 
 	function ValidationToken() {
 		this.clean();
@@ -115,8 +145,6 @@
 			return this;
 		}
 	};
-
-//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	var events = {
 		fieldValidationPass: function(e, d) {
@@ -229,7 +257,7 @@
 						case "required":
 							(function() {
 								var err;
-								err = "This is a required field";
+								err = built_ins["required"];
 								if (type === "bool") {
 									if (value === "false") {
 										token.addError(err);
@@ -247,27 +275,27 @@
 							break;
 						case "alphanumeric":
 							if (!is.alphaNumeric(value)) {
-								token.addError("This is not a valid alpha-numeric value");
+								token.addError(built_ins["alphanumeric"]);
 							}
 							break;
 						case "email":
 							if (!is.email(value)) {
-								token.addError("This is not a valid Email address");
+								token.addError(built_ins["email"]);
 							}
 							break;
 						case "url":
-							if (!is.URL(value)) {
-								token.addError("This is not a valid URL");
+							if (!is.url(value)) {
+								token.addError(built_ins["url"]);
 							}
 							break;
 						case "number":
 							if (!is.num(value)) {
-								token.addError("This is not a valid number");
+								token.addError(built_ins["number"]);
 							}
 							break;
 						case "date":
 							if (!is.date(value)) {
-								token.addError("This is not a valid date");
+								token.addError(built_ins["date"]);
 							}
 							break;
 						default:
@@ -294,7 +322,8 @@
 	}
 	
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	
+// manager
+
 	function ValidationManager(options) {
 		var me = this;
 				
@@ -366,24 +395,26 @@
 		}
 	};
 	
-	var RESERVED_KEYS =
-		["required",
-		"alphanumeric",
-		"email",
-		"url",
-		"number",
-		"date"];
-	
 	ValidationManager.validators = {};
 	
 	ValidationManager.registerValidator = function(key, fn) {
 		NI.ex.checkStr(key);
 		NI.ex.checkFn(fn);
 		key = key.toLowerCase();
-		if (RESERVED_KEYS.indexOf(key) === -1) {
-			ValidationManager.validators[key] = fn;
-		} else {
+		if (built_ins[key]) {
 			console.warn("Cannot override the built-in validator: "+ key);
+			return;
+		}
+		ValidationManager.validators[key] = fn;
+	};
+	
+	ValidationManager.registerErrorMessage = function(key, note) {
+		NI.ex.checkStr(key);
+		NI.ex.checkStr(note);
+		if (built_ins[key]) {
+			built_ins[key] = note;
+		} else {
+			
 		}
 	};
 	
