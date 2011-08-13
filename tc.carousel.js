@@ -179,7 +179,7 @@
 		
 		function registerBtn(key) {
 			var $btn;
-			$btn = generate[key](this);
+			$btn = generate[key](me);
 			if ($elements[key]) {
 				$elements[key].add($btn);
 			} else {
