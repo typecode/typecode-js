@@ -25,8 +25,7 @@
 (function(window, $) {
 	
 	var NI = window.NI,
-	    generate,
-	    events;
+	    generate;
 	
 	generate = {
 		carousel: function() {
@@ -60,25 +59,8 @@
 		}
 	};
 	
-	events = {
-		keydown: function(e) {
-			var key;
-			key = e.keyCode || e.which;
-			switch (key) {
-				case NI.co.keyboard.LEFT:
-					e.preventDefault();
-					e.data.instance.prev();
-					break;
-				case NI.co.keyboard.RIGHT:
-					e.preventDefault();
-					e.data.instance.next();
-					break;
-			}
-		}
-	};
-	
 	function Carousel(options) {
-		var me, o, $c, $elements;
+		var me, o, $c, $elements, events;
 		
 		me = this;
 		o = $.extend({
@@ -139,6 +121,10 @@
 			me.begin(true);
 		}
 		
+		function current() {
+			return $elements.scroll.children("."+o.panelClass + "."+ o.activeClass);
+		}
+		
 		function targetPosition($panel) {
 			if (o.viewportDimensions && typeof o.viewportDimensions.width === "number") {
 				return -($panel.index()*o.viewportDimensions.width);
@@ -147,18 +133,18 @@
 			}
 		}
 		
-		function moveTo($panel, speed) {
+		function moveTo($panel, noAnimate) {
 			
 			if (!$panel.length) {
 				return me;
 			}
 			
 			$elements.scroll.animate({left: targetPosition($panel)}, 
-				speed, o.easing, function() {
+				(noAnimate ? 0 : o.speed), o.easing, function() {
 					var info;
 					
 					if ($panel.hasClass(o.cloneClass)) {
-						if ($panel.hasClass("beginning")) {
+						if ($panel.hasClass("head")) {
 							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).last();
 						} else {
 							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first();
@@ -168,7 +154,7 @@
 					
 					$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
 					
-					info = me.getInfo();
+					info = me.info();
 					
 					if (!o.circular) {
 						if ($elements.prevBtn.length) {
@@ -187,9 +173,22 @@
 			return me;
 		}
 		
-		function current() {
-			return $elements.scroll.children("."+o.panelClass + "."+ o.activeClass);
-		}
+		events = {
+			keydown: function(e) {
+				var key;
+				key = e.keyCode || e.which;
+				switch (key) {
+					case NI.co.keyboard.LEFT:
+						e.preventDefault();
+						e.data.instance.prev();
+						break;
+					case NI.co.keyboard.RIGHT:
+						e.preventDefault();
+						e.data.instance.next();
+						break;
+				}
+			}
+		};
 		
 		function registerBtn(key) {
 			var $btn;
@@ -198,32 +197,7 @@
 			return $btn;
 		}
 		
-		this.registerPrevBtn = function() {
-			return registerBtn("prevBtn");
-		};
-
-		this.registerNextBtn = function() {
-			return registerBtn("nextBtn");
-		};
-		
-		this.get = function() {
-			return $c;
-		};
-		
-		this.add = function($panel) {
-			$panel.css("float", "left").addClass(o.panelClass);
-			if (o.viewportDimensions) {
-				if (typeof o.viewportDimensions.width === "number") {
-					$panel.width(o.viewportDimensions.width);
-				}
-				if (typeof o.viewportDimensions.height === "number") {
-					$panel.height(o.viewportDimensions.height);
-				}
-			}
-			$elements.scroll.append($panel);
-		};
-		
-		this.getInfo = function() {
+		this.info = function() {
 			var $panels, index;
 			$panels = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass);
 			$panels.each(function(i, panel) {
@@ -238,33 +212,84 @@
 			};
 		};
 		
+		this.add = function($panel) {
+			$panel.css("float", "left").addClass(o.panelClass);
+			if (o.viewportDimensions) {
+				if (typeof o.viewportDimensions.width === "number") {
+					$panel.width(o.viewportDimensions.width);
+				}
+				if (typeof o.viewportDimensions.height === "number") {
+					$panel.height(o.viewportDimensions.height);
+				}
+			}
+			$elements.scroll.append($panel);
+			return this;
+		};
+		
+		this.registerPrevBtn = function() {
+			return registerBtn("prevBtn");
+		};
+
+		this.registerNextBtn = function() {
+			return registerBtn("nextBtn");
+		};
+		
+		
+		this.get = function() {
+			return $c;
+		};	
+		
 		this.refresh = function() {
 			var $panels;
 			if (o.circular) {
 				$elements.scroll.children("."+o.cloneClass).remove();
 				$panels = $elements.scroll.children("."+o.panelClass);
-				$panels.last().clone(false).addClass(o.cloneClass +" beginning").prependTo($elements.scroll);
-				$panels.first().clone(false).addClass(o.cloneClass +" end").appendTo($elements.scroll);
+				$panels.last().clone(false).addClass(o.cloneClass +" head").prependTo($elements.scroll);
+				$panels.first().clone(false).addClass(o.cloneClass +" tail").appendTo($elements.scroll);
 			}
 			return this;
 		};
+		
 			
-		this.begin = function(no_animate) {
+		this.begin = function(noAnimate) {
 			this.refresh();
-			return moveTo($elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first(), no_animate ? 0 : o.speed);
+			return moveTo($elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first(), noAnimate);
 		};
 		
-		this.next = function(no_animate) {
-			return moveTo(current().next("."+o.panelClass), no_animate ? 0 : o.speed);
+		this.end = function(noAnimate) {
+			return moveTo($elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).last(), noAnimate);
 		};
 		
-		this.prev = function(no_animate) {
-			return moveTo(current().prev("."+o.panelClass), no_animate ? 0 : o.speed);
+		this.toIndex = function(index, noAnimate) {
+			$elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).each(function(i, panel) {
+				if (i === index) {
+					moveTo($(panel), noAnimate);
+					return false;
+				}
+			});
+			return this;
 		};
 		
-		//TODO
+		this.next = function(noAnimate) {
+			return moveTo(current().next("."+o.panelClass), noAnimate);
+		};
+		
+		this.prev = function(noAnimate) {
+			return moveTo(current().prev("."+o.panelClass), noAnimate);
+		};
+		
+		
 		this.destroy = function() {
-			
+			if (o.keyboard) {
+				$(window.document).unbind("keydown.carousel", events.keydown);
+			}
+			if ($elements.prevBtn.length) {
+				$elements.prevBtn.unbind("click");
+			}
+			if ($elements.nextBtn.length) {
+				$elements.nextBtn.unbind("click");
+			}
+			$c.remove();
 		};
 		
 		init();
