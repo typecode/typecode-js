@@ -192,7 +192,7 @@
 			return registerBtn("prevBtn");
 		};
 
-		this.registerPrevBtn = function() {
+		this.registerNextBtn = function() {
 			return registerBtn("nextBtn");
 		};
 		
