@@ -25,7 +25,8 @@
 (function(window, $) {
 	
 	var NI = window.NI,
-	    generate;
+	    generate,
+	    events;
 	
 	generate = {
 		carousel: function() {
@@ -59,6 +60,23 @@
 		}
 	};
 	
+	events = {
+		keydown: function(e) {
+			var key;
+			key = e.keyCode || e.which;
+			switch (key) {
+				case NI.co.keyboard.LEFT:
+					e.preventDefault();
+					e.data.instance.prev();
+					break;
+				case NI.co.keyboard.RIGHT:
+					e.preventDefault();
+					e.data.instance.next();
+					break;
+			}
+		}
+	};
+	
 	function Carousel(options) {
 		var me, o, $c, $elements;
 		
@@ -74,6 +92,7 @@
 			speed: 400,
 			easing: "swing",
 			circular: true,
+			keyboard: true,
 			onMove: function(instance, info) {}
 		}, options);
 		
@@ -113,27 +132,20 @@
 				});
 			}
 			
-			$(window.document).bind("keydown.carousel", {instance:me}, events.keydown);
+			if (o.keyboard) {
+				$(window.document).bind("keydown.carousel", {instance:me}, events.keydown);
+			}
 			
 			me.begin(true);
 		}
 		
-		var events = {
-			keydown: function(e) {
-				var key;
-				key = e.keyCode || e.which;
-				switch (key) {
-					case NI.co.keyboard.LEFT:
-						e.preventDefault();
-						e.data.instance.prev();
-						break;
-					case NI.co.keyboard.RIGHT:
-						e.preventDefault();
-						e.data.instance.next();
-						break;
-				}
+		function targetPosition($panel) {
+			if (o.viewportDimensions && typeof o.viewportDimensions.width === "number") {
+				return -($panel.index()*o.viewportDimensions.width);
+			} else {
+				return -($panel.position().left);
 			}
-		};
+		}
 		
 		function moveTo($panel, speed) {
 			
@@ -141,7 +153,7 @@
 				return me;
 			}
 			
-			$elements.scroll.animate({left: -($panel.position().left)}, 
+			$elements.scroll.animate({left: targetPosition($panel)}, 
 				speed, o.easing, function() {
 					var info;
 					
@@ -151,18 +163,20 @@
 						} else {
 							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first();
 						}
-						$elements.scroll.css("left", -($panel.position().left));
+						$elements.scroll.css("left", targetPosition($panel));
 					}
 					
 					$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
 					
 					info = me.getInfo();
 					
-					if ($elements.prevBtn.length) {
-						$elements.prevBtn[info.index === 0 ? "addClass" : "removeClass"](o.disabledClass);
-					}
-					if ($elements.nextBtn.length) {
-						$elements.nextBtn[info.index === info.total-1 ? "addClass" : "removeClass"](o.disabledClass);
+					if (!o.circular) {
+						if ($elements.prevBtn.length) {
+							$elements.prevBtn[info.index === 0 ? "addClass" : "removeClass"](o.disabledClass);
+						}
+						if ($elements.nextBtn.length) {
+							$elements.nextBtn[info.index === info.total-1 ? "addClass" : "removeClass"](o.disabledClass);
+						}
 					}
 										
 					if ($.isFunction(o.onMove)) {
@@ -180,11 +194,7 @@
 		function registerBtn(key) {
 			var $btn;
 			$btn = generate[key](me);
-			if ($elements[key]) {
-				$elements[key].add($btn);
-			} else {
-				$elements[key] = $btn;
-			}
+			$elements[key] ? $elements[key].add($btn) : $elements[key] = $btn;
 			return $btn;
 		}
 		
