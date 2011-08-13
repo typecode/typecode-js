@@ -298,5 +298,6 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		
 	NI.Carousel = Carousel;
+	NI.Carousel.Generator = generate;
 	
 }(this, this.jQuery));

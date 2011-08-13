@@ -70,12 +70,6 @@
 				$c.bind("click", {instance:me, $pane:$elements.pane, allowPaneClick: true}, events.clickClose);
 			}
 			
-			$c.bind("focus", {instance:me, escape:o.escape, $c:$c}, function(e) {
-				$(window.document).bind("keydown.overlay", {instance:e.data.instance, escape:e.data.escape, $c:e.data.$c}, events.keydown);
-			}).bind("blur", {instance:me}, function(e) {
-				$(window.document).unbind("keydown.overlay", events.keydown);
-			});
-			
 			open = false;
 		}
 		
@@ -178,6 +172,8 @@
 			$m.show();
 			$c.show().scrollTop(0).focus();
 			
+			$(window.document).bind("keydown.overlay", {instance:this, escape:o.escape, $c:$c}, events.keydown);
+			
 			open = true;
 			if ($.isFunction(o.onOpen)) {
 				o.onOpen(this);
@@ -189,6 +185,9 @@
 			if (!open) { return this; }
 			$m.fadeOut();
 			$c.hide().blur();
+			
+			$(window.document).unbind("keydown.overlay", events.keydown);
+			
 			if (o.autoflush === true) {
 				this.flush();
 			}
