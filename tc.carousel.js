@@ -92,7 +92,9 @@
 			$viewport = $c.find(".viewport");
 			$elements = {
 				viewport: $viewport,
-				scroll: $viewport.children(".scroll")
+				scroll: $viewport.children(".scroll"),
+				prevBtn: null,
+				nextBtn: null
 			};
 			
 			if (o.viewportDimensions) {
@@ -139,28 +141,32 @@
 				return me;
 			}
 			
-			if ($panel.hasClass(o.cloneClass)) {
-				if ($panel.hasClass("beginning")) {
-					$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).last();
-				} else {							
-					$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first();
-				}
-			}
-			
 			$elements.scroll.animate({left: -($panel.position().left)}, 
 				speed, o.easing, function() {
-					var index, total;
+					var info;
+					
+					if ($panel.hasClass(o.cloneClass)) {
+						if ($panel.hasClass("beginning")) {
+							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).last();
+						} else {
+							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first();
+						}
+						$elements.scroll.css("left", -($panel.position().left));
+					}
 					
 					$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
 					
-					index = me.getCurrentIndex();
-					total = me.getTotal();
+					info = me.getInfo();
 					
-					$c.find(".btn-prev")[index === 0 ? "addClass" : "removeClass"](o.disabledClass);
-					$c.find(".btn-next")[index === total-1 ? "addClass" : "removeClass"](o.disabledClass);
+					if ($elements.prevBtn.length) {
+						$elements.prevBtn[info.index === 0 ? "addClass" : "removeClass"](o.disabledClass);
+					}
+					if ($elements.nextBtn.length) {
+						$elements.nextBtn[info.index === info.total-1 ? "addClass" : "removeClass"](o.disabledClass);
+					}
 										
 					if ($.isFunction(o.onMove)) {
-						o.onMove(me, {index: index, total: total});
+						o.onMove(me, info);
 					}
 				}
 			);
@@ -168,8 +174,27 @@
 		}
 		
 		function current() {
-			return $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).filter("."+ o.activeClass);
+			return $elements.scroll.children("."+o.panelClass + "."+ o.activeClass);
 		}
+		
+		function registerBtn(key) {
+			var $btn;
+			$btn = generate[key](this);
+			if ($elements[key]) {
+				$elements[key].add($btn);
+			} else {
+				$elements[key] = $btn;
+			}
+			return $btn;
+		}
+		
+		this.registerPrevBtn = function() {
+			return registerBtn("prevBtn");
+		};
+
+		this.registerPrevBtn = function() {
+			return registerBtn("nextBtn");
+		};
 		
 		this.get = function() {
 			return $c;
@@ -188,11 +213,7 @@
 			$elements.scroll.append($panel);
 		};
 		
-		this.getTotal = function() {
-			return $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).length;
-		};
-		
-		this.getCurrentIndex = function() {
+		this.getInfo = function() {
 			var $panels, index;
 			$panels = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass);
 			$panels.each(function(i, panel) {
@@ -201,22 +222,25 @@
 					return false;
 				}
 			});
-			return index;
+			return {
+				index: index,
+				total: $panels.length
+			};
 		};
 		
-		this.refreshClones = function() {
+		this.refresh = function() {
 			var $panels;
-			$elements.scroll.children("."+o.cloneClass).remove();
-			$panels = $elements.scroll.children("."+o.panelClass);
-			$panels.first().clone(false).addClass(o.cloneClass +" beginning").prependTo($elements.scroll);
-			$panels.last().clone(false).addClass(o.cloneClass +" end").appendTo($elements.scroll);
+			if (o.circular) {
+				$elements.scroll.children("."+o.cloneClass).remove();
+				$panels = $elements.scroll.children("."+o.panelClass);
+				$panels.last().clone(false).addClass(o.cloneClass +" beginning").prependTo($elements.scroll);
+				$panels.first().clone(false).addClass(o.cloneClass +" end").appendTo($elements.scroll);
+			}
 			return this;
 		};
 			
 		this.begin = function(no_animate) {
-			if (o.circular) {
-				this.refreshClones();
-			}
+			this.refresh();
 			return moveTo($elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first(), no_animate ? 0 : o.speed);
 		};
 		
@@ -235,14 +259,6 @@
 		
 		init();
 	}
-		
-	Carousel.generatePrevBtn = function(instance) {
-		return generate.prevBtn(instance);
-	};
-	
-	Carousel.generateNextBtn = function(instance) {
-		return generate.nextBtn(instance);
-	};
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		
