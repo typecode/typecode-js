@@ -142,15 +142,15 @@
 		function targetPosition($panel) {
 			if (o.vertical) {
 				if (o.viewportDimensions && typeof o.viewportDimensions.height === "number") {
-					return -($panel.index()*o.viewportDimensions.height);
+					return {top: -($panel.index()*o.viewportDimensions.height)};
 				} else {
-					return -($panel.position().top);
+					return {top: -($panel.position().top)};
 				}
 			}
 			if (o.viewportDimensions && typeof o.viewportDimensions.width === "number") {
-				return -($panel.index()*o.viewportDimensions.width);
+				return {left: -($panel.index()*o.viewportDimensions.width)};
 			} else {
-				return -($panel.position().left);
+				return {left: -($panel.position().left)};
 			}
 		}
 		
@@ -160,13 +160,12 @@
 				return me;
 			}
 			
-			$elements.scroll.animate({o.vertical ? "top" : "left": targetPosition($panel)}, 
-				(noAnimate ? 0 : o.speed), o.easing, function() {
+			$elements.scroll.animate(targetPosition($panel), (noAnimate ? 0 : o.speed), o.easing, function() {
 					var info;
 					
 					if ($panel.hasClass(o.cloneClass)) {
 						$panel = $elements.scroll.children(selectors.panel).not(selectors.clone)[$panel.hasClass("head") ? "last" : "first"]();
-						$elements.scroll.css(o.vertical ? "top" : "left", targetPosition($panel));
+						$elements.scroll.css(targetPosition($panel));
 					}
 					
 					$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
