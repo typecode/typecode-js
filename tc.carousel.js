@@ -22,6 +22,9 @@
                              TYPE/CODE        
                          From 2010 till ∞     */
 
+// this carousel implementation is based on the jQuery Tools "scrollable" implementation:
+// https://github.com/jquerytools/jquerytools/blob/master/src/scrollable/scrollable.js
+
 (function(window, $) {
 	
 	var NI = window.NI,
@@ -60,7 +63,7 @@
 	};
 	
 	function Carousel(options) {
-		var me, o, $c, $elements, events;
+		var me, o, $c, selectors, $elements, events, touchInfo;
 		
 		me = this;
 		o = $.extend({
@@ -73,6 +76,7 @@
 			cloneClass: "clone",
 			speed: 400,
 			easing: "swing",
+			vertical: false,
 			circular: true,
 			keyboard: true,
 			onMove: function(instance, info) {}
@@ -89,6 +93,12 @@
 			} else {
 				$c = generate.carousel();
 			}
+			
+			selectors = {
+				panel: "."+o.panelClass,
+				active: "."+o.activeClass,
+				clone: "."+o.cloneClass
+			};
 			
 			$viewport = $c.find(".viewport");
 			$elements = {
@@ -108,24 +118,35 @@
 				}
 			}
 			
+			if (o.keyboard) {
+				$(window.document).bind("keydown.carousel", {instance:me}, events.keydown);
+			}
+			
+			touchInfo = {};
+			$elements.scroll[0].ontouchstart = events.touchstart;
+			$elements.scroll[0].ontouchmove = events.touchmove;
+			
 			if (o.panels && o.panels.length) {
 				$.each(o.panels, function(i, $panel) {
 					me.add($panel);
 				});
 			}
 			
-			if (o.keyboard) {
-				$(window.document).bind("keydown.carousel", {instance:me}, events.keydown);
-			}
-			
 			me.begin(true);
 		}
 		
 		function current() {
-			return $elements.scroll.children("."+o.panelClass + "."+ o.activeClass);
+			return $elements.scroll.children(selectors.panel + selectors.active);
 		}
 		
 		function targetPosition($panel) {
+			if (o.vertical) {
+				if (o.viewportDimensions && typeof o.viewportDimensions.height === "number") {
+					return -($panel.index()*o.viewportDimensions.height);
+				} else {
+					return -($panel.position().top);
+				}
+			}
 			if (o.viewportDimensions && typeof o.viewportDimensions.width === "number") {
 				return -($panel.index()*o.viewportDimensions.width);
 			} else {
@@ -139,17 +160,13 @@
 				return me;
 			}
 			
-			$elements.scroll.animate({left: targetPosition($panel)}, 
+			$elements.scroll.animate({o.vertical ? "top" : "left": targetPosition($panel)}, 
 				(noAnimate ? 0 : o.speed), o.easing, function() {
 					var info;
 					
 					if ($panel.hasClass(o.cloneClass)) {
-						if ($panel.hasClass("head")) {
-							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).last();
-						} else {
-							$panel = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first();
-						}
-						$elements.scroll.css("left", targetPosition($panel));
+						$panel = $elements.scroll.children(selectors.panel).not(selectors.clone)[$panel.hasClass("head") ? "last" : "first"]();
+						$elements.scroll.css(o.vertical ? "top" : "left", targetPosition($panel));
 					}
 					
 					$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
@@ -170,6 +187,7 @@
 					}
 				}
 			);
+			
 			return me;
 		}
 		
@@ -187,6 +205,19 @@
 						e.data.instance.next();
 						break;
 				}
+			},
+			touchstart: function(e) {
+				touchInfo.x = e.touches[0].clientX;
+				touchInfo.y = e.touches[0].clientY;
+			},
+			touchmove: function(e) {
+				var dx, dy;
+				if (e.touches.length === 1 && !$elements.scroll.is(":animated")) {
+					e.preventDefault();
+					dx = touchInfo.x - e.touches[0].clientX;
+					dy = touchInfo.y - e.touches[0].clientY;
+					me[o.vertical && dy > 0 || !o.vertical && dx > 0 ? "next" : "prev"]();
+				}
 			}
 		};
 		
@@ -198,22 +229,28 @@
 		}
 		
 		this.info = function() {
-			var $panels, index;
-			$panels = $elements.scroll.children("."+o.panelClass).not("."+o.cloneClass);
+			var $panels, $current, index;
+			$panels = $elements.scroll.children(selectors.panel).not(selectors.clone);
 			$panels.each(function(i, panel) {
-				if ($(panel).hasClass(o.activeClass)) {
+				var $p = $(panel);
+				if ($p.hasClass(o.activeClass)) {
+					$current = $p;
 					index = i;
 					return false;
 				}
 			});
 			return {
+				$current: $current,
 				index: index,
 				total: $panels.length
 			};
 		};
 		
 		this.add = function($panel) {
-			$panel.css("float", "left").addClass(o.panelClass);
+			$panel.addClass(o.panelClass);
+			if (!o.vertical) {
+				$panel.css("float", "left");
+			}
 			if (o.viewportDimensions) {
 				if (typeof o.viewportDimensions.width === "number") {
 					$panel.width(o.viewportDimensions.width);
@@ -224,6 +261,39 @@
 			}
 			$elements.scroll.append($panel);
 			return this;
+		};
+		
+		this.remove = function($panel) {
+			var info, panelIndex, currentIndex;
+			
+			if (!($.contains($elements.scroll[0], $panel[0])) || $panel.hasClass(o.cloneClass)) {
+				return false;
+			}
+			
+			info = this.info();
+			
+			if (info.total === 1) {
+				$elements.scroll.children(selectors.clone).remove();
+				return $panel.detach();
+			}
+			
+			panelIndex = $panel.index();
+			currentIndex = info.$current.index();
+			
+			$panel.detach();
+			
+			// if the removed panel came before the currently active panel,
+			// update the offset of the scroll element
+			if (panelIndex < currentIndex) {
+				moveTo(info.$current, true);
+				
+			// if the removed panel was the currently active panel,
+			// activate the previous sibling panel
+			} else if (panelIndex === currentIndex) {
+				this.toIndex(currentIndex-1, true);
+			}
+			
+			return $panel;
 		};
 		
 		this.registerPrevBtn = function() {
@@ -242,8 +312,8 @@
 		this.refresh = function() {
 			var $panels;
 			if (o.circular) {
-				$elements.scroll.children("."+o.cloneClass).remove();
-				$panels = $elements.scroll.children("."+o.panelClass);
+				$elements.scroll.children(selectors.clone).remove();
+				$panels = $elements.scroll.children(selectors.panel);
 				$panels.last().clone(false).addClass(o.cloneClass +" head").prependTo($elements.scroll);
 				$panels.first().clone(false).addClass(o.cloneClass +" tail").appendTo($elements.scroll);
 			}
@@ -253,15 +323,15 @@
 			
 		this.begin = function(noAnimate) {
 			this.refresh();
-			return moveTo($elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).first(), noAnimate);
+			return moveTo($elements.scroll.children(selectors.panel).not(selectors.clone).first(), noAnimate);
 		};
 		
 		this.end = function(noAnimate) {
-			return moveTo($elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).last(), noAnimate);
+			return moveTo($elements.scroll.children(selectors.panel).not(selectors.clone).last(), noAnimate);
 		};
 		
 		this.toIndex = function(index, noAnimate) {
-			$elements.scroll.children("."+o.panelClass).not("."+o.cloneClass).each(function(i, panel) {
+			$elements.scroll.children(selectors.panel).not(selectors.clone).each(function(i, panel) {
 				if (i === index) {
 					moveTo($(panel), noAnimate);
 					return false;
@@ -271,11 +341,11 @@
 		};
 		
 		this.next = function(noAnimate) {
-			return moveTo(current().next("."+o.panelClass), noAnimate);
+			return moveTo(current().next(selectors.panel), noAnimate);
 		};
 		
 		this.prev = function(noAnimate) {
-			return moveTo(current().prev("."+o.panelClass), noAnimate);
+			return moveTo(current().prev(selectors.panel), noAnimate);
 		};
 		
 		
