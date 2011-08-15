@@ -210,6 +210,10 @@
 				events.trigger.apply(events, arguments);
 			};
 			return target;
+		},
+		
+		guid: function(prefix) {
+			return (prefix || "obj_")+ new Date().getTime();
 		}
 	};
 
