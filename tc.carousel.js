@@ -315,7 +315,7 @@
 		// return the jQuery container element that represents the carousel
 		this.get = function() {
 			return $c;
-		};	
+		};
 		
 		// Tell the Carousel to check itself before it wr-wr-wrecks itself.
 		// If the Carousel is circular, generate its secret clone elements.

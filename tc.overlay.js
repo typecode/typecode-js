@@ -90,15 +90,16 @@
 			},
 			clickClose: function(e) {
 				var pane;
-				e.preventDefault();
 				if (e.data.$pane && e.data.allowPaneClick) {
 					pane = e.data.$pane[0];
 					if (!$.contains(pane, e.target) && (pane != e.target)) {
+						e.preventDefault();
 						e.data.instance.close();
 					}
 				} else {
+					e.preventDefault();
 					e.data.instance.close();
-				}				
+				}
 			}
 		};
 		
@@ -168,6 +169,8 @@
 			if (o.closeBtn && !($elements.hd.find(".btn-close").length)) {
 				$elements.hd.append(generate.closeBtn(this));
 			}
+			
+			$c.find('.btn-close').bind("click", {instance:this}, events.clickClose);
 			
 			$m.show();
 			$c.show().scrollTop(0).focus();
