@@ -172,8 +172,8 @@
 			
 			$c.find('.btn-close').bind("click", {instance:this}, events.clickClose);
 			
-			$m.show();
-			$c.show().scrollTop(0).focus();
+			$m.fadeIn();
+			$c.fadeIn().scrollTop(0).focus();
 			
 			$(window.document).bind("keydown.overlay", {instance:this, escape:o.escape, $c:$c}, events.keydown);
 			
