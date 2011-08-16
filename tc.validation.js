@@ -165,10 +165,7 @@
 			$(e.target).removeClass("state-valid state-invalid");
 			return false;
 		},
-		fieldChange: function(e, d) {
-			validate($(e.target));
-		},
-		fieldKeyup: function(e, d) {
+		watchEventHandler: function(e, d){
 			validate($(e.target));
 		},
 		managedFieldPass: function(e, d) {
@@ -330,12 +327,12 @@
 		this.o = $.extend({
 			$mother: null,
 			spec: [],
-			watchKeypress: false
+			watchEvents:['keyup', 'change']
 		}, options);
 		
 		this.fields = [];
 		$.each(this.o.spec, function(i, item) {
-			var field;
+			var field, i;
 			field = typeof item.element === "string" ? $(item.element) : item.element;
 			if (!field.length || !item.validators) {
 				return true;
@@ -346,10 +343,11 @@
 			
 			field.bind("validationPass", { manager:me }, events.fieldValidationPass)
 			     .bind("validationFail", { manager:me }, events.fieldValidationFail)
-			     .bind("validationReset", { manager:me }, events.fieldValidationReset)
-			     .bind("change", { manager:me }, events.fieldChange);
-			if (me.o.watchKeypress) {
-				field.bind("keyup", { manager:me }, events.fieldKeyup);
+			     .bind("validationReset", { manager:me }, events.fieldValidationReset);
+			
+			
+			for (i in me.o.watchEvents){
+				field.bind(me.o.watchEvents[i], { manager:me }, events.watchEventHandler);
 			}
 			
 			me.fields.push(field);
