@@ -302,11 +302,11 @@
 				switch(target_pos.className){
 					case 'top':
 					case 'bottom':
-						tail_css.left = (internal.tooltip.width()/2) - o.offset_left - (get_tail(target_pos.className).width()/2);
+						tail_css_change.left = (internal.tooltip.width()/2) - o.offset_left - (get_tail(target_pos.className).width()/2);
 						break;
 					case 'left':
 					case 'right':
-						tail_css.top = (internal.tooltip.height()/2) + o.offset_top - (get_tail(target_pos.className).height()/2);
+						tail_css_change.top = (internal.tooltip.height()/2) + o.offset_top - (get_tail(target_pos.className).height()/2);
 						break;
 				}
 			}
