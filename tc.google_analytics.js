@@ -39,6 +39,8 @@
 		if(window._gat){
 			this.tracker = window._gat._createTracker(o.account);
 		}
+		
+		
 	}
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
