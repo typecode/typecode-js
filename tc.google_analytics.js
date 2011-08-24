@@ -36,9 +36,17 @@
 		if(!o.account){
 			return;
 		}
-		if(window._gat){
-			this.tracker = window._gat._createTracker(o.account);
-		}
+		
+		_gaq.push(['_setAccount', o.account]);
+		
+		//console.log(window._gat);
+		//if(window._gat){
+		//	this.tracker = window._gat._createTracker(o.account);
+		//	console.log(this.tracker);
+		//}
+		//
+		//console.log(this.tracker);
+		
 	}
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

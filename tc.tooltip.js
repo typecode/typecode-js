@@ -83,7 +83,6 @@
 		};
 		
 		function generate_tails(){
-			console.log('generate_tails');
 			var i, my_tail;
 			
 			var css_fn = {
