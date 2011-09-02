@@ -37,7 +37,7 @@
 		internal_functions = {
 			handleNamespace:function(key){
 				if(o.namespace && o.namespace.length){
-					key = o.namespace + ':' + key;
+					key = o.namespace + '|' + key;
 				}
 				return key;
 			},
