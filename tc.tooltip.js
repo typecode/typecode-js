@@ -173,7 +173,7 @@
 			} else {
 				return {
 					left: internal.current_trigger.width(),
-					top: internal.current_trigger.heigh()
+					top: internal.current_trigger.height()
 				};
 			}
 		}
