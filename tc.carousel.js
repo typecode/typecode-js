@@ -79,6 +79,7 @@
 			vertical: false,
 			circular: true,
 			keyboard: true,
+			onBeforeMove: function(instance, info) {},
 			onMove: function(instance, info) {}
 		}, options);
 		
@@ -153,23 +154,34 @@
 		}
 		
 		function moveTo($panel, noAnimate) {
+			var $cloneTarget = false, info;
 			
 			if (!$panel.length) {
 				return me;
 			}
 			
+			// Determine if the target panel is a clone.
+			// If it is, keep track of the real panel as $cloneTarget
+			if ($panel.hasClass(o.cloneClass)) {
+				$cloneTarget = $elements.scroll.children(selectors.panel).not(selectors.clone)[$panel.hasClass("head") ? "last" : "first"]();
+				$cloneTarget.addClass(o.activeClass).siblings().removeClass(o.activeClass);
+			} else {
+				$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
+			}
+			
+			info = me.info();
+			
+			if ($.isFunction(o.onBeforeMove)) {
+				if (o.onBeforeMove(me, info) === false) {
+					return me;
+				}
+			}
+			
 			$elements.scroll.animate(targetPosition($panel), (noAnimate ? 0 : o.speed), o.easing, function() {
-					var info;
 					
-					// if the target panel is a clone, swap in the real panel
-					if ($panel.hasClass(o.cloneClass)) {
-						$panel = $elements.scroll.children(selectors.panel).not(selectors.clone)[$panel.hasClass("head") ? "last" : "first"]();
-						$elements.scroll.css(targetPosition($panel));
+					if ($cloneTarget) {
+						$elements.scroll.css(targetPosition($cloneTarget));
 					}
-					
-					$panel.addClass(o.activeClass).siblings().removeClass(o.activeClass);
-					
-					info = me.info();
 					
 					if (!o.circular) {
 						if ($elements.prevBtn.length) {
