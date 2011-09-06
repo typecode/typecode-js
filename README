@@ -1,4 +1,35 @@
-typecode-js lib
+      _____                    _____                                            
+     /\    \                  /\    \                                           
+    /::\    \                /::\    \                                          
+    \:::\    \              /::::\    \                                         
+     \:::\    \            /::::::\    \                                        
+      \:::\    \          /:::/\:::\    \                                       
+       \:::\    \        /:::/  \:::\    \                                      
+       /::::\    \      /:::/    \:::\    \                                     
+      /::::::\    \    /:::/    / \:::\    \                                    
+     /:::/\:::\    \  /:::/    /   \:::\    \                                   
+    /:::/  \:::\____\/:::/____/     \:::\____\                                  
+   /:::/    \::/    /\:::\    \      \::/    /                                  
+  /:::/    / \/____/  \:::\    \      \/____/                                   
+ /:::/    /            \:::\    \                                               
+/:::/    /              \:::\    \                                              
+\::/    /                \:::\    \                                             
+ \/____/                  \:::\    \                                            
+                           \:::\    \                                           
+                            \:::\____\                                          
+                             \::/    /                                          
+                              \/____/                                           
+                             TYPE/CODE                                          
+                         From 2010 till ∞                                       
+                                                                                
+                                                                                
+typecode-js UI Library v0.1
 
 All components require jQuery and the seed file (tc.seed.js) to be loaded first.
-If a component has other dependencies, they are listed in that component's source file.
+Other dependencies are listed in individual source files.
+
+
+Versions
+
+0.1 - first release version, only whole version with all files in 
+      top level directory

@@ -20,7 +20,9 @@
                              \::/    /        
                               \/____/         
                              TYPE/CODE        
-                         From 2010 till ∞     */
+                         From 2010 till ∞     
+                         typecode-js v0.1       
+                                                */
 
 (function(window, $) {
 	
