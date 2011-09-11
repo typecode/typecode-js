@@ -37,6 +37,7 @@
 			maskFadeOutSpeed: 100, // Delay for mask Fade Out Animation.
 			escape: true, //ESC Keypress closes Overlay.
 			closeBtn: false, // Appends Close Button to Overlay.
+			isTouchDevice: false,
 			onOpen: function(instance) {}, // Callback after Overlay is opened.
 			onClose: function(instance) {} // Callback after Overlay is hidden.
 		}, options);
@@ -105,7 +106,7 @@
 		
 		var generate = {
 			overlay:function(){
-				return $( '<div class="overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; overflow:auto;">\
+				var $overlay = $( '<div class="overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; overflow:auto;">\
 					<div class="tier" style="display:table; margin:0 auto; height:100%;">\
 						<div class="tier" style="display:table-cell;">\
 							<div class="pane" style="position:relative;">\
@@ -117,6 +118,15 @@
 						</div>\
 					</div>\
 				</div>' );
+				
+				if (o.isTouchDevice) {
+					$overlay.css({
+						position: "absolute",
+						overflow: "visible"
+					});
+				}
+				
+				return $overlay;
 			},
 			mask:function(){
 				return $( '<div class="mask" style="position:fixed; top:0; left:0; width:100%; height:100%;">\
