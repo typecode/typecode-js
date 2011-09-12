@@ -76,19 +76,6 @@
 			open = false;
 		}
 		
-		function insureMaskHeight() {
-			var mheight, cheight;
-			mheight = $m.height();
-			cheight = $c.height();
-			if (cheight > mheight) {
-				$m.height(cheight);
-			}
-		}
-		
-		function resetMaskHeight() {
-			$m.css({ height: "100%" });
-		}
-		
 		var events = {
 			keydown: function(e) {
 				var key;
@@ -144,8 +131,16 @@
 				return $overlay;
 			},
 			mask:function(){
-				return $( '<div class="mask" style="position:fixed; top:0; left:0; width:100%; height:100%;">\
+				var $mask = $( '<div class="mask" style="position:fixed; top:0; left:0; width:100%; height:100%;">\
 				</div>' );
+				
+				if (o.isTouchDevice) {
+					$mask.css({
+						position: "absolute"
+					});
+				}
+				
+				return $mask;
 			},
 			closeBtn:function(instance){
 				var $btn;
@@ -162,7 +157,7 @@
 			$elements.bd.empty();
 			$elements.ft.empty();
 			if (o.isTouchDevice) {
-				resetMaskHeight();
+				$m.css({ height: "100%" });
 			}
 			return this;
 		};
@@ -204,7 +199,7 @@
 			$c.fadeIn().scrollTop(0).focus();
 			
 			if (o.isTouchDevice) {
-				insureMaskHeight();
+				$m.height( $(document).height() );
 			}
 			
 			$(window.document).bind("keydown.overlay", {instance:this, escape:o.escape, $c:$c}, events.keydown);
