@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+		
+		<meta charset="utf-8">
+		
+		<title>typecode-js merlin example 0</title>
+		
+		<style type="text/css" media="screen">
+			
+			.merlin { border:1px solid #333333; width:500px; height:200px; }
+			
+			.disabled { opacity:0.5; }
+			
+		</style>
+		
+	</head>
+	
+	<body>
+		
+		<h1>Merlin Example 0</h1>
+		
+		<a href='#prev' class='prev'>previous</a>
+		<a href='#next' class='next'>next</a>
+		
+		<div class='merlin example-0'>
+			
+			<div class="step one">
+				<h2>One</h2>
+			</div><!--end .step.one -->
+		
+			<div class="step two">
+				<h2>Two</h2>
+				
+				<label for='text-input-0'>Text Input 0</label>
+				<input type='text' name='text-input-0' id='text-input-0' class='text-input-0' />
+				
+				<br />
+				
+				<label for='text-input-1'>Text Input 1</label>
+				<input type='text' name='text-input-1' id='text-input-1' class='text-input-1' />
+				<p class='counter text-input-counter-0'>&nbsp;</p>
+				
+			</div><!--end .step.two -->
+			
+			<div class="step three">
+				<h2>Three</h2>
+				<p>Loading.....</p>
+			</div><!--end .step.three -->
+			
+			<div class="step four">
+				<h2>Four</h2>
+			</div><!--end .step.four -->
+		
+		</div> <!--end .merlin.example-0-->
+		
+		
+		<!-- jQuery 1.6.3, Hosted on Google CDN -->
+		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
+		
+		<!-- Type/Code Libraries -->
+		<script src="../lib/tc.seed.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/tc.merlin.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/input/tc.input.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/input/tc.input.hint.js" type="text/javascript" charset="utf-8"></script>
+		
+		<!-- Example Application -->
+		<script type="text/javascript" charset="utf-8">
+			
+			//lets just do this on jquery ready for sake of simplicity.
+			$(function(){
+				
+				var example_merlin;
+				
+				example_merlin = new NI.Merlin({
+					name:'example-0',
+					dom:$('.merlin.example-0'),
+					controls:{
+						next:$('.next'),
+						prev:$('.prev')
+					},
+					first_step:'one',
+					steps:{
+						'one':{
+							selector:'.step.one',
+							next:'two',
+							init:function(merlin){},
+							visible:function(merlin){},
+							finish:function(merlin){}
+						},
+						'two':{
+							selector:'.step.two',
+							next:'three',
+							prev:'one',
+							inputs:{
+								'input-0':{
+									selector:'.text-input-0'
+								},
+								'input-1':{
+									selector:'.text-input-1'
+								}
+							}
+						},
+						'three':{
+							selector:'.step.three',
+							next:'four',
+							prev:'two'
+						},
+						'four':{
+							selector:'.step.four',
+							prev:'three'
+						}
+					}
+				});
+				
+			});
+			
+		</script>
+		
+	</body>
+</html>
