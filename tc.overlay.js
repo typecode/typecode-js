@@ -74,6 +74,19 @@
 			open = false;
 		}
 		
+		function insureMaskHeight() {
+			var mheight, cheight;
+			mheight = $m.height();
+			cheight = $c.height();
+			if (cheight > mheight) {
+				$m.height(cheight);
+			}
+		}
+		
+		function resetMaskHeight() {
+			$m.css({ height: "100%" });
+		}
+		
 		var events = {
 			keydown: function(e) {
 				var key;
@@ -146,6 +159,9 @@
 			$elements.hd.empty();
 			$elements.bd.empty();
 			$elements.ft.empty();
+			if (o.isTouchDevice) {
+				resetMaskHeight();
+			}
 			return this;
 		};
 		
@@ -184,6 +200,10 @@
 			
 			$m.fadeIn();
 			$c.fadeIn().scrollTop(0).focus();
+			
+			if (o.isTouchDevice) {
+				insureMaskHeight();
+			}
 			
 			$(window.document).bind("keydown.overlay", {instance:this, escape:o.escape, $c:$c}, events.keydown);
 			
