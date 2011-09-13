@@ -39,7 +39,10 @@
 			maskFadeOutSpeed: 100, // Delay for mask Fade Out Animation.
 			escape: true, //ESC Keypress closes Overlay.
 			closeBtn: false, // Appends Close Button to Overlay.
-			isTouchDevice: false,
+			isTouchDevice: false, // if true, the Overlay adjusts its behavior 
+			                      // to be appropriate for touch devices 
+			                      // (primarily by not using fixed positioning)
+			
 			onOpen: function(instance) {}, // Callback after Overlay is opened.
 			onClose: function(instance) {} // Callback after Overlay is hidden.
 		}, options);
@@ -71,6 +74,9 @@
 			
 			if (o.maskClick) {
 				$c.bind("click", {instance:me, $pane:$elements.pane, allowPaneClick: true}, events.clickClose);
+				if (o.isTouchDevice) {
+					$m.bind("click", {instance: me}, events.clickClose);
+				}
 			}
 			
 			open = false;
