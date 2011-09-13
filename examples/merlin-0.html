@@ -13,6 +13,10 @@
 			
 			.disabled { opacity:0.5; }
 			
+			.progress-unit.current{  }
+			.progress-unit.current:before{ content:'('; }
+			.progress-unit.current:after{ content:')'; }
+			
 		</style>
 		
 	</head>
@@ -26,11 +30,11 @@
 		
 		<div class='merlin example-0'>
 			
-			<div class="step one">
+			<div class="step one" style='display:none;'>
 				<h2>One</h2>
 			</div><!--end .step.one -->
 		
-			<div class="step two">
+			<div class="step two" style='display:none;'>
 				<h2>Two</h2>
 				
 				<label for='text-input-0'>Text Input 0</label>
@@ -44,16 +48,23 @@
 				
 			</div><!--end .step.two -->
 			
-			<div class="step three">
+			<div class="step three" style='display:none;'>
 				<h2>Three</h2>
 				<p>Loading.....</p>
 			</div><!--end .step.three -->
 			
-			<div class="step four">
+			<div class="step four" style='display:none;'>
 				<h2>Four</h2>
 			</div><!--end .step.four -->
 		
 		</div> <!--end .merlin.example-0-->
+		
+		<p class='merlin-progress-indicator'>
+			<span class='progress-unit one'>1</span>
+			<span class='progress-unit two'>2</span>
+			<span class='progress-unit three'>3</span>
+			<span class='progress-unit four'>4</span>
+		</p>
 		
 		
 		<!-- jQuery 1.6.3, Hosted on Google CDN -->
@@ -80,10 +91,12 @@
 						next:$('.next'),
 						prev:$('.prev')
 					},
+					progress_element:$('.merlin-progress-indicator'),
 					first_step:'one',
 					steps:{
 						'one':{
 							selector:'.step.one',
+							progress_selector:'.one',
 							next:'two',
 							init:function(merlin){},
 							visible:function(merlin){},
@@ -91,6 +104,7 @@
 						},
 						'two':{
 							selector:'.step.two',
+							progress_selector:'.two',
 							next:'three',
 							prev:'one',
 							inputs:{
@@ -106,11 +120,13 @@
 						},
 						'three':{
 							selector:'.step.three',
+							progress_selector:'.three',
 							next:'four',
 							prev:'two'
 						},
 						'four':{
 							selector:'.step.four',
+							progress_selector:'.four',
 							prev:'three'
 						}
 					}
