@@ -10,7 +10,7 @@
 		<style type="text/css" media="screen">
 			
 			.merlin { width:500px; min-height:200px; }
-			.step { border:1px solid #333333; }
+			.step { border:1px solid #333333; padding:15px; }
 			
 			.disabled { opacity:0.5; }
 			
@@ -32,37 +32,54 @@
 		
 		<h1>Merlin Example 0</h1>
 		
-		<a href='#prev' class='prev'>previous</a>
-		<a href='#next' class='next'>next</a>
+		<!-- <a href='#prev' class='prev'>previous</a>
+				<a href='#next' class='next'>next</a> -->
 		
 		<div class='merlin example-0'>
 			
-			<div class="step one" style='display:none;'>
-				<h2>One</h2>
+			<div class="step welcome" style='display:none;'>
+				<h2>Welcome</h2>
+				<p>Please <a href='#login' class='next'>login</a>.</p>
 			</div><!--end .step.one -->
 		
-			<div class="step two" style='display:none;'>
-				<h2>Two</h2>
-				
-				<label for='text-input-0'>Text Input 0</label>
-				<input type='text' name='text-input-0' id='text-input-0' class='text-input-0' />
+			<div class="step login-form" style='display:none;'>
+				<label for='input-next'>Role</label>
+				<select name='input-role' id='input-role' class='input-role'>
+					<option value='-1'></option>
+					<option value='user'>User</option>
+					<option value='admin'>Administrator</option>
+				</select>
 				
 				<br />
 				
-				<label for='text-input-1'>Text Input 1</label>
-				<input type='text' name='text-input-1' id='text-input-1' class='text-input-1' />
+				<label for='text-input-email'>Email</label>
+				<input type='text' name='text-input-email' id='text-input-email' class='text-input-email' />
+				
+				<br />
+				
+				<label for='text-input-password'>Password</label>
+				<input type='password' name='text-input-password' id='text-input-password' class='text-input-password' />
 				<p class='counter text-input-counter-0'>&nbsp;</p>
 				
-			</div><!--end .step.two -->
+				<p><a href='#prev' class='prev'>Back</a> <a href='#next' class='next'>Login</a></p>
+				
+			</div><!--end .step.login-form -->
 			
-			<div class="step three" style='display:none;'>
-				<h2>Three</h2>
-				<p>Loading.....</p>
-			</div><!--end .step.three -->
+			<div class="step login-process-user" style='display:none;'>
+				<p>Logging in as user...</p>
+			</div><!--end .step.login-process-user -->
 			
-			<div class="step four" style='display:none;'>
-				<h2>Four</h2>
-			</div><!--end .step.four -->
+			<div class="step login-process-admin" style='display:none;'>
+				<p>Logging in as administrator...</p>
+			</div><!--end .step.login-process-administrator -->
+			
+			<div class="step login-success" style='display:none;'>
+				<p>Thanks for logging in!</p>
+			</div><!--end .step.login-success -->
+			
+			<div class="step login-failure" style='display:none;'>
+				<p>There was an error logging you in. Please <a href='#login-form' class='prev'>try again</a>.</p>
+			</div><!--end .step.login-success -->
 		
 		</div> <!--end .merlin.example-0-->
 		
@@ -101,44 +118,96 @@
 						prev:$('.prev')
 					},
 					progress_element:$('.merlin-progress-indicator'),
-					first_step:'one',
+					first_step:'welcome',
 					steps:{
-						'one':{
-							selector:'.step.one',
-							progress_selector:'.one',
-							next:'two',
-							init:function(merlin){},
-							visible:function(merlin){},
-							finish:function(merlin){}
+						'welcome':{
+							selector:'.step.welcome',
+							progress_selector:'.welcome',
+							next:'login-form'
 						},
-						'two':{
-							selector:'.step.two',
-							progress_selector:'.two',
-							next:'three',
-							prev:'one',
+						
+						'login-form':{
+							selector:'.step.login-form',
+							progress_selector:'.login-form',
+							init:function(me){
+								me.internal.current_step.inputs['input-role'].component.set_val();
+								me.internal.current_step.inputs['input-email'].component.set_val();
+								me.internal.current_step.inputs['input-password'].component.set_val();
+							},
+							visible:function(me){
+								
+							},
+							finish:function(me){
+								me.internal.data = $.extend(me.internal.data,{
+									role:me.internal.current_step.inputs['input-role'].component.get_val(),
+									email:me.internal.current_step.inputs['input-email'].component.get_val(),
+									password:me.internal.current_step.inputs['input-password'].component.get_val()
+								});
+							},
+							next:function(me){
+								switch(me.internal.data.role){
+									case 'user':
+										return 'login-process-user';
+									case 'admin':
+										return 'login-process-admin';
+								}
+							},
+							prev:'welcome',
 							inputs:{
-								'input-0':{
-									selector:'.text-input-0',
-									hint:'Input Zero',
+								'input-role':{
+									selector:'.input-role',
+									validators:['required']
+								},
+								'input-email':{
+									selector:'.text-input-email',
+									hint:'Email',
 									validators:['email']
 								},
-								'input-1':{
-									selector:'.text-input-1',
-									hint:'Input One',
+								'input-password':{
+									selector:'.text-input-password',
+									hint:'Password',
 									validators:['minlen=3','maxlen=10']
 								}
 							}
 						},
-						'three':{
-							selector:'.step.three',
-							progress_selector:'.three',
-							next:'four',
-							prev:'two'
+						'login-process-user':{
+							selector:'.step.login-process-user',
+							progress_selector:'.login-user',
+							visible:function(me){
+								setTimeout(function(){
+									if(me.internal.data.email == 'user@typeco.de' &&
+											me.internal.data.password == 'password'){
+										me.show_step('login-success');
+									} else {
+										me.show_step('login-failure');
+									}
+								}, 1000);
+							},
+							prev:'login-form'
 						},
-						'four':{
-							selector:'.step.four',
-							progress_selector:'.four',
+						'login-process-admin':{
+							selector:'.step.login-process-admin',
+							progress_selector:'.login-admin',
+							visible:function(me){
+								setTimeout(function(){
+									if(me.internal.data.email == 'admin@typeco.de' &&
+											me.internal.data.password == 'password'){
+										me.show_step('login-success');
+									} else {
+										me.show_step('login-failure');
+									}
+								}, 1000);
+							},
+							prev:'login-form'
+						},
+						'login-success':{
+							selector:'.step.login-success',
+							progress_selector:'.login-success',
 							prev:'three'
+						},
+						'login-failure':{
+							selector:'.step.login-failure',
+							prev:'login-form'
 						}
 					}
 				});
