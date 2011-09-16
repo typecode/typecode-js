@@ -32,14 +32,14 @@
 		
 		<h1>Merlin Example 0</h1>
 		
-		<!-- <a href='#prev' class='prev'>previous</a>
-				<a href='#next' class='next'>next</a> -->
+		<a href='#prev' class='prev'>previous</a>
+		<a href='#next' class='next'>next</a>
 		
-		<div class='merlin example-0'>
+		<div class='merlin login'>
 			
 			<div class="step welcome" style='display:none;'>
 				<h2>Welcome</h2>
-				<p>Please <a href='#login' class='next'>login</a>.</p>
+				<p>Please <a href='#login,login-form'>login</a>.</p>
 			</div><!--end .step.one -->
 		
 			<div class="step login-form" style='display:none;'>
@@ -61,7 +61,7 @@
 				<input type='password' name='text-input-password' id='text-input-password' class='text-input-password' />
 				<p class='counter text-input-counter-0'>&nbsp;</p>
 				
-				<p><a href='#prev' class='prev'>Back</a> <a href='#next' class='next'>Login</a></p>
+				<p><a href='#prev' class='prev'>Back</a> <a href='#login,next'>Login</a></p>
 				
 			</div><!--end .step.login-form -->
 			
@@ -94,6 +94,9 @@
 		<!-- jQuery 1.6.3, Hosted on Google CDN -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
 		
+		<!-- jQuery Hashchange v1.3, source version -->
+		<script type='text/javascript' src='https://raw.github.com/cowboy/jquery-hashchange/v1.3/jquery.ba-hashchange.js'></script>
+		
 		<!-- Type/Code Libraries -->
 		<script src="../lib/tc.seed.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../lib/tc.merlin.js" type="text/javascript" charset="utf-8"></script>
@@ -111,8 +114,8 @@
 				var example_merlin;
 				
 				example_merlin = new NI.Merlin({
-					name:'example-0',
-					$e:$('.merlin.example-0'),
+					name:'login',
+					$e:$('.merlin.login'),
 					controls:{
 						next:$('.next'),
 						prev:$('.prev')
