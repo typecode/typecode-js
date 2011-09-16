@@ -9,7 +9,8 @@
 		
 		<style type="text/css" media="screen">
 			
-			.merlin { border:1px solid #333333; width:500px; height:200px; }
+			.merlin { width:500px; min-height:200px; }
+			.step { border:1px solid #333333; }
 			
 			.disabled { opacity:0.5; }
 			
@@ -20,9 +21,8 @@
 			
 			.tc-input-hint { padding:1px 0px 0px 3px; }
 			
-			
-			input.valid:after { content:'VALID'; }
-			input.not-valid:after { content:'NOT-VALID'; }
+			.state-valid { border-color:green; }
+			.state-invalid { border-color:red; }
 			
 		</style>
 		
@@ -82,6 +82,8 @@
 		<script src="../lib/tc.merlin.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../lib/input/tc.input.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../lib/input/tc.input.hint.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/input/tc.input.validator.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/tc.validation.js" type="text/javascript" charset="utf-8"></script>
 		
 		<!-- Example Application -->
 		<script type="text/javascript" charset="utf-8">
@@ -93,7 +95,7 @@
 				
 				example_merlin = new NI.Merlin({
 					name:'example-0',
-					dom:$('.merlin.example-0'),
+					$e:$('.merlin.example-0'),
 					controls:{
 						next:$('.next'),
 						prev:$('.prev')
@@ -117,11 +119,13 @@
 							inputs:{
 								'input-0':{
 									selector:'.text-input-0',
-									hint:'Input Zero'
+									hint:'Input Zero',
+									validators:['email']
 								},
 								'input-1':{
 									selector:'.text-input-1',
-									hint:'Input One'
+									hint:'Input One',
+									validators:['minlen=3','maxlen=10']
 								}
 							}
 						},
