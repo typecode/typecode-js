@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+		
+		<meta charset="utf-8">
+		
+		<title>typecode-js merlin-du-autosave</title>
+		
+		<style type="text/css" media="screen">
+			
+			.merlin { width:500px; min-height:200px; }
+			.step { border:1px solid #333333; padding:15px; }
+			
+			.disabled { display:none; }
+			
+			.progress-unit.current{  }
+			.progress-unit.current:before{ content:'('; }
+			.progress-unit.current:after{ content:')'; }
+			
+			.tc-input-hint { padding:1px 0px 0px 3px; }
+			
+			.state-valid { border-color:green; }
+			.state-invalid { border-color:red; }
+			
+			.state-saving {  }
+			.state-saved {  }
+			
+		</style>
+		
+	</head>
+	
+	<body>
+		
+		<div class='merlin du'>
+			
+			<div class="step read" style='display:none;'>
+				<p><strong>Input0: </strong> <span class='input0'>..data.. </p>
+				<a href='#next' class='next'>Edit</a>
+			</div><!--end .step.one -->
+			
+			<div class="step edit" style='display:none;'>
+				
+				<p><label for='text-input-email'>input0</label> <input type='text' name='input0' id='input0' class='input0' /><span class='state-saving'>saving</span><span class='state-saved'>saved</span></p>
+				<a href='#next' class='next'>Done</a>
+			</div><!--end .step.one -->
+		
+		</div> <!--end .merlin.example-du-->
+		
+		
+		<!-- jQuery 1.6.3, Hosted on Google CDN -->
+		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
+		
+		<!-- jQuery Hashchange v1.3, source version -->
+		<script type='text/javascript' src='https://raw.github.com/cowboy/jquery-hashchange/v1.3/jquery.ba-hashchange.js'></script>
+		
+		<!-- Type/Code Libraries -->
+		<script src="../lib/tc.seed.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/tc.merlin.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/input/tc.input.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/input/tc.input.hint.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/input/tc.input.validator.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/tc.validation.js" type="text/javascript" charset="utf-8"></script>
+		
+		<!-- Example Application -->
+		<script type="text/javascript" charset="utf-8">
+			
+			//lets just do this on jquery ready for sake of simplicity.
+			$(function(){
+				
+				var example_merlin;
+				
+				example_merlin = new NI.Merlin({
+					name:'login',
+					$e:$('.merlin.du'),
+					controls:{
+						next:'.next',
+						prev:'.prev'
+					},
+					data:{
+						input0:'Dummy Data'
+					},
+					first_step:'read',
+					steps:{
+						'read':{
+							selector:'.step.read',
+							next:'edit',
+							visible:function(me){
+								me.internal.current_step.$e.find('.input0').html(me.internal.data.input0);
+							}
+						},
+						'edit':{
+							selector:'.step.edit',
+							next:'read',
+							inputs:{
+								'input0':{
+									selector:'.input0',
+									validators:['required']
+								}
+							},
+							init:function(me){
+								me.internal.current_step.inputs['input0'].component.get_dom().bind('change keyup',{},function(e,d){
+									
+									if(me.runtime.save_timeout){
+										clearTimeout(me.runtime.save_timeout);
+									}
+									
+									if(me.internal.current_step.$e.hasClass('state-invalid')){
+										return;
+									}
+									
+									if(me.internal.data.input0 == me.internal.steps.edit.inputs['input0'].component.get_val()){
+										return;
+									}
+									
+									me.internal.current_step.$e.find('.state-saved').hide();
+									
+									me.runtime.save_timeout = setTimeout(function(){
+										me.internal.current_step.$e.find('.state-saving').show();
+										setTimeout(function(){
+											me.internal.current_step.$e.find('.state-saving').hide();
+											me.internal.data.input0 = me.internal.steps.edit.inputs['input0'].component.get_val();
+											me.internal.current_step.$e.find('.state-saved').show();
+											setTimeout(function(){
+												me.internal.current_step.$e.find('.state-saved').hide();
+											},1500);
+										},400);
+									},((e.type == 'keyup') ? 300 : 0));
+									
+								});
+							},
+							visible:function(me){
+								me.internal.current_step.$e.find('.state-saved').hide();
+								me.internal.current_step.$e.find('.state-saving').hide();
+								me.internal.current_step.inputs['input0'].component.set_val(me.internal.data.input0,true);
+							}
+						}
+					}
+				});
+				
+			});
+			
+		</script>
+		
+	</body>
+</html>
