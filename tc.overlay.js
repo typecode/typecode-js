@@ -39,6 +39,10 @@
 			maskFadeOutSpeed: 100, // Delay for mask Fade Out Animation.
 			escape: true, //ESC Keypress closes Overlay.
 			closeBtn: false, // Appends Close Button to Overlay.
+			isTouchDevice: false, // if true, the Overlay adjusts its behavior 
+			                      // to be appropriate for touch devices 
+			                      // (primarily by not using fixed positioning)
+			
 			onOpen: function(instance) {}, // Callback after Overlay is opened.
 			onClose: function(instance) {} // Callback after Overlay is hidden.
 		}, options);
@@ -70,6 +74,9 @@
 			
 			if (o.maskClick) {
 				$c.bind("click", {instance:me, $pane:$elements.pane, allowPaneClick: true}, events.clickClose);
+				if (o.isTouchDevice) {
+					$m.bind("click", {instance: me}, events.clickClose);
+				}
 			}
 			
 			open = false;
@@ -107,7 +114,7 @@
 		
 		var generate = {
 			overlay:function(){
-				return $( '<div class="overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; overflow:auto;">\
+				var $overlay = $( '<div class="overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; overflow:auto;">\
 					<div class="tier" style="display:table; margin:0 auto; height:100%;">\
 						<div class="tier" style="display:table-cell;">\
 							<div class="pane" style="position:relative;">\
@@ -119,10 +126,27 @@
 						</div>\
 					</div>\
 				</div>' );
+				
+				if (o.isTouchDevice) {
+					$overlay.css({
+						position: "absolute",
+						overflow: "visible"
+					});
+				}
+				
+				return $overlay;
 			},
 			mask:function(){
-				return $( '<div class="mask" style="position:fixed; top:0; left:0; width:100%; height:100%;">\
+				var $mask = $( '<div class="mask" style="position:fixed; top:0; left:0; width:100%; height:100%;">\
 				</div>' );
+				
+				if (o.isTouchDevice) {
+					$mask.css({
+						position: "absolute"
+					});
+				}
+				
+				return $mask;
 			},
 			closeBtn:function(instance){
 				var $btn;
@@ -138,6 +162,9 @@
 			$elements.hd.empty();
 			$elements.bd.empty();
 			$elements.ft.empty();
+			if (o.isTouchDevice) {
+				$m.css({ height: "100%" });
+			}
 			return this;
 		};
 		
@@ -176,6 +203,10 @@
 			
 			$m.fadeIn();
 			$c.fadeIn().scrollTop(0).focus();
+			
+			if (o.isTouchDevice) {
+				$m.height( $(document).height() );
+			}
 			
 			$(window.document).bind("keydown.overlay", {instance:this, escape:o.escape, $c:$c}, events.keydown);
 			

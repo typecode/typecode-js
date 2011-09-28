@@ -264,7 +264,6 @@
 				if($.isFunction(calculate_position[o.positions[i]])){
 					target_position = calculate_position[o.positions[i]](source_position, trigger_size, tooltip_size);
 				}
-				console.log(target_position);
 				if(!get_edge_collisions(target_position, tooltip_size).length){
 					return target_position;
 				}
