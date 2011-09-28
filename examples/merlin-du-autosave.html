@@ -10,7 +10,7 @@
 		<style type="text/css" media="screen">
 			
 			.merlin { width:500px; min-height:200px; }
-			.step { border:1px solid #333333; padding:15px; }
+			.step { border:1px solid #333333; padding:15px; position:relative; }
 			
 			.disabled { display:none; }
 			
@@ -23,6 +23,7 @@
 			.state-valid { border-color:green; }
 			.state-invalid { border-color:red; }
 			
+			.autosave-state { position:absolute; top:15px; right:50px; }
 			.state-saving {  }
 			.state-saved {  }
 			
@@ -36,12 +37,20 @@
 			
 			<div class="step read" style='display:none;'>
 				<p><strong>Input0: </strong> <span class='input0'>..data.. </p>
+					
+				<p><strong>Input1: </strong> <span class='input1'>..data.. </p>
+					
+				<p><strong>Input2: </strong> <span class='input2'>..data.. </p>
+					
 				<a href='#next' class='next'>Edit</a>
 			</div><!--end .step.one -->
 			
 			<div class="step edit" style='display:none;'>
 				
-				<p><label for='text-input-email'>input0</label> <input type='text' name='input0' id='input0' class='input0' /><span class='state-saving'>saving</span><span class='state-saved'>saved</span></p>
+				<p><label for='input0'>input0</label> <input type='text' name='input0' id='input0' class='input0' /></p>
+				<p><label for='input1'>input1</label> <input type='text' name='input1' id='input1' class='input1' /></p>
+				<p><label for='input2'>input2</label> <input type='text' name='input2' id='input2' class='input2' /></p>
+				<p class='autosave-state'><span class='state-saving'>saving</span><span class='state-saved'>saved</span></p>
 				<a href='#next' class='next'>Done</a>
 			</div><!--end .step.one -->
 		
@@ -57,6 +66,8 @@
 		<!-- Type/Code Libraries -->
 		<script src="../lib/tc.seed.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../lib/tc.merlin.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/merlin/tc.merlin.autosave.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/merlin/tc.merlin.data.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../lib/input/tc.input.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../lib/input/tc.input.hint.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../lib/input/tc.input.validator.js" type="text/javascript" charset="utf-8"></script>
@@ -77,8 +88,15 @@
 						next:'.next',
 						prev:'.prev'
 					},
-					data:{
-						input0:'Dummy Data'
+					extensions:{
+						autosave: new NI.MerlinAutosave({}),
+						data: new NI.MerlinData({
+							data: {
+								input0:'Dummy Data',
+								input1:'Dummy Data 1',
+								input2:'Dummy Data 2'
+							}
+						})
 					},
 					first_step:'read',
 					steps:{
@@ -86,7 +104,9 @@
 							selector:'.step.read',
 							next:'edit',
 							visible:function(me){
-								me.internal.current_step.$e.find('.input0').html(me.internal.data.input0);
+								me.internal.current_step.$e.find('.input0').html(me.extensions.data.get_val('input0'));
+								me.internal.current_step.$e.find('.input1').html(me.extensions.data.get_val('input1'));
+								me.internal.current_step.$e.find('.input2').html(me.extensions.data.get_val('input2'));
 							}
 						},
 						'edit':{
@@ -96,43 +116,27 @@
 								'input0':{
 									selector:'.input0',
 									validators:['required']
+								},
+								'input1':{
+									selector:'.input1',
+									validators:['required']
+								},
+								'input2':{
+									selector:'.input2',
+									validators:['required']
 								}
 							},
 							init:function(me){
-								me.internal.current_step.inputs['input0'].component.get_dom().bind('change keyup',{},function(e,d){
-									
-									if(me.runtime.save_timeout){
-										clearTimeout(me.runtime.save_timeout);
+								me.extensions.autosave.init(me,{
+									save:function(callback){
+										me.extensions.data.collect_fields(me);
+										me.extensions.data.post_data(callback);
 									}
-									
-									if(me.internal.current_step.$e.hasClass('state-invalid')){
-										return;
-									}
-									
-									if(me.internal.data.input0 == me.internal.steps.edit.inputs['input0'].component.get_val()){
-										return;
-									}
-									
-									me.internal.current_step.$e.find('.state-saved').hide();
-									
-									me.runtime.save_timeout = setTimeout(function(){
-										me.internal.current_step.$e.find('.state-saving').show();
-										setTimeout(function(){
-											me.internal.current_step.$e.find('.state-saving').hide();
-											me.internal.data.input0 = me.internal.steps.edit.inputs['input0'].component.get_val();
-											me.internal.current_step.$e.find('.state-saved').show();
-											setTimeout(function(){
-												me.internal.current_step.$e.find('.state-saved').hide();
-											},1500);
-										},400);
-									},((e.type == 'keyup') ? 300 : 0));
-									
 								});
 							},
 							visible:function(me){
-								me.internal.current_step.$e.find('.state-saved').hide();
-								me.internal.current_step.$e.find('.state-saving').hide();
-								me.internal.current_step.inputs['input0'].component.set_val(me.internal.data.input0,true);
+								me.extensions.autosave.visible(me);
+								me.extensions.data.populate_fields(me);
 							}
 						}
 					}
