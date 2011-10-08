@@ -22,8 +22,13 @@
 			}
 			
 			.tc-dropdown .display {
+				cursor: pointer;
 				padding: 5px 10px;
 				border: 2px solid #999999; 
+			}
+			.tc-dropdown .display:hover {
+				background-color: #f9f9f9;
+				border-color: #333333;
 			}
 			.tc-dropdown .menu { 
 				display: none; 
@@ -39,11 +44,13 @@
 			.tc-dropdown .tc-dropdown-item {
 				cursor: pointer;
 				padding: 5px 10px;
-				font-family: Georiga, serif;
+				font-family: Georgia, serif;
 				font-style: italic;
+				font-size: 14px;
 			}
 			.tc-dropdown .tc-dropdown-item.state-active {
-				color: #66ccff;
+				color: #dd0000;
+				font-weight: bold;
 			}
 			.tc-dropdown .tc-dropdown-item:hover {
 				background-color: #999999;
@@ -84,8 +91,8 @@
 							"3": "Third Item"
 						},
 						handlers: {
-							change: function() {
-								console.info("change!");
+							change: function(e, d) {
+								console.info("change from: "+ d.from +", to: "+ d.to);
 							}
 						},
 						value: "1"
