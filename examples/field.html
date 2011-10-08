@@ -5,7 +5,7 @@
 		
 		<meta charset="utf-8">
 		
-		<title>typecode-js input</title>
+		<title>typecode-js field</title>
 		
 		<style type="text/css">
 			body { 
@@ -15,6 +15,11 @@
 			
 			.tc-field { 
 				position: relative; 
+			}
+			
+			.tc-field-label {
+				font-size: 12px;
+				text-transform: uppercase;
 			}
 			
 			.tc-dropdown {
@@ -86,16 +91,20 @@
 				$(function() {
 					var dropdown = new NI.field.Dropdown({
 						value_list: {
-							"1": "First Item",
-							"2": "Second Item",
-							"3": "Third Item"
+							"1": "Almonds",
+							"2": "Cashews",
+							"3": "Pistachios",
+							"4": "Walnuts",
+							"5": "Pecans",
+							"6": "Hazlenuts"
 						},
 						handlers: {
 							change: function(e, d) {
 								console.info("change from: "+ d.from +", to: "+ d.to);
 							}
 						},
-						value: "1"
+						val: "1",
+						label: "Dropdown"
 					});
 					dropdown.append_to($("body"));
 				});
