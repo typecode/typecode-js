@@ -36,7 +36,6 @@
 				border-color: #333333;
 			}
 			.tc-dropdown .menu { 
-				display: none; 
 				margin: 0; 
 				padding: 0; 
 				position: absolute;
@@ -70,6 +69,19 @@
 	</head>
 	
 	<body>
+		
+		<div id="nuts" class="tc-field tc-dropdown">
+			<div class="display">Walnuts</div>
+			<div class="menu">
+				<div data-value="-1" class="tc-dropdown-item state-empty">Select a Nut</div>
+				<div data-value="1" class="tc-dropdown-item">Almonds</div>
+				<div data-value="2" class="tc-dropdown-item">Cashews</div>
+				<div data-value="3" class="tc-dropdown-item" style="display:none;">Pistachios</div>
+				<div data-value="4" class="tc-dropdown-item">Walnuts</div>
+				<div data-value="5" class="tc-dropdown-item">Pecans</div>
+				<div data-value="6" class="tc-dropdown-item">Hazlenuts</div>
+			</div>
+		</div>
 				
 		<!-- jQuery 1.6.3, Hosted on Google CDN -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
@@ -89,24 +101,17 @@
 				console.log(NI.field);
 			
 				$(function() {
-					var dropdown = new NI.field.Dropdown({
-						value_list: {
-							"1": "Almonds",
-							"2": "Cashews",
-							"3": "Pistachios",
-							"4": "Walnuts",
-							"5": "Pecans",
-							"6": "Hazlenuts"
-						},
-						handlers: {
-							change: function(e, d) {
-								console.info("change from: "+ d.from +", to: "+ d.to);
+					var dropdown = NI.field.create({
+						selector: "#nuts",
+						options: {
+							handlers: {
+								change: function(e, d) {
+									console.info("change from "+ d.from +" to "+ d.to);
+								}
 							}
-						},
-						empty_text: "Select nut",
-						label: "Dropdown"
+						}
 					});
-					dropdown.append_to($("body"));
+					console.log(dropdown);
 				});
 			
 			}(this, this.jQuery));
