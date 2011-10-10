@@ -113,7 +113,7 @@
 				console.log(NI.field);
 			
 				$(function() {
-					var dropdown = NI.field.create({
+					var dropdown = NI.field.new_instance({
 						selector: "#nuts",
 						options: {
 							handlers: {
@@ -125,7 +125,7 @@
 					});
 					console.log(dropdown);
 					
-					var input = NI.field.create({
+					var input = NI.field.new_instance({
 						selector: "#my-input",
 						options: {
 							extensions: {
