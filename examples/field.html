@@ -14,7 +14,9 @@
 			}
 			
 			.tc-field { 
-				position: relative; 
+				position: relative;
+				float: left;
+				clear: left;
 				margin: 0 0 30px;
 				border: 1px solid transparent;
 			}
@@ -26,6 +28,12 @@
 			.tc-field-label {
 				font-size: 12px;
 				text-transform: uppercase;
+			}
+			
+			.tc-field-hint {
+				color: #999999;
+				font-size: 14px;
+				font-style: italic;
 			}
 			
 			.tc-dropdown {
@@ -46,6 +54,7 @@
 				font-style: italic;
 			}
 			.tc-dropdown .menu { 
+				display: none;
 				margin: 0; 
 				padding: 0; 
 				position: absolute;
@@ -135,7 +144,11 @@
 									
 								},
 								Hint: {
-									content: "This is a hint"
+									content: "Enter a number",
+									css: {
+										top: 5,
+										left: 5
+									}
 								}
 							},
 							handlers: {
@@ -146,7 +159,7 @@
 									console.info("blur");
 								}
 							},
-							val: "This should be a number"
+							val: ""
 						}
 					});
 					console.log(input);
