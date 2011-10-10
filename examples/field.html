@@ -16,6 +16,11 @@
 			.tc-field { 
 				position: relative; 
 				margin: 0 0 30px;
+				border: 1px solid transparent;
+			}
+			
+			.tc-field.state-invalid {
+				border-color: #dd0000;
 			}
 			
 			.tc-field-label {
@@ -90,6 +95,8 @@
 		</div>
 		
 		<input id="my-input" type="text">
+		
+		<input id="my-password" type="password">
 
 		<!-- jQuery 1.6.3, Hosted on Google CDN -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
@@ -113,8 +120,36 @@
 				console.log(NI.field);
 			
 				$(function() {
+					
+					
+					var input = NI.field.new_instance({
+						element: "#my-input",
+						options: {
+							extensions: {
+								Validator: {
+									validators: ["number"]
+								}
+							},
+							handlers: {
+								focus: function(e) {
+									console.info("focus");
+								},
+								blur: function(e) {
+									console.info("blur");
+								}
+							},
+							val: "This should be a number"
+						}
+					});
+					console.log(input);
+					
+					var password = NI.field.new_instance({
+						element: "#my-password"
+					});
+					console.log(password);
+					
 					var dropdown = NI.field.new_instance({
-						selector: "#nuts",
+						element: "#nuts",
 						options: {
 							handlers: {
 								change: function(e, d) {
@@ -124,18 +159,6 @@
 						}
 					});
 					console.log(dropdown);
-					
-					var input = NI.field.new_instance({
-						selector: "#my-input",
-						options: {
-							extensions: {
-								Validator: {
-									validators: ["number"]
-								}
-							}
-						}
-					});
-					console.log(input);
 				});
 			
 			}(this, this.jQuery));
