@@ -90,8 +90,8 @@
 	
 	<body>
 		
-		<div id="nuts" class="tc-field tc-dropdown">
-			<div class="display">Walnuts</div>
+		<div id="my-dropdown" class="tc-field tc-dropdown">
+			<div class="display"></div>
 			<div class="menu">
 				<div data-value="-1" class="tc-dropdown-item state-empty">Select a Nut</div>
 				<div data-value="1" class="tc-dropdown-item">Almonds</div>
@@ -103,9 +103,23 @@
 			</div>
 		</div>
 		
+		<select id="my-select">
+			<div class="menu">
+				<option value="-1">Select a Nut</option>
+				<option value="1">Almonds</option>
+				<option value="2">Cashews</option>
+				<option value="3">Pistachios</option>
+				<option value="4">Walnuts</option>
+				<option value="5">Pecans</option>
+				<option value="6">Hazlenuts</option>
+			</div>
+		</select>
+		
 		<input id="my-input" type="text">
 		
 		<input id="my-password" type="password">
+		
+		<textarea id="my-textarea"></textarea>
 
 		<!-- jQuery 1.6.3, Hosted on Google CDN -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
@@ -170,7 +184,7 @@
 					console.log(password);
 					
 					var dropdown = NI.field.new_instance({
-						element: "#nuts",
+						element: "#my-dropdown",
 						options: {
 							handlers: {
 								change: function(e, d) {
@@ -181,6 +195,30 @@
 					});
 					console.log(dropdown);
 				});
+				
+				var textarea = NI.field.new_instance({
+					element: "#my-textarea",
+					options: {
+						extensions: {
+							Hint: {
+								content: "Enter a Comment",
+								css: {
+									top: 5,
+									left: 5
+								}
+							}
+						}
+					}
+				});
+				console.log(textarea);
+				
+				var select = NI.field.new_instance({
+					element: "#my-select",
+					options: {
+					
+					}
+				});
+				console.log(select);
 			
 			}(this, this.jQuery));
 		</script>
