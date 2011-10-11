@@ -93,6 +93,21 @@
 				top: -2px;
 			}
 			
+			.sexy-control {
+				cursor: pointer;
+				float: left;
+			}
+			
+			.sexy-checkbox {
+				margin-right: 5px;
+				width: 9px;
+				height: 9px;
+				border: 1px solid;
+			}
+			.sexy-checkbox.state-active {
+				background-color: blue;
+			}
+			
 		</style>
 		
 	</head>
@@ -133,9 +148,7 @@
 		
 		<textarea id="my-textarea"></textarea>
 		
-		<div class="tc-field">
-			<input name='my checkbox' id="my-checkbox" type="checkbox">
-		</div>
+		<input name='my checkbox' id="my-checkbox" type="checkbox">
 
 		<!-- jQuery 1.6.3, Hosted on Google CDN -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
@@ -241,7 +254,7 @@
 				var checkbox = NI.field.new_instance({
 					element: "#my-checkbox",
 					options: {
-						label: "morph the label!"
+						label: "label!"
 					}
 				});
 				console.log(checkbox);
