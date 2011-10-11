@@ -132,6 +132,10 @@
 		<input id="my-password" type="password">
 		
 		<textarea id="my-textarea"></textarea>
+		
+		<div class="tc-field">
+			<input name='my checkbox' id="my-checkbox" type="checkbox">
+		</div>
 
 		<!-- jQuery 1.6.3, Hosted on Google CDN -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
@@ -233,6 +237,14 @@
 					}
 				});
 				console.log(select);
+				
+				var checkbox = NI.field.new_instance({
+					element: "#my-checkbox",
+					options: {
+						label: "morph the label!"
+					}
+				});
+				console.log(checkbox);
 			
 			}(this, this.jQuery));
 		</script>
