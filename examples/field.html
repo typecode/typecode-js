@@ -100,12 +100,32 @@
 			
 			.sexy-checkbox {
 				margin-right: 5px;
-				width: 9px;
-				height: 9px;
-				border: 1px solid;
+				width: 12px;
+				height: 12px;
+				-webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px;
+				border: 2px solid #fff;
+				background: #f9f9f9; background: -moz-linear-gradient(top, #f9f9f9 0%, #efefef 100%);
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9f9f9), color-stop(100%,#efefef));
+				background: -webkit-linear-gradient(top, #f9f9f9 0%,#efefef 100%);
+				background: -o-linear-gradient(top, #f9f9f9 0%,#efefef 100%);
+				background: -ms-linear-gradient(top, #f9f9f9 0%,#efefef 100%);
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#efefef',GradientType=0 );
+				background: linear-gradient(top, #f9f9f9 0%,#efefef 100%);
+				-webkit-transition: all 100ms ease-in-out; -moz-transition: all 100ms ease-in-out; 
+				-o-transition: all 100ms ease-in-out; transition: all 100ms ease-in-out;
+			}
+			.sexy-checkbox:hover {
+				-webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .2); 
+				-moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .2); box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .2);
 			}
 			.sexy-checkbox.state-active {
-				background-color: blue;
+				background: #d87936; background: -moz-linear-gradient(top, #d87936 0%, #c46623 100%);
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d87936), color-stop(100%,#c46623));
+				background: -webkit-linear-gradient(top, #d87936 0%,#c46623 100%);
+				background: -o-linear-gradient(top, #d87936 0%,#c46623 100%);
+				background: -ms-linear-gradient(top, #d87936 0%,#c46623 100%);
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d87936', endColorstr='#c46623',GradientType=0 );
+				background: linear-gradient(top, #d87936 0%,#c46623 100%);
 			}
 			
 		</style>
