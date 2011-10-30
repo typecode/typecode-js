@@ -14,13 +14,26 @@
 			}
 			
 			.tc-field { 
-				position: relative; 
+				position: relative;
+				float: left;
+				clear: left;
 				margin: 0 0 30px;
+				border: 1px solid transparent;
+			}
+			
+			.tc-field.state-invalid {
+				border-color: #dd0000;
 			}
 			
 			.tc-field-label {
 				font-size: 12px;
 				text-transform: uppercase;
+			}
+			
+			.tc-field-hint {
+				color: #999999;
+				font-size: 14px;
+				font-style: italic;
 			}
 			
 			.tc-dropdown {
@@ -31,6 +44,8 @@
 				cursor: pointer;
 				padding: 5px 10px;
 				border: 2px solid #999999; 
+				overflow: hidden;
+				white-space: nowrap;
 			}
 			.tc-dropdown .display:hover {
 				background-color: #f9f9f9;
@@ -41,6 +56,7 @@
 				font-style: italic;
 			}
 			.tc-dropdown .menu { 
+				display: none;
 				margin: 0; 
 				padding: 0; 
 				position: absolute;
@@ -70,26 +86,89 @@
 				background-color: #000000;
 				color: #ffffff;
 			}
+			
+			.tc-dropdown .tc-dropdown-item input[type="checkbox"] {
+				margin: 0px 10px 0px 0px;
+				position: relative;
+				top: -2px;
+			}
+			
+			.sexy-control {
+				cursor: pointer;
+				float: left;
+			}
+			
+			.sexy-checkbox {
+				margin-right: 5px;
+				width: 12px;
+				height: 12px;
+				-webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px;
+				border: 2px solid #fff;
+				background: #f9f9f9; background: -moz-linear-gradient(top, #f9f9f9 0%, #efefef 100%);
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9f9f9), color-stop(100%,#efefef));
+				background: -webkit-linear-gradient(top, #f9f9f9 0%,#efefef 100%);
+				background: -o-linear-gradient(top, #f9f9f9 0%,#efefef 100%);
+				background: -ms-linear-gradient(top, #f9f9f9 0%,#efefef 100%);
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#efefef',GradientType=0 );
+				background: linear-gradient(top, #f9f9f9 0%,#efefef 100%);
+				-webkit-transition: all 100ms ease-in-out; -moz-transition: all 100ms ease-in-out; 
+				-o-transition: all 100ms ease-in-out; transition: all 100ms ease-in-out;
+			}
+			.sexy-checkbox:hover {
+				-webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .2); 
+				-moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .2); box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .2);
+			}
+			.sexy-checkbox.state-active {
+				background: #d87936; background: -moz-linear-gradient(top, #d87936 0%, #c46623 100%);
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d87936), color-stop(100%,#c46623));
+				background: -webkit-linear-gradient(top, #d87936 0%,#c46623 100%);
+				background: -o-linear-gradient(top, #d87936 0%,#c46623 100%);
+				background: -ms-linear-gradient(top, #d87936 0%,#c46623 100%);
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d87936', endColorstr='#c46623',GradientType=0 );
+				background: linear-gradient(top, #d87936 0%,#c46623 100%);
+			}
+			
 		</style>
 		
 	</head>
 	
 	<body>
 		
-		<div id="nuts" class="tc-field tc-dropdown">
-			<div class="display">Walnuts</div>
+		<div id="my-dropdown" class="tc-field tc-dropdown tc-multiple">
+			<div class="display"></div>
 			<div class="menu">
 				<div data-value="-1" class="tc-dropdown-item state-empty">Select a Nut</div>
-				<div data-value="1" class="tc-dropdown-item">Almonds</div>
-				<div data-value="2" class="tc-dropdown-item">Cashews</div>
-				<div data-value="3" class="tc-dropdown-item">Pistachios</div>
-				<div data-value="4" class="tc-dropdown-item">Walnuts</div>
-				<div data-value="5" class="tc-dropdown-item">Pecans</div>
-				<div data-value="6" class="tc-dropdown-item">Hazlenuts</div>
+				
+				<div data-value="1" class="tc-dropdown-item"><!--<input type="checkbox">-->Almonds</div>
+				<div data-value="2" class="tc-dropdown-item"><!--<input type="checkbox">-->Cashews</div>
+				<div data-value="3" class="tc-dropdown-item"><!--<input type="checkbox">-->Pistachios</div>
+				<div data-value="4" class="tc-dropdown-item"><!--<input type="checkbox">-->Walnuts</div>
+				<div data-value="5" class="tc-dropdown-item"><!--<input type="checkbox">-->Pecans</div>
+				<div data-value="6" class="tc-dropdown-item"><!--<input type="checkbox">-->Hazlenuts</div>
 			</div>
 		</div>
 		
-		<input id="my-input" type="text">
+		<select id="my-select">
+			<div class="menu">
+				<option value="-1">Select a Nut</option>
+				<option value="1">Almonds</option>
+				<option value="2">Cashews</option>
+				<option value="3">Pistachios</option>
+				<option value="4">Walnuts</option>
+				<option value="5">Pecans</option>
+				<option value="6">Hazlenuts</option>
+			</div>
+		</select>
+		
+		<div class="tc-field">
+			<input id="my-input" type="text">
+		</div>
+		
+		<input id="my-password" type="password">
+		
+		<textarea id="my-textarea"></textarea>
+		
+		<input name='my checkbox' id="my-checkbox" type="checkbox">
 
 		<!-- jQuery 1.6.3, Hosted on Google CDN -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
@@ -100,6 +179,8 @@
 		<script src="../lib/tc.validation.js" type="text/javascript"></script>
 		<script src="../lib/tc.field.js" type="text/javascript"></script>
 		<script src="../lib/field/tc.field.validator.js" type="text/javascript"></script>
+		<script src="../lib/field/tc.field.autocomplete.js" type="text/javascript"></script>
+		<script src="../lib/field/tc.field.hint.js" type="text/javascript"></script>
 		<script src="../lib/field/tc.field.std.js" type="text/javascript"></script>
 		<script src="../lib/field/tc.field.dropdown.js" type="text/javascript"></script>
 		
@@ -113,30 +194,90 @@
 				console.log(NI.field);
 			
 				$(function() {
+					
+					
+					var input = NI.field.new_instance({
+						element: "#my-input",
+						options: {
+							extensions: {
+								Validator: {
+									validators: ["number"]
+								},
+								Autocomplete: {
+									
+								},
+								Hint: {
+									content: "Enter a number",
+									css: {
+										top: 5,
+										left: 5
+									}
+								}
+							},
+							handlers: {
+								focus: function(e) {
+									console.info("focus");
+								},
+								blur: function(e) {
+									console.info("blur");
+								}
+							},
+							val: ""
+						}
+					});
+					console.log(input);
+					
+					var password = NI.field.new_instance({
+						element: "#my-password"
+					});
+					console.log(password);
+					
 					var dropdown = NI.field.new_instance({
-						selector: "#nuts",
+						element: "#my-dropdown",
 						options: {
 							handlers: {
 								change: function(e, d) {
-									console.info("change from "+ d.from +" to "+ d.to);
+									if (d) { 
+										console.info("change from "+ d.from +" to "+ d.to);
+									}
 								}
 							}
 						}
 					});
 					console.log(dropdown);
-					
-					var input = NI.field.new_instance({
-						selector: "#my-input",
-						options: {
-							extensions: {
-								Validator: {
-									validators: ["number"]
+				});
+				
+				var textarea = NI.field.new_instance({
+					element: "#my-textarea",
+					options: {
+						extensions: {
+							Hint: {
+								content: "Enter a Comment",
+								css: {
+									top: 5,
+									left: 5
 								}
 							}
 						}
-					});
-					console.log(input);
+					}
 				});
+				console.log(textarea);
+				
+				var select = NI.field.new_instance({
+					element: "#my-select",
+					options: {
+					
+					}
+				});
+				console.log(select);
+				
+				var checkbox = NI.field.new_instance({
+					element: "#my-checkbox",
+					options: {
+						label: "label!"
+					}
+				});
+				console.log(checkbox);
 			
 			}(this, this.jQuery));
 		</script>

@@ -68,10 +68,11 @@
 		<script src="../lib/tc.merlin.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../lib/merlin/tc.merlin.autosave.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../lib/merlin/tc.merlin.data.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../lib/input/tc.input.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../lib/input/tc.input.hint.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../lib/input/tc.input.validator.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../lib/tc.validation.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/tc.field.js" type="text/javascript"></script>
+		<script src="../lib/field/tc.field.validator.js" type="text/javascript"></script>
+		<script src="../lib/field/tc.field.std.js" type="text/javascript"></script>
+		<script src="../lib/field/tc.field.dropdown.js" type="text/javascript"></script>
 		
 		<!-- Example Application -->
 		<script type="text/javascript" charset="utf-8">
@@ -112,18 +113,30 @@
 						'edit':{
 							selector:'.step.edit',
 							next:'read',
-							inputs:{
+							fields:{
 								'input0':{
 									selector:'.input0',
-									validators:['required']
+									options: {
+										extensions: {
+											Validator: { validators:['required'] }
+										}
+									}
 								},
 								'input1':{
 									selector:'.input1',
-									validators:['required']
+									options: {
+										extensions: {
+											Validator: { validators:['required'] }
+										}
+									}
 								},
 								'input2':{
 									selector:'.input2',
-									validators:['required']
+									options: {
+										extensions: {
+											Validator: { validators:['required'] }
+										}
+									}
 								}
 							},
 							init:function(me){
