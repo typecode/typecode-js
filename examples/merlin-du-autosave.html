@@ -150,6 +150,9 @@
 							visible:function(me){
 								me.extensions.autosave.visible(me);
 								me.extensions.data.populate_fields(me);
+							},
+							finish: function(me){
+								me.extensions.autosave.save(me);
 							}
 						}
 					}
