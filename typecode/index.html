@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+		
+		<meta charset="utf-8">
+		
+		<title>TypeCode Javascript Library</title>
+
+		<link rel="stylesheet" href="global.css">
+		<link rel="stylesheet" href="./docs/docco.css">
+		<style type="text/css" media="screen">
+
+		</style>
+		
+	</head>
+	
+	<body>
+		<div class="wrapper">
+			<header>
+				<img src="typecode.png"/>
+			</header>
+
+			<div class="main">
+				<ul class="clearfix">
+					<li><h2><a href="#" id="field-btn">Field</a></h2></li>
+					<li><h2><a href="#" id="merlin-btn">Merlin</a></li>
+				</ul>
+			</div>
+			<div class="contents">
+				<div class="content" id="field">
+					<h3>Field Examples</h3>
+					<div class="accordion">
+						<section>
+							<div class="header">
+								<h4><a href="#">Dropdown</a></h4>
+							</div>
+							<div class="accord-content">
+								<p>This dropdown allows you to freely style your dropdown,</p>
+								<div id="my-dropdown" class="tc-field tc-dropdown">
+									<div class="display"></div>
+									<div class="menu">
+										<div data-value="-1" class="item state-empty">Select a Nut</div>
+										
+										<div data-value="1" class="item"><!--<input type="checkbox">-->Almonds</div>
+										<div data-value="2" class="item"><!--<input type="checkbox">-->Cashews</div>
+										<div data-value="3" class="item"><!--<input type="checkbox">-->Pistachios</div>
+										<div data-value="4" class="item"><!--<input type="checkbox">-->Walnuts</div>
+										<div data-value="5" class="item"><!--<input type="checkbox">-->Pecans</div>
+										<div data-value="6" class="item"><!--<input type="checkbox">-->Hazlenuts</div>
+									</div>
+								</div>
+								<p>instead of using this ugly html select tag.</p>
+								<select>
+								  <option>Almonds</option>
+								  <option>Cashews</option>
+								  <option>Pistachios</option>
+								  <option>Walnuts</option>
+								  <option>Pecans</option>
+								  <option>Hazlenuts</option>
+								</select>
+								<h5>Setting Up</h5>
+								<h5>HTML Code</h5>
+<div id="container">             <table cellpadding="0" cellspacing="0">      <tbody>                        
+	  <tr id="section-2">             <td class="docs">                <p>
+You may make up the ID however you wish, but
+you can't change any class names.
+The data-value="-1" indicates the default state.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;my-dropdown&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;tc-field tc-dropdown&quot;</span><span class="o">&gt;</span>
+	<span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;display&quot;</span><span class="o">&gt;&lt;</span><span class="nx">/div&gt;</span>
+	<span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;menu&quot;</span><span class="o">&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item state-empty&quot;</span><span class="o">&gt;</span><span class="nx">Select</span> <span class="nx">a</span> <span class="nx">Nut</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;1&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;</span><span class="nx">Almonds</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;2&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;</span><span class="nx">Cashews</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;3&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;</span><span class="nx">Pistachios</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;4&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;</span><span class="nx">Walnuts</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;5&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;</span><span class="nx">Pecans</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;6&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;</span><span class="nx">Hazlenuts</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+	<span class="o">&lt;</span><span class="nx">/div&gt;</span>
+<span class="o">&lt;</span><span class="nx">/div&gt;</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div>
+
+								<h5>JavaScript Code</h5>
+								<div id="container">          <table cellpadding="0" cellspacing="0">                       <tr id="section-1">             <td class="docs">                              <p>The element: takes the id of the dropdown you have set up.
+Instead of "#my-dropdown" you can also write, $('#my-dropdown').
+We are using jQuery to fetch html elements.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">dropdown</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+	<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-dropdown&quot;</span><span class="p">,</span> 
+	<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+		<span class="nx">handlers</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">change</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> 
+					<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;change from &quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">from</span> <span class="o">+</span><span class="s2">&quot; to &quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">to</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>  
+ </div> 
+
+
+							</div>
+						</section>
+						<section>
+							<div class="header">
+								<h4><a href="#">Dropdown-Not using html</a></h4>
+							</div>
+							<div class="accord-content">
+								<p>This dropdown is a same dropdown as above, but you don't need any HTML code. How awesome is that.</p>
+								<div class="headless"></div>
+								<h5>Setting Up<h5>
+								<h5>JavaScript Code</h5>
+								<div id="container">            <table cellpadding="0" cellspacing="0">          <tbody>                                                                  <tr id="section-2">             <td class="docs">                           <p>This one is pretty self explanatory, you would increment
+numeric values along with matching order of text values.
+So, as an example, if you wish to add third element to your
+drop down, in the value_list, you would add "2": "C Train".
+Remember to add commas to previous elements.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">headlessDropdown</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">Dropdown</span><span class="p">({</span>
+	<span class="nx">value_list</span><span class="o">:</span> <span class="p">{</span>
+		<span class="s2">&quot;0&quot;</span><span class="o">:</span> <span class="s2">&quot;A Train&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;1&quot;</span><span class="o">:</span> <span class="s2">&quot;B Train&quot;</span>
+	<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">                   <p>Also, you can tweak this empty_text value as well.</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">empty_text</span><span class="o">:</span> <span class="s2">&quot;Select a Train&quot;</span>
+<span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">                  <p>".headless" is a class name of a div in HTML. You can create a div 
+with a specific class name to designate your Dropdown or 
+you don't have to make one and just append to the DOM.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">headlessDropdown</span><span class="p">.</span><span class="nx">append_to</span><span class="p">(</span><span class="s2">&quot;.headless&quot;</span><span class="p">);</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div>
+							</div>
+						</section>
+						<section>
+							<div class="header">
+								<h4><a href="#">MultiDropdown</a></h4>
+							</div>
+							<div class="accord-content">
+								<p>MultiDropdown allows you to select multiple values on a dropdown.</p>
+								<p>The values that you choose are highlighted in red and checked.</p>
+								<div id="my-dropdown2" class="tc-field tc-dropdown tc-multiple">
+									<div class="display"></div>
+									<div class="menu">
+										<div data-value="-1" class="item state-empty">Select a Train</div>
+										
+										<div data-value="1" class="item"><input type="checkbox">A,B,C Train</div>
+										<div data-value="2" class="item"><input type="checkbox">N,Q,R Train</div>
+										<div data-value="3" class="item"><input type="checkbox">B,D,F,M Train</div>
+										<div data-value="4" class="item"><input type="checkbox">1,2,3 Train</div>
+										<div data-value="5" class="item"><input type="checkbox">4,5,6 Train</div>
+										<div data-value="6" class="item"><input type="checkbox">7 Train</div>
+									</div>
+								</div>
+								<h5>Setting Up</h5>
+								<h5>HTML code</h5>
+								<div id="container">          <table cellpadding="0" cellspacing="0">           <tbody>                               <tr id="section-1">             <td class="docs">                         <p>Tbe only difference with this dropdown is that you add "tc-multiple" in classes.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;my-multidropdown&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;tc-field tc-dropdown tc-multiple&quot;</span><span class="o">&gt;</span>
+	<span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;display&quot;</span><span class="o">&gt;&lt;</span><span class="nx">/div&gt;</span>
+	<span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;menu&quot;</span><span class="o">&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item state-empty&quot;</span><span class="o">&gt;</span><span class="nx">Select</span> <span class="nx">a</span> <span class="nx">Train</span><span class="o">&lt;</span><span class="nx">/div&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">                          <p>You can take away &lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="nx">&quot;checkbox&quot;</span><span class="nx">&gt;</span> if you don't want to see check boxes, the red highlighting will still allow you to distinguish what are selected.        </p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;1&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span><span class="o">&gt;</span><span class="nx">A</span><span class="p">,</span><span class="nx">B</span><span class="p">,</span><span class="nx">C</span> <span class="nx">Train</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;2&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span><span class="o">&gt;</span><span class="nx">N</span><span class="p">,</span><span class="nx">Q</span><span class="p">,</span><span class="nx">R</span> <span class="nx">Train</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;3&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span><span class="o">&gt;</span><span class="nx">B</span><span class="p">,</span><span class="nx">D</span><span class="p">,</span><span class="nx">F</span><span class="p">,</span><span class="nx">M</span> <span class="nx">Train</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;4&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span> <span class="nx">Train</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;5&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span><span class="o">&gt;</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span> <span class="nx">Train</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+		<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">value</span><span class="o">=</span><span class="s2">&quot;6&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="o">&gt;&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span><span class="o">&gt;</span><span class="mi">7</span> <span class="nx">Train</span><span class="o">&lt;</span><span class="nx">/div&gt;</span>
+	<span class="o">&lt;</span><span class="nx">/div&gt;</span>
+<span class="o">&lt;</span><span class="nx">/div&gt;  </span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div>
+							<h5>JavaScript Code</h5>
+							<div id="container">            <table cellpadding="0" cellspacing="0">          <tbody>                               <tr id="section-1">             <td class="docs">                            <p>Nothing changed from the JavaScript set up for regular Dropdown.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">multiDropdown</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+	<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-multidropdown&quot;</span><span class="p">,</span>
+	<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+		<span class="nx">handlers</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">change</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> 
+					<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;change from &quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">from</span> <span class="o">+</span><span class="s2">&quot; to &quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">to</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> 
+							</div>
+						</section>
+						<section>
+							<div class="header">
+								<h4><a href="#">Input Field-with Validator</a></h4>
+							</div>
+							<div class="accord-content">
+								<p>This input field has validator built in it.</p>
+								<p>On a following example, try inputting values other than numbers. The field area will be highlighted in red.</p>
+								<div class="tc-field">
+									<input id="my-input" type="text">
+								</div>
+								<h5>Setting Up</h5>
+								<h5>HTML Code</h5>
+								<div id="container">          <table cellpadding="0" cellspacing="0">            <tbody>                               <tr id="section-1">             <td class="docs">                              <p>This does not need much of a set up in HTML.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;tc-field&quot;</span><span class="o">&gt;</span>
+	<span class="o">&lt;</span><span class="nx">input</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;my-input&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">/div&gt;</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div>
+								<h5>JavaScript Code</h5>
+								<div id="container">        <table cellpadding="0" cellspacing="0">             <tbody>                               <tr id="section-1">             <td class="docs">                                         </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+	<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-input&quot;</span><span class="p">,</span>
+	<span class="nx">options</span><span class="o">:</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">                             <p>This is where you get to include extentions/functionalities that you may
+want to include in your input field. For the example, there are Validator and Hint.
+For more explanations on Validators check Validators tab.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">extensions</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">Validator</span><span class="o">:</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">                             <p>Here, we are indicating that the input kind will be number and nothing else.</p>             </td>             <td class="code">               <div class="highlight"><pre>				<span class="nx">validators</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;number&quot;</span><span class="p">]</span>
+			<span class="p">},</span>
+			<span class="nx">Hint</span><span class="o">:</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">                        <p>This is where you get to tweak hint message, and its placement according to your
+field size with css.</p><p>The css here is referencing to the left top corner of your field box.</p>             </td>             <td class="code">               <div class="highlight"><pre>				<span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Enter a number&quot;</span><span class="p">,</span>
+				<span class="nx">css</span><span class="o">:</span> <span class="p">{</span>
+					<span class="nx">top</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+					<span class="nx">left</span><span class="o">:</span> <span class="mi">5</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="nx">handlers</span><span class="o">:</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">                          <p>These handlers are included for you to perhaps in future bind functionalities,
+in each handling functions.</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">focus</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;focus&quot;</span><span class="p">);</span>
+			<span class="p">},</span>
+			<span class="nx">blur</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;blur&quot;</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">                           <p>You can put in explicit values if you wish. We left this blank to display the hint.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">val</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> 
+							</div>
+						</section>
+						<section>
+							<div class="header">
+								<h4><a href="#">Textarea</a></h4>
+							</div>
+							<div class="accord-content">
+								<p>There is nothing too fancy in this textarea field, except you can add your hint just like the input field.</p>
+								<p>This is using the regular html textarea tag, but with our JavaScript, it allows you to add in functionalities (Hint for now).</p>
+								<textarea id="my-textarea"></textarea>
+								<h5>Setting Up</h5>
+								<h5>HTML Code</h5>
+								<div id="container">           <table cellpadding="0" cellspacing="0">         <tbody>                               <tr id="section-1">             <td class="docs">                            <p>Simple as that...</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="o">&lt;</span><span class="nx">textarea</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;my-textarea&quot;</span><span class="o">&gt;&lt;</span><span class="nx">/textarea&gt;</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div>
+							<h5>JavaScript Code</h5>
+							 <div id="container">              <table cellpadding="0" cellspacing="0">            <tbody>                               <tr id="section-1">             <td class="docs">                                          </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">textarea</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+	<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-textarea&quot;</span><span class="p">,</span>
+	<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+		<span class="nx">extensions</span><span class="o">:</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">                            <p>As exaplained in Input field, you can tweak the hint message here and placement of the message with css top and left property.</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">Hint</span><span class="o">:</span> <span class="p">{</span>
+				<span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Enter a Comment&quot;</span><span class="p">,</span>
+				<span class="nx">css</span><span class="o">:</span> <span class="p">{</span>
+					<span class="nx">top</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+					<span class="nx">left</span><span class="o">:</span> <span class="mi">5</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> 
+
+							</div>
+						</section>
+						<section>
+							<div class="header">
+								<h4><a href="#">Sexy Checkbox</a></h4>
+							</div>
+							<div class="accord-content">
+								<p>Now, here is our &quot;sexy&quot; checkbox</p>
+
+								<input name='my checkbox' id="my-checkbox" type="checkbox">
+								<p>And the regular checkbox looks like this...</p>
+								<input type="checkbox" name="regular checkbox"/> label
+								<h5>Setting Up</h5>
+								<h5>HTML Code</h5>
+								 <div id="container">        <table cellpadding="0" cellspacing="0">             <tbody>                               <tr id="section-1">             <td class="docs">                          <p>This one also use the regular html checkbox tag, so not too complicated.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="o">&lt;</span><span class="nx">input</span> <span class="nx">name</span><span class="o">=</span><span class="s1">&#39;my checkbox&#39;</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;my-checkbox&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span><span class="o">&gt;</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> 
+								<h5>JavaScript Code</h5>
+								  <div id="container">        <table cellpadding="0" cellspacing="0">         <tbody>                               <tr id="section-1">             <td class="docs">                                   </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">checkbox</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+	<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-checkbox&quot;</span><span class="p">,</span>
+	<span class="nx">options</span><span class="o">:</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">                     <p>Here you can set message for the label.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">label</span><span class="o">:</span> <span class="s2">&quot;label!&quot;</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> 
+							</div>
+						</section>
+					</div>
+
+					<h3>The JavaScript files you need to generate your fields:</h3>
+					<p>Remember to put these files in order or else your fields will not get created properly.</p>
+					<p>Click on each to see documentations</p>
+					<ul class="JSfiles">
+						<li><a target="_blank" href="fieldExample/docs/tc.seed.html">tc.seed.js</a></li>
+						<li><a target="_blank" href="fieldExample/docs/tc.validation.html">tc.validation.js</a></li>
+						<li><a target="_blank" href="fieldExample/docs/tc.field.html">tc.field.js</a></li>
+						<li><a target="_blank" href="fieldExample/docs/tc.field.validator.html">tc.field.validator.js</a></li>
+						<li><a target="_blank" href="fieldExample/docs/tc.field.autocomplete.html">tc.field.autocomplete.js</a></li>
+						<li><a target="_blank" href="fieldExample/docs/tc.field.hint.html">tc.field.hint</a></li>
+						<li><a target="_blank" href="fieldExample/docs/tc.field.std.html">tc.field.std.js</a></li>
+						<li><a target="_blank" href="fieldExample/docs/tc.field.dropdown.html">tc.field.dropdown.js</a></li>
+					</ul>
+
+				</div>
+				<div class="content" id="merlin">
+					<h3>Merlin Examples</h3>
+				</div>
+			</div>
+			<footer>
+				<hr>
+				<br/>
+				<br/>
+				<p>Footer</p>
+				<br/>
+				<br/>
+				<hr>
+			</footer>
+		</div>
+		
+		<!-- jQuery 1.6.3, Hosted on Google CDN -->
+		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
+		
+		
+		<!-- Type/Code Libraries -->
+		<script src="fieldExample/tc.seed.js" type="text/javascript"></script>
+		<script src="fieldExample/tc.validation.js" type="text/javascript"></script>
+		<script src="fieldExample/tc.field.js" type="text/javascript"></script>
+		<script src="fieldExample/field/tc.field.validator.js" type="text/javascript"></script>
+		<script src="fieldExample/field/tc.field.autocomplete.js" type="text/javascript"></script>
+		<script src="fieldExample/field/tc.field.hint.js" type="text/javascript"></script>
+		<script src="fieldExample/field/tc.field.std.js" type="text/javascript"></script>
+		<script src="fieldExample/field/tc.field.dropdown.js" type="text/javascript"></script>
+		
+		<!-- Example Application -->
+		<script type="text/javascript" charset="utf-8">
+			function accordion(container) {
+				container.children('section').each(function() {
+					var section, content, neighbors;
+					
+					section=$(this);
+					content= section.find('.accord-content');
+					neighbors= section.siblings().find('.accord-content');
+					
+					section.find('.header h4').bind('click', function(event) {
+						event.preventDefault();
+						
+						neighbors.slideUp(200);
+						content.slideToggle(200);
+					});
+				});
+			}
+
+					
+			$(document).ready(function(){
+				var dropdown = NI.field.new_instance({
+					element: "#my-dropdown", // This also could be $('#my-dropdown')
+					options: {
+						handlers: {
+							change: function(e, d) {
+								if (d) { 
+									console.info("change from "+ d.from +" to "+ d.to);
+								}
+							}
+						}
+					}
+				});
+				
+				var dropdown2 = NI.field.new_instance({
+					element: "#my-dropdown2",
+					options: {
+						handlers: {
+							change: function(e, d) {
+								if (d) { 
+									console.info("change from "+ d.from +" to "+ d.to);
+								}
+							}
+						}
+					}
+				});
+				var headlessDropdown = new NI.field.Dropdown({
+					value_list: {
+						"0": "A Train",
+						"1": "B Train"
+					},
+					empty_text: "Select a Train"
+				});
+				headlessDropdown.append_to(".headless");
+
+				var textarea = NI.field.new_instance({
+					element: "#my-textarea",
+					options: {
+						extensions: {
+							Hint: {
+								content: "Enter a Comment",
+								css: {
+									top: 5,
+									left: 5
+								}
+							}
+						}
+					}
+				});
+				var checkbox = NI.field.new_instance({
+					element: "#my-checkbox",
+					options: {
+						label: "label!"
+					}
+				});
+				var input = NI.field.new_instance({
+					element: "#my-input",
+					options: {
+						extensions: {
+							Validator: {
+								validators: ["number"]
+							},
+							Autocomplete: {
+							
+							},
+							Hint: {
+								content: "Enter a number",
+								css: {
+									top: 5,
+									left: 5
+								}
+							}
+						},
+						handlers: {
+							focus: function(e) {
+								console.info("focus");
+							},
+							blur: function(e) {
+								console.info("blur");
+							}
+						},
+						val: ""
+					}
+				});
+				$("#field-btn").click(function(e){
+					e.preventDefault();
+					$(".content").hide();
+					$("#field").show();
+				});
+				$("#merlin-btn").click(function(e){
+					e.preventDefault();
+					$(".content").hide();
+					$("#merlin").show();
+				});
+				$(".accordion").each(function() {
+					accordion($(this));
+				});
+			});
+
+
+		</script>
+		
+	</body>
+</html>

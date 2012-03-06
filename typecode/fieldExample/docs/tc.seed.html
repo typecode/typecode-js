@@ -1,0 +1,251 @@
+<!DOCTYPE html>  <html> <head>   <title>tc.seed.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               tc.seed.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/* ============================================================================</span>
+
+<span class="cm"> &gt;4SESz.,     _,     ,gSEE2zx.,_        .azx                    ,w.            </span>
+<span class="cm">@Sh. &quot;QEE3.  JEE3.  &amp;ss  `*4EEEEE2x.,_  &quot;EEV  ,aS5^;dEEEE2x.,   VEEF  _        </span>
+<span class="cm">\E2`_,gF4EEEx.?jF   EE5L       `*4EEEEE2zpn..ZEEF ;sz.  `*EEESzw.w* &#39;|EE.      </span>
+<span class="cm">  ,dEEF   `&quot;?j]  _,_   ,_  _,     _,.     L.EEEF  !EEF  _,,  `&quot;``    EE7   ,,_ </span>
+<span class="cm"> :EEE7 ,ws,`|EEL`JEEL`JEE)`JEEL zE5` E3. / [EE3  ,w.  zE2` Ek .zE5^JZE3.,6EF [3</span>
+<span class="cm"> {EEE. VEE7.EE2  AE3. EEV  ZEEL{EEL ws. ;  [EE1  EEEt{E3. JEELEE3. JE5LJEEF ,w,</span>
+<span class="cm">  \EEk,,&gt;^ JEEL,@EEF ZE5L,ZE5^ &quot;Q3. V2`.    \EEk,,J&#39; &quot;Q[ yE2^ VE[_zEE[,&quot;QEL V5F</span>
+<span class="cm">          ,ss  :EE7 ;EEF               L,szzw..            ,.,            ``   </span>
+<span class="cm">          \E5.,E5F  EE1.              /; ``*4EEEZhw._      EEEL                </span>
+<span class="cm">            ````     ``              JEEE.     `&quot;45EEEhw.,,,]                                                                 </span>
+<span class="cm">============================================================================= */</span>
+<span class="cm">/*TYPE/CODE From 2010 till ∞ 			*/</span>
+
+<span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>NI is a namespace that we use.</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="kd">var</span> <span class="nx">NI</span> <span class="o">=</span> <span class="p">{},</span>
+	    <span class="nx">fakeConsole</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>NI extensions</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">NI</span><span class="p">.</span><span class="nx">ex</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>This is a function that checks if passed in value is string or not.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">checkStr</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">s</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">t</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">}</span>
+			<span class="cm">/*throw new TypeError(&quot;Expected string, but found &quot;+ t +&quot; instead&quot;);*/</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&quot;Expected string, but found &#39;&quot;</span><span class="o">+</span> <span class="nb">String</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="o">+</span><span class="s2">&quot;&#39; instead&quot;</span><span class="p">);</span>
+		<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Checking Functions.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">checkFn</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">fn</span><span class="p">))</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">}</span>
+			<span class="cm">/*throw new TypeError(&quot;Expected function, but found &quot;+ typeof fn +&quot; instead&quot;);*/</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&quot;Expected function, but found &#39;&quot;</span><span class="o">+</span> <span class="k">typeof</span> <span class="nx">fn</span> <span class="o">+</span><span class="s2">&quot;&#39; instead&quot;</span><span class="p">);</span>
+		<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Checking jQuery object.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">checkJQ</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">}</span>
+			<span class="cm">/*throw new TypeError(&quot;Expected jQuery object, but found&quot;+ typeof o +&quot; instead&quot;);*/</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&quot;Expected jQuery object, but found &#39;&quot;</span><span class="o">+</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">+</span><span class="s2">&quot;&#39; instead&quot;</span><span class="p">);</span>
+		<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Checking jQuery Node.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">checkJQNode</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$e</span><span class="p">,</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Parameters passed in: $e for element and type for node type.
+You can see here, the element is passed in .checkJQ() function first to check
+if it is a jQeury object. Then matching type name with set of node names that 
+jQuery recognizes.</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">NI</span><span class="p">.</span><span class="nx">ex</span><span class="p">.</span><span class="nx">checkJQ</span><span class="p">(</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="nx">type</span> <span class="o">=</span> <span class="nx">type</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">$e</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">$e</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">nodeName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">===</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			<span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Expected jQuery object holding single &quot;</span><span class="o">+</span> <span class="nx">type</span> <span class="o">+</span><span class="s2">&quot; element&quot;</span><span class="p">);</span>
+		<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>So, since javascript doesn't distinguish arrays or nulls, this typeOf function
+is made to check arrays and nulls.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">typeOf</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">v</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">s</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">v</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span> <span class="o">&amp;&amp;</span>
+					    <span class="o">!</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">propertyIsEnumerable</span><span class="p">(</span><span class="s2">&quot;length&quot;</span><span class="p">))</span> <span class="o">&amp;&amp;</span>
+					    <span class="k">typeof</span> <span class="nx">v</span><span class="p">.</span><span class="nx">splice</span> <span class="o">===</span> <span class="s2">&quot;function&quot;</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">s</span> <span class="o">=</span> <span class="s2">&quot;array&quot;</span><span class="p">;</span>
+					<span class="p">}</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="nx">s</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			<span class="k">return</span> <span class="nx">s</span><span class="p">;</span>
+		<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>This function checks if the value is empty or not. If empty return value will be false.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">isEmpty</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">NI</span><span class="p">.</span><span class="nx">ex</span><span class="p">.</span><span class="nx">checkStr</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">?</span>
+				<span class="kc">false</span> <span class="o">:</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Checking if the element is the parent node or not. If the very first instance of such 
+element has a parent node, it's not headless, returning true.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">isHeadless</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$e</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">$e</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">node</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">parentNode</span> <span class="o">===</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">nodeTypes</span><span class="p">.</span><span class="nx">DOCUMENT_NODE</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>NI Applications.</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">NI</span><span class="p">.</span><span class="nx">app</span> <span class="o">=</span> <span class="p">{</span>
+	
+		<span class="nx">bootstrap</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">o</span><span class="p">;</span>
+			<span class="nx">o</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+				<span class="nx">debug</span><span class="o">:</span> <span class="kc">false</span>
+			<span class="p">},</span> <span class="nx">options</span><span class="p">);</span>
+			
+			<span class="nx">app</span><span class="p">.</span><span class="nx">console</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">getConsole</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">debug</span><span class="p">);</span>
+			<span class="nx">app</span><span class="p">.</span><span class="nx">classes</span> <span class="o">=</span> <span class="p">{};</span>
+			<span class="nx">app</span><span class="p">.</span><span class="nx">runtime</span> <span class="o">=</span> <span class="p">{};</span>
+			<span class="nx">NI</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">eventPool</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+			
+			<span class="nx">app</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;::::::::::::: Starting application :::::::::::::&quot;</span><span class="p">);</span>
+			<span class="nx">app</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">((</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span> <span class="o">||</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">version</span> <span class="o">||</span> <span class="s2">&quot;&quot;</span><span class="p">));</span>
+			<span class="nx">app</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;::::::::::::::::::::::::::::::::::::::::::::::::&quot;</span><span class="p">);</span>
+			
+			<span class="k">return</span> <span class="nx">app</span><span class="p">;</span>
+		<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>getConsole is used to acquire a reference to the global console object safely,
+because sometimes the console isn't defined in some browsers.        </p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">getConsole</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">debug</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">debug</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nb">window</span><span class="p">.</span><span class="nx">console</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> 
+			    <span class="k">typeof</span> <span class="nb">window</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">debug</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+				
+				<span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">console</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">fakeConsole</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">fakeConsole</span> <span class="o">=</span> <span class="p">{};</span>
+				<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">((</span><span class="s2">&quot;assert,count,debug,dir,dirxml,error,exception,\</span>
+<span class="s2">				group,groupCollapsed,groupEnd,info,log,markTimeline,\</span>
+<span class="s2">				profile,profileEnd,time,timeEnd,trace,warn&quot;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">),</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+					<span class="nx">fakeConsole</span><span class="p">[</span><span class="k">this</span><span class="p">]</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">noop</span><span class="p">;</span>
+				<span class="p">});</span>
+			<span class="p">}</span>
+			<span class="k">return</span> <span class="nx">fakeConsole</span><span class="p">;</span>
+		<span class="p">},</span>
+	</pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>Initialize environment-specific components
+from an array of "feature" objects, each one
+of the form { feature: "foo", options: {} },
+which invokes app<a href="options">foo</a></p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">initAppFeatures</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">env</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">app</span><span class="p">.</span><span class="nx">runtime</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">app</span><span class="p">.</span><span class="nx">runtime</span> <span class="o">=</span> <span class="p">{};</span>
+			<span class="p">}</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">features</span><span class="p">))</span> <span class="p">{</span>
+				<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">features</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">runtime</span><span class="p">[</span><span class="nx">o</span><span class="p">.</span><span class="nx">feature</span><span class="p">])</span> <span class="p">{</span>
+						<span class="nx">NI</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">getConsole</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">warn</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">feature</span> <span class="o">+</span><span class="s2">&quot; already initialized&quot;</span><span class="p">);</span>
+					<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">app</span><span class="p">[</span><span class="nx">o</span><span class="p">.</span><span class="nx">feature</span><span class="p">]))</span> <span class="p">{</span>
+						<span class="nx">app</span><span class="p">.</span><span class="nx">runtime</span><span class="p">[</span><span class="nx">o</span><span class="p">.</span><span class="nx">feature</span><span class="p">]</span> <span class="o">=</span> <span class="nx">app</span><span class="p">[</span><span class="nx">o</span><span class="p">.</span><span class="nx">feature</span><span class="p">].</span><span class="nx">call</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">options</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">});</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">};</span>
+
+	<span class="nx">NI</span><span class="p">.</span><span class="nx">fn</span> <span class="o">=</span> <span class="p">{</span>
+
+		<span class="nx">extend</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sub</span><span class="p">,</span> <span class="nx">base</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">F</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
+			<span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">base</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+			<span class="nx">sub</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
+			<span class="nx">sub</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">sub</span><span class="p">;</span>
+			<span class="nx">sub</span><span class="p">.</span><span class="nx">base</span> <span class="o">=</span> <span class="nx">base</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">base</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">===</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">base</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">base</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+	
+		<span class="nx">clone</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">F</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
+			<span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
+		<span class="p">},</span>
+		
+		<span class="nx">augment</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dest</span><span class="p">,</span> <span class="nx">src</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">{</span>
+				<span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">dest</span><span class="p">.</span><span class="nx">prototype</span><span class="p">[</span><span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span> <span class="o">=</span> <span class="nx">src</span><span class="p">.</span><span class="nx">prototype</span><span class="p">[</span><span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">]];</span>
+				<span class="p">}</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">src</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">dest</span><span class="p">.</span><span class="nx">prototype</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
+						<span class="nx">dest</span><span class="p">.</span><span class="nx">prototype</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">src</span><span class="p">.</span><span class="nx">prototype</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		
+		<span class="nx">eventPool</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">$</span><span class="p">({});</span>
+			<span class="nx">target</span><span class="p">.</span><span class="nx">bind</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">events</span><span class="p">.</span><span class="nx">bind</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">events</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+			<span class="p">};</span>
+			<span class="nx">target</span><span class="p">.</span><span class="nx">unbind</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">events</span><span class="p">.</span><span class="nx">unbind</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">events</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+			<span class="p">};</span>
+			<span class="nx">target</span><span class="p">.</span><span class="nx">trigger</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">events</span><span class="p">.</span><span class="nx">trigger</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">events</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+			<span class="p">};</span>
+			<span class="k">return</span> <span class="nx">target</span><span class="p">;</span>
+		<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>A fucntion that generates a unique id.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">guid</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">prefix</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="p">(</span><span class="nx">prefix</span> <span class="o">||</span> <span class="s2">&quot;obj_&quot;</span><span class="p">)</span><span class="o">+</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">();</span>
+		<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>A function that fatches a random element.    </p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">randomElement</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">NI</span><span class="p">.</span><span class="nx">ex</span><span class="p">.</span><span class="nx">typeOf</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="o">===</span> <span class="s2">&quot;array&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="nx">array</span><span class="p">[</span><span class="nb">window</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">NI</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">))];</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>NI Constants- varaibles that are intended to only be read.</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">NI</span><span class="p">.</span><span class="nx">co</span> <span class="o">=</span> <span class="p">{</span>
+		
+		<span class="nx">keyboard</span><span class="o">:</span> <span class="p">{</span>	
+		
+			<span class="nx">BACKSPACE</span><span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
+			<span class="nx">CAPS_LOCK</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
+			<span class="nx">COMMA</span><span class="o">:</span> <span class="mi">188</span><span class="p">,</span>
+			<span class="nx">CONTROL</span><span class="o">:</span> <span class="mi">17</span><span class="p">,</span>
+			<span class="nx">DELETE</span><span class="o">:</span> <span class="mi">46</span><span class="p">,</span>
+			<span class="nx">DOWN</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
+			<span class="nx">END</span><span class="o">:</span> <span class="mi">35</span><span class="p">,</span>
+			<span class="nx">ENTER</span><span class="o">:</span> <span class="mi">13</span><span class="p">,</span>
+			<span class="nx">ESCAPE</span><span class="o">:</span> <span class="mi">27</span><span class="p">,</span>
+			<span class="nx">HOME</span><span class="o">:</span> <span class="mi">36</span><span class="p">,</span>
+			<span class="nx">INSERT</span><span class="o">:</span> <span class="mi">45</span><span class="p">,</span>
+			<span class="nx">LEFT</span><span class="o">:</span> <span class="mi">37</span><span class="p">,</span>
+			<span class="nx">NUMPAD_ADD</span><span class="o">:</span> <span class="mi">107</span><span class="p">,</span>
+			<span class="nx">NUMPAD_DECIMAL</span><span class="o">:</span> <span class="mi">110</span><span class="p">,</span>
+			<span class="nx">NUMPAD_DIVIDE</span><span class="o">:</span> <span class="mi">111</span><span class="p">,</span>
+			<span class="nx">NUMPAD_ENTER</span><span class="o">:</span> <span class="mi">108</span><span class="p">,</span>
+			<span class="nx">NUMPAD_MULTIPLY</span><span class="o">:</span> <span class="mi">106</span><span class="p">,</span>
+			<span class="nx">NUMPAD_SUBTRACT</span><span class="o">:</span> <span class="mi">109</span><span class="p">,</span>
+			<span class="nx">PAGE_DOWN</span><span class="o">:</span> <span class="mi">34</span><span class="p">,</span>
+			<span class="nx">PAGE_UP</span><span class="o">:</span> <span class="mi">33</span><span class="p">,</span>
+			<span class="nx">PERIOD</span><span class="o">:</span> <span class="mi">190</span><span class="p">,</span>
+			<span class="nx">RIGHT</span><span class="o">:</span> <span class="mi">39</span><span class="p">,</span>
+			<span class="nx">SHIFT</span><span class="o">:</span> <span class="mi">16</span><span class="p">,</span>
+			<span class="nx">SPACE</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span>
+			<span class="nx">TAB</span><span class="o">:</span> <span class="mi">9</span><span class="p">,</span>
+			<span class="nx">UP</span><span class="o">:</span> <span class="mi">38</span>
+		<span class="p">},</span>
+		
+		<span class="nx">nodeTypes</span><span class="o">:</span> <span class="p">{</span>
+			
+			<span class="nx">ELEMENT_NODE</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="nx">ATTRIBUTE_NODE</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+			<span class="nx">TEXT_NODE</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+			<span class="nx">CDATA_SECTION_NODE</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span>
+			<span class="nx">ENTITY_REFERENCE_NODE</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+			<span class="nx">ENTITY_NODE</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
+			<span class="nx">PROCESSING_INSTRUCTION_NODE</span><span class="o">:</span> <span class="mi">7</span><span class="p">,</span>
+			<span class="nx">COMMENT_NODE</span><span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
+			<span class="nx">DOCUMENT_NODE</span><span class="o">:</span> <span class="mi">9</span><span class="p">,</span>
+			<span class="nx">DOCUMENT_TYPE_NODE</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+			<span class="nx">DOCUMENT_FRAGMENT_NODE</span><span class="o">:</span> <span class="mi">11</span><span class="p">,</span>
+			<span class="nx">NOTATION_NODE</span><span class="o">:</span> <span class="mi">12</span>
+		<span class="p">},</span>
+		
+		<span class="nx">directions</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">UP</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+			<span class="nx">RIGHT</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="nx">DOWN</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+			<span class="nx">LEFT</span><span class="o">:</span> <span class="mi">3</span>
+		<span class="p">}</span>
+	<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>NI Math    </p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">NI</span><span class="p">.</span><span class="nx">math</span> <span class="o">=</span> <span class="p">{</span>
+		
+		<span class="nx">random</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+			<span class="p">}</span>
+			<span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+		<span class="p">},</span>
+		
+		<span class="nx">round</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">places</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nx">places</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">n</span><span class="o">*</span><span class="nx">p</span><span class="p">)</span><span class="o">/</span><span class="nx">p</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nb">window</span><span class="p">.</span><span class="nx">NI</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">;</span>
+
+<span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">jQuery</span><span class="p">));</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

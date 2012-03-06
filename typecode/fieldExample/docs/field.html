@@ -1,0 +1,131 @@
+<!DOCTYPE html>  <html> <head>   <title>field.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="field.html">                 field.js               </a>                                           <a class="source" href="tc.field.html">                 tc.field.js               </a>                                           <a class="source" href="tc.seed.html">                 tc.seed.js               </a>                                           <a class="source" href="tc.validation.html">                 tc.validation.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               field.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">NI</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">NI</span><span class="p">,</span>
+		 <span class="nx">console</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">getConsole</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+	
+	<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;NI field!!!&quot;</span><span class="p">);</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">);</span>
+
+	<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>	
+			<span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+				<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-input&quot;</span><span class="p">,</span>
+				<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+					<span class="nx">extensions</span><span class="o">:</span> <span class="p">{</span>
+						<span class="nx">Validator</span><span class="o">:</span> <span class="p">{</span>
+							<span class="nx">validators</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;number&quot;</span><span class="p">]</span>
+						<span class="p">},</span>
+						<span class="nx">Autocomplete</span><span class="o">:</span> <span class="p">{</span>
+						
+						<span class="p">},</span>
+						<span class="nx">Hint</span><span class="o">:</span> <span class="p">{</span>
+							<span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Enter a number&quot;</span><span class="cm">/*,</span>
+<span class="cm">							css: {</span>
+<span class="cm">								top: 5,</span>
+<span class="cm">								left: 5</span>
+<span class="cm">							}*/</span>
+						<span class="p">}</span>
+					<span class="p">},</span>
+					<span class="nx">handlers</span><span class="o">:</span> <span class="p">{</span>
+						<span class="nx">focus</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+							<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;focus&quot;</span><span class="p">);</span>
+						<span class="p">},</span>
+						<span class="nx">blur</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+							<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;blur&quot;</span><span class="p">);</span>
+						<span class="p">}</span>
+					<span class="p">},</span>
+					<span class="nx">val</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+				<span class="p">}</span>
+			<span class="p">});</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">input</span><span class="p">);</span>
+	
+			<span class="kd">var</span> <span class="nx">password</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+				<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-password&quot;</span>
+			<span class="p">});</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">password</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">dropdown</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+				<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-dropdown&quot;</span><span class="p">,</span> <span class="c1">// This also could be $(&#39;#my-dropdown&#39;)</span>
+				<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+					<span class="nx">handlers</span><span class="o">:</span> <span class="p">{</span>
+						<span class="nx">change</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+							<span class="k">if</span> <span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> 
+								<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;change from &quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">from</span> <span class="o">+</span><span class="s2">&quot; to &quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">to</span><span class="p">);</span>
+							<span class="p">}</span>
+						<span class="p">}</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">});</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dropdown</span><span class="p">);</span>
+
+			<span class="kd">var</span> <span class="nx">dropdown2</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+				<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-dropdown2&quot;</span><span class="p">,</span>
+				<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+					<span class="nx">handlers</span><span class="o">:</span> <span class="p">{</span>
+						<span class="nx">change</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+							<span class="k">if</span> <span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> 
+								<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;change from &quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">from</span> <span class="o">+</span><span class="s2">&quot; to &quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">to</span><span class="p">);</span>
+							<span class="p">}</span>
+						<span class="p">}</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">});</span>
+				<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dropdown2</span><span class="p">);</span>	
+			
+			<span class="kd">var</span> <span class="nx">dropdown3</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+				<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-dropdown3&quot;</span><span class="p">,</span>
+				<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+					<span class="nx">handlers</span><span class="o">:</span><span class="p">{</span>
+						<span class="nx">change</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">d</span><span class="p">){</span>
+							<span class="k">if</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+								<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;change from&quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">from</span> <span class="o">+</span><span class="s2">&quot; to &quot;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">to</span><span class="p">);</span>
+							<span class="p">}</span>
+						<span class="p">}</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">});</span>
+				
+			<span class="kd">var</span> <span class="nx">headlessDropdown</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">Dropdown</span><span class="p">({</span>
+				<span class="nx">value_list</span><span class="o">:</span> <span class="p">{</span>
+					<span class="s2">&quot;0&quot;</span><span class="o">:</span> <span class="s2">&quot;A Train&quot;</span><span class="p">,</span>
+					<span class="s2">&quot;1&quot;</span><span class="o">:</span> <span class="s2">&quot;B Train&quot;</span>
+				<span class="p">},</span>
+				<span class="nx">empty_text</span><span class="o">:</span> <span class="s2">&quot;Select a Train&quot;</span>
+			<span class="p">});</span>
+			<span class="nx">headlessDropdown</span><span class="p">.</span><span class="nx">append_to</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">);</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">headlessDropdown</span><span class="p">);</span>
+
+			<span class="kd">var</span> <span class="nx">textarea</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+				<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-textarea&quot;</span><span class="p">,</span>
+				<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+					<span class="nx">extensions</span><span class="o">:</span> <span class="p">{</span>
+						<span class="nx">Hint</span><span class="o">:</span> <span class="p">{</span>
+							<span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Enter a Comment&quot;</span><span class="p">,</span>
+							<span class="nx">css</span><span class="o">:</span> <span class="p">{</span>
+								<span class="nx">top</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+								<span class="nx">left</span><span class="o">:</span> <span class="mi">5</span>
+							<span class="p">}</span>
+						<span class="p">}</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">});</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">textarea</span><span class="p">);</span>
+
+			<span class="kd">var</span> <span class="nx">select</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+				<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-select&quot;</span><span class="p">,</span>
+				<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+
+				<span class="p">}</span>
+			<span class="p">});</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">select</span><span class="p">);</span>
+
+			<span class="kd">var</span> <span class="nx">checkbox</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+				<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-checkbox&quot;</span><span class="p">,</span>
+				<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+					<span class="nx">label</span><span class="o">:</span> <span class="s2">&quot;label!&quot;</span>
+				<span class="p">}</span>
+			<span class="p">});</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">checkbox</span><span class="p">);</span>
+	<span class="p">});</span>
+	
+
+<span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">jQuery</span><span class="p">));</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

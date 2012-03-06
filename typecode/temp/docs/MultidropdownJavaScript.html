@@ -1,0 +1,14 @@
+<!DOCTYPE html>  <html> <head>   <title>MultidropdownJavaScript.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               MultidropdownJavaScript.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>Nothing changed from the JavaScript set up for regular typecode dropdown.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">multiDropdown</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span><span class="p">({</span>
+	<span class="nx">element</span><span class="o">:</span> <span class="s2">&quot;#my-multidropdown&quot;</span><span class="p">,</span>
+	<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+		<span class="nx">handlers</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">change</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> 
+					<span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s2">&quot;change from &quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">from</span> <span class="o">+</span><span class="s2">&quot; to &quot;</span><span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">to</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

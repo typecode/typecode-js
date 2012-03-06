@@ -1,0 +1,307 @@
+<!DOCTYPE html>  <html> <head>   <title>tc.field.autocomplete.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="tc.field.autocomplete.html">                 tc.field.autocomplete.js               </a>                                           <a class="source" href="tc.field.dropdown.html">                 tc.field.dropdown.js               </a>                                           <a class="source" href="tc.field.hint.html">                 tc.field.hint.js               </a>                                           <a class="source" href="tc.field.html">                 tc.field.js               </a>                                           <a class="source" href="tc.field.std.html">                 tc.field.std.js               </a>                                           <a class="source" href="tc.field.validator.html">                 tc.field.validator.js               </a>                                           <a class="source" href="tc.seed.html">                 tc.seed.js               </a>                                           <a class="source" href="tc.validation.html">                 tc.validation.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               tc.field.autocomplete.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*    _____                    _____          </span>
+<span class="cm">     /\    \                  /\    \         </span>
+<span class="cm">    /::\    \                /::\    \        </span>
+<span class="cm">    \:::\    f\              /::::\    \       </span>
+<span class="cm">     \:::\    \            /::::::\    \      </span>
+<span class="cm">      \:::\    \          /:::/\:::\    \     </span>
+<span class="cm">       \:::\    \        /:::/  \:::\    \    </span>
+<span class="cm">       /::::\    \      /:::/    \:::\    \   </span>
+<span class="cm">      /::::::\    \    /:::/    / \:::\    \  </span>
+<span class="cm">     /:::/\:::\    \  /:::/    /   \:::\    \ </span>
+<span class="cm">    /:::/  \:::\____\/:::/____/     \:::\____\</span>
+<span class="cm">   /:::/    \::/    /\:::\    \      \::/    /</span>
+<span class="cm">  /:::/    / \/____/  \:::\    \      \/____/ </span>
+<span class="cm"> /:::/    /            \:::\    \             </span>
+<span class="cm">/:::/    /              \:::\    \            </span>
+<span class="cm">\::/    /                \:::\    \           </span>
+<span class="cm"> \/____/                  \:::\    \          </span>
+<span class="cm">                           \:::\    \         </span>
+<span class="cm">                            \:::\____\        </span>
+<span class="cm">                             \::/    /        </span>
+<span class="cm">                              \/____/         </span>
+<span class="cm">                             TYPE/CODE        </span>
+<span class="cm">                         From 2010 till ∞     */</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Dependencies:
+NI.field</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+	
+	<span class="kd">var</span> <span class="nx">NI</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">NI</span><span class="p">,</span>
+	    <span class="nx">delegates</span> <span class="o">=</span> <span class="p">{};</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">delegates</span><span class="p">.</span><span class="nx">DropdownAutocomplete</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">field</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">me</span><span class="p">,</span> <span class="nx">o</span><span class="p">;</span>
+		
+		<span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+		<span class="nx">o</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+			
+		<span class="p">},</span> <span class="nx">options</span><span class="p">);</span>
+		
+		<span class="kd">function</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+			
+		<span class="p">}</span>
+		
+		<span class="nx">init</span><span class="p">();</span>
+	<span class="p">};</span>
+	
+	<span class="nx">delegates</span><span class="p">.</span><span class="nx">TextInputAutocomplete</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">field</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">me</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">internal</span><span class="p">;</span>
+		
+		<span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+		<span class="nx">o</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+			<span class="nx">menu_class</span><span class="o">:</span> <span class="s2">&quot;autocomplete menu&quot;</span><span class="p">,</span>
+			<span class="nx">menu_markup</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+			
+			<span class="nx">item_generator</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+			<span class="nx">event_data</span><span class="o">:</span> <span class="p">{},</span>
+			<span class="nx">on_item_pick</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="p">{},</span>
+			<span class="nx">item_class</span><span class="o">:</span> <span class="s2">&quot;tc-menu-item&quot;</span><span class="p">,</span>
+			
+			<span class="nx">data_source</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+			<span class="nx">request_filter_param</span><span class="o">:</span> <span class="s2">&quot;term&quot;</span><span class="p">,</span>
+			
+			<span class="nx">circular</span><span class="o">:</span> <span class="kc">true</span>
+		<span class="p">},</span> <span class="nx">options</span><span class="p">);</span>
+		
+		<span class="nx">internal</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="nx">menu_open</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+			<span class="nx">menu_engaged</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+			<span class="nx">data_source</span><span class="o">:</span><span class="nx">o</span><span class="p">.</span><span class="nx">data_source</span>
+		<span class="p">};</span>
+		
+		<span class="kd">function</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">menu</span> <span class="o">=</span> <span class="nx">$</span><span class="p">((</span><span class="nx">o</span><span class="p">.</span><span class="nx">menu_markup</span> <span class="o">?</span> <span class="nx">o</span><span class="p">.</span><span class="nx">menu_markup</span> <span class="o">:</span> <span class="s2">&quot;&lt;div class=&#39;&quot;</span><span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">menu_class</span> <span class="o">+</span><span class="s2">&quot; item-wrapper&#39;&gt;&lt;/div&gt;&quot;</span><span class="p">));</span>
+			<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">menu_class</span><span class="p">)){</span> <span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">menu_class</span><span class="p">);</span> <span class="p">}</span>
+			<span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">item_wrapper</span> <span class="o">=</span> <span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;item-wrapper&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">menu</span> <span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.item-wrapper&#39;</span><span class="p">));</span>
+			<span class="nx">hide</span><span class="p">();</span>
+			<span class="nx">field</span><span class="p">.</span><span class="nx">$e</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">menu</span><span class="p">);</span>
+			
+			<span class="nx">field</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;keyup&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span><span class="nx">field</span><span class="o">:</span> <span class="nx">field</span><span class="p">},</span> <span class="nx">o</span><span class="p">.</span><span class="nx">event_data</span><span class="p">),</span> <span class="nx">events</span><span class="p">.</span><span class="nx">keyup</span><span class="p">)</span>
+			                    <span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;focus&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span><span class="nx">field</span><span class="o">:</span> <span class="nx">field</span><span class="p">},</span> <span class="nx">o</span><span class="p">.</span><span class="nx">event_data</span><span class="p">),</span> <span class="nx">events</span><span class="p">.</span><span class="nx">focus</span><span class="p">)</span>
+			                    <span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;blur&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span><span class="nx">field</span><span class="o">:</span> <span class="nx">field</span><span class="p">},</span> <span class="nx">o</span><span class="p">.</span><span class="nx">event_data</span><span class="p">),</span> <span class="nx">events</span><span class="p">.</span><span class="nx">blur</span><span class="p">)</span>
+			                    <span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;change&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span><span class="nx">field</span><span class="o">:</span> <span class="nx">field</span><span class="p">},</span> <span class="nx">o</span><span class="p">.</span><span class="nx">event_data</span><span class="p">),</span> <span class="nx">events</span><span class="p">.</span><span class="nx">change</span><span class="p">);</span>
+			
+			<span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;mouseover&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">internal</span><span class="p">.</span><span class="nx">menu_engaged</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="p">}).</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;mouseout&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">internal</span><span class="p">.</span><span class="nx">menu_engaged</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="p">});</span>
+		<span class="p">}</span>
+		
+		<span class="kd">var</span> <span class="nx">events</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="nx">keyup</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">val</span><span class="p">;</span>
+				
+				<span class="nx">key</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">;</span>
+				<span class="nx">val</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">get_val</span><span class="p">();</span>
+				
+				<span class="k">if</span> <span class="p">(</span><span class="nx">NI</span><span class="p">.</span><span class="nx">ex</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">val</span><span class="p">))</span> <span class="p">{</span>
+					<span class="nx">hide</span><span class="p">();</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">key</span> <span class="o">&gt;=</span> <span class="mi">48</span> <span class="o">&amp;&amp;</span> <span class="nx">key</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="p">))</span> <span class="p">{</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">internal</span><span class="p">.</span><span class="nx">data_source</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//URL</span>
+					<span class="nx">request_data</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">internal</span><span class="p">.</span><span class="nx">data_source</span><span class="p">)){</span>
+					<span class="nx">filter_array</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+			<span class="nx">keydown</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">prevent_default</span><span class="p">,</span> <span class="nx">key</span><span class="p">;</span>
+				
+				<span class="nx">prevent_default</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="nx">key</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">;</span>
+				
+				<span class="k">switch</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">case</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">UP</span><span class="o">:</span>
+						<span class="nx">move_selection</span><span class="p">(</span><span class="nx">NI</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">directions</span><span class="p">.</span><span class="nx">UP</span><span class="p">);</span>
+						<span class="k">break</span><span class="p">;</span>
+				
+					<span class="k">case</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">DOWN</span><span class="o">:</span>
+						<span class="nx">move_selection</span><span class="p">(</span><span class="nx">NI</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">directions</span><span class="p">.</span><span class="nx">DOWN</span><span class="p">);</span>
+						<span class="k">break</span><span class="p">;</span>
+					
+					<span class="k">case</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">ENTER</span><span class="o">:</span>
+						</pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>don't let the enter keypress trip up
+other handlers</p>             </td>             <td class="code">               <div class="highlight"><pre>						<span class="nx">e</span><span class="p">.</span><span class="nx">stopImmediatePropagation</span><span class="p">();</span>
+						
+						<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+							<span class="kd">var</span> <span class="nx">$items</span><span class="p">,</span> <span class="nx">$active_item</span><span class="p">;</span>
+							
+							<span class="nx">$items</span> <span class="o">=</span> <span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">item_wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">item_class</span><span class="p">);</span>
+							<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">$items</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+								<span class="k">return</span><span class="p">;</span>
+							<span class="p">}</span>
+							<span class="nx">$active_item</span> <span class="o">=</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">+</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">ACTIVE_CLASS</span><span class="p">);</span>
+							<span class="k">if</span> <span class="p">(</span><span class="nx">$active_item</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+								<span class="nx">$active_item</span><span class="p">.</span><span class="nx">last</span><span class="p">().</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">);</span>
+							<span class="p">}</span>
+						<span class="p">}());</span>
+						<span class="k">break</span><span class="p">;</span>
+					
+					<span class="k">case</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">ESCAPE</span><span class="o">:</span>
+						<span class="nx">hide</span><span class="p">();</span>
+						<span class="k">break</span><span class="p">;</span>
+				
+					<span class="k">default</span><span class="o">:</span>
+						<span class="nx">prevent_default</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+						<span class="k">break</span><span class="p">;</span>
+				<span class="p">}</span>
+				
+				<span class="k">if</span> <span class="p">(</span><span class="nx">prevent_default</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+			<span class="nx">focus</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">val</span><span class="p">;</span>
+				<span class="nx">val</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">get_val</span><span class="p">();</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">NI</span><span class="p">.</span><span class="nx">ex</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">val</span><span class="p">))</span> <span class="p">{</span>
+					<span class="nx">hide</span><span class="p">();</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">internal</span><span class="p">.</span><span class="nx">data_source</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//URL</span>
+					<span class="nx">request_data</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">internal</span><span class="p">.</span><span class="nx">data_source</span><span class="p">)){</span>
+					<span class="nx">filter_array</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+			<span class="nx">blur</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">internal</span><span class="p">.</span><span class="nx">menu_engaged</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">hide</span><span class="p">();</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+			<span class="nx">change</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">on_change</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">on_change</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+					
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">};</span>
+		
+		<span class="kd">function</span> <span class="nx">request_data</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{};</span>
+			<span class="nx">data</span><span class="p">[</span><span class="nx">o</span><span class="p">.</span><span class="nx">request_filter_param</span><span class="p">]</span> <span class="o">=</span> <span class="nx">val</span><span class="p">;</span>
+			<span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="nx">internal</span><span class="p">.</span><span class="nx">data_source</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">populate_menu</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+				<span class="nx">show</span><span class="p">();</span>
+			<span class="p">});</span>
+		<span class="p">};</span>
+
+		<span class="kd">function</span> <span class="nx">filter_array</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">filter</span><span class="p">,</span> <span class="nx">t_start</span><span class="p">;</span>
+			<span class="nx">data</span> <span class="o">=</span> <span class="p">[];</span>
+			<span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">val</span><span class="p">,</span><span class="s2">&quot;gi&quot;</span><span class="p">);</span>
+
+			<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">internal</span><span class="p">.</span><span class="nx">data_source</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="nx">j</span><span class="p">){</span>
+				<span class="kd">var</span> <span class="nx">my_start</span><span class="p">;</span>
+				<span class="nx">my_start</span> <span class="o">=</span> <span class="nx">j</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">filter</span><span class="p">);</span>
+				<span class="k">if</span><span class="p">(</span><span class="nx">my_start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="nx">data</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">j</span><span class="p">);</span>
+			<span class="p">});</span>
+			
+			<span class="nx">populate_menu</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+			<span class="nx">show</span><span class="p">();</span>
+		<span class="p">};</span>
+		
+		<span class="kd">function</span> <span class="nx">populate_menu</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">item_wrapper</span><span class="p">.</span><span class="nx">empty</span><span class="p">();</span>
+			<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">$item</span><span class="p">;</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">item_generator</span><span class="p">))</span> <span class="p">{</span>
+					<span class="nx">$item</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">item_generator</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="nx">field</span><span class="p">.</span><span class="nx">get_val</span><span class="p">());</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="nx">$item</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">my_item</span><span class="p">){</span>
+						<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;div data-value=&quot;&#39;</span><span class="o">+</span><span class="nx">my_item</span><span class="p">.</span><span class="nx">value</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">my_item</span><span class="p">.</span><span class="nx">label</span><span class="o">+</span><span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">);</span>
+					<span class="p">})(</span><span class="nx">item</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">$item</span><span class="p">){</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">$item</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">item_class</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">$item</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">o</span><span class="p">.</span><span class="nx">item_class</span><span class="p">).</span><span class="nx">length</span><span class="p">){</span>
+					<span class="nx">$item</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">item_class</span><span class="p">)</span>
+				<span class="p">}</span>
+				<span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">item_wrapper</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">$item</span><span class="p">);</span>
+			<span class="p">});</span>
+			<span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">item_wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">item_class</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span><span class="nx">field</span><span class="o">:</span> <span class="nx">field</span><span class="p">},</span> <span class="nx">o</span><span class="p">.</span><span class="nx">event_data</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">on_item_pick</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">hide</span><span class="p">();</span>
+					<span class="nx">internal</span><span class="p">.</span><span class="nx">menu_engaged</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">});</span>
+		<span class="p">}</span>
+		
+		<span class="kd">function</span> <span class="nx">move_selection</span><span class="p">(</span><span class="nx">direction</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">$t</span><span class="p">,</span> <span class="nx">$items</span><span class="p">,</span> <span class="nx">$active_item</span><span class="p">,</span> <span class="nx">index</span><span class="p">;</span>
+			
+			<span class="nx">$items</span> <span class="o">=</span> <span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">item_wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">item_class</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">$items</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">return</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="nx">$active_item</span> <span class="o">=</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">+</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">ACTIVE_CLASS</span><span class="p">);</span>
+			
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">$active_item</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">direction</span> <span class="o">===</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">directions</span><span class="p">.</span><span class="nx">UP</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">$t</span> <span class="o">=</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">last</span><span class="p">();</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="nx">$t</span> <span class="o">=</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">first</span><span class="p">();</span>
+				<span class="p">}</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				
+				<span class="nx">index</span> <span class="o">=</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">index</span><span class="p">(</span><span class="nx">$active_item</span><span class="p">.</span><span class="nx">last</span><span class="p">());</span>
+			
+				<span class="k">if</span> <span class="p">(</span><span class="nx">direction</span> <span class="o">===</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">directions</span><span class="p">.</span><span class="nx">UP</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">$t</span> <span class="o">=</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+					<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">$t</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">$t</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">circular</span> <span class="o">?</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">last</span><span class="p">()</span> <span class="o">:</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">first</span><span class="p">();</span>
+					<span class="p">}</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="nx">$t</span> <span class="o">=</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+					<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">$t</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">$t</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">circular</span> <span class="o">?</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">first</span><span class="p">()</span> <span class="o">:</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">last</span><span class="p">();</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			
+			<span class="nx">$items</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">ACTIVE_CLASS</span><span class="p">);</span>
+			<span class="nx">$t</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">ACTIVE_CLASS</span><span class="p">);</span>
+		<span class="p">}</span>
+		
+		<span class="kd">function</span> <span class="nx">show</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">show</span><span class="p">();</span>
+			<span class="nx">internal</span><span class="p">.</span><span class="nx">menu_open</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="nx">field</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;keydown.autocomplete_&quot;</span><span class="o">+</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_name</span><span class="p">,</span> <span class="p">{</span><span class="nx">me</span><span class="o">:</span> <span class="k">this</span><span class="p">},</span> <span class="nx">events</span><span class="p">.</span><span class="nx">keydown</span><span class="p">);</span>
+		<span class="p">}</span>
+		
+		<span class="kd">function</span> <span class="nx">hide</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nx">field</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">hide</span><span class="p">();</span>
+			<span class="nx">internal</span><span class="p">.</span><span class="nx">menu_open</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="nx">field</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">.</span><span class="nx">unbind</span><span class="p">(</span><span class="s2">&quot;keydown.autocomplete_&quot;</span><span class="o">+</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_name</span><span class="p">,</span> <span class="nx">events</span><span class="p">.</span><span class="nx">keydown</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="nx">field</span><span class="p">.</span><span class="nx">set_data_source</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data_source</span><span class="p">){</span>
+			<span class="nx">internal</span><span class="p">.</span><span class="nx">data_source</span> <span class="o">=</span> <span class="nx">data_source</span><span class="p">;</span>
+		<span class="p">};</span>
+		
+		<span class="nx">init</span><span class="p">();</span>
+	<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">extensions</span><span class="p">.</span><span class="nx">Autocomplete</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">field</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">me</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">delegate</span><span class="p">;</span>
+		
+		<span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+		<span class="nx">o</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+			
+		<span class="p">},</span> <span class="nx">options</span><span class="p">);</span>
+		
+		<span class="kd">function</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+			
+			<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">delegates</span><span class="p">[</span><span class="nx">field</span><span class="p">.</span><span class="nx">_name</span> <span class="o">+</span> <span class="s2">&quot;Autocomplete&quot;</span><span class="p">]))</span> <span class="p">{</span>
+				<span class="nx">delegate</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">delegates</span><span class="p">[</span><span class="nx">field</span><span class="p">.</span><span class="nx">_name</span> <span class="o">+</span> <span class="s2">&quot;Autocomplete&quot;</span><span class="p">](</span><span class="nx">field</span><span class="p">,</span> <span class="nx">o</span><span class="p">);</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;Autocomplete does not support field type: &quot;</span><span class="o">+</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_name</span><span class="p">);</span>
+			<span class="p">}</span>
+			
+		<span class="p">}</span>
+		
+		<span class="nx">init</span><span class="p">();</span>
+	<span class="p">};</span>
+
+<span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">jQuery</span><span class="p">));</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

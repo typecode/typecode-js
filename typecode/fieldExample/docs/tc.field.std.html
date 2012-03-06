@@ -1,0 +1,592 @@
+<!DOCTYPE html>  <html> <head>   <title>tc.field.std.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="tc.field.autocomplete.html">                 tc.field.autocomplete.js               </a>                                           <a class="source" href="tc.field.dropdown.html">                 tc.field.dropdown.js               </a>                                           <a class="source" href="tc.field.hint.html">                 tc.field.hint.js               </a>                                           <a class="source" href="tc.field.html">                 tc.field.js               </a>                                           <a class="source" href="tc.field.std.html">                 tc.field.std.js               </a>                                           <a class="source" href="tc.field.validator.html">                 tc.field.validator.js               </a>                                           <a class="source" href="tc.seed.html">                 tc.seed.js               </a>                                           <a class="source" href="tc.validation.html">                 tc.validation.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               tc.field.std.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*    _____                    _____          </span>
+<span class="cm">     /\    \                  /\    \         </span>
+<span class="cm">    /::\    \                /::\    \        </span>
+<span class="cm">    \:::\    \              /::::\    \       </span>
+<span class="cm">     \:::\    \            /::::::\    \      </span>
+<span class="cm">      \:::\    \          /:::/\:::\    \     </span>
+<span class="cm">       \:::\    \        /:::/  \:::\    \    </span>
+<span class="cm">       /::::\    \      /:::/    \:::\    \   </span>
+<span class="cm">      /::::::\    \    /:::/    / \:::\    \  </span>
+<span class="cm">     /:::/\:::\    \  /:::/    /   \:::\    \ </span>
+<span class="cm">    /:::/  \:::\____\/:::/____/     \:::\____\</span>
+<span class="cm">   /:::/    \::/    /\:::\    \      \::/    /</span>
+<span class="cm">  /:::/    / \/____/  \:::\    \      \/____/ </span>
+<span class="cm"> /:::/    /            \:::\    \             </span>
+<span class="cm">/:::/    /              \:::\    \            </span>
+<span class="cm">\::/    /                \:::\    \           </span>
+<span class="cm"> \/____/                  \:::\    \          </span>
+<span class="cm">                           \:::\    \         </span>
+<span class="cm">                            \:::\____\        </span>
+<span class="cm">                             \::/    /        </span>
+<span class="cm">                              \/____/         </span>
+<span class="cm">                             TYPE/CODE        </span>
+<span class="cm">                         From 2010 till ∞     */</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Dependencies:
+NI.field</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+	
+	<span class="kd">var</span> <span class="nx">NI</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">NI</span><span class="p">,</span>
+	    <span class="nx">field</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">field</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+standard field type</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>field type names starting with "_Base" are abstract</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;_BaseText&quot;</span><span class="p">,</span>
+		
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">;</span>
+			<span class="p">},</span>
+			
+			<span class="nx">get_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">val</span><span class="p">();</span>
+			<span class="p">},</span>
+
+			<span class="nx">_set_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="nx">val</span> <span class="o">?</span> <span class="nx">val</span> <span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">);</span>
+			<span class="p">},</span>
+			
+			<span class="nx">set_enabled</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">enabled</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">enabled</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;disabled&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">removeAttr</span><span class="p">(</span><span class="s2">&quot;disabled&quot;</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+	
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;TextInput&quot;</span><span class="p">,</span>
+		
+		<span class="nx">base</span><span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_BaseText</span><span class="p">,</span>
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">generate_from_dom</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_base</span><span class="p">.</span><span class="nx">generate_from_dom</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>this.elements.input = $("input[type='text']", this.$e);</p>             </td>             <td class="code">               <div class="highlight"><pre>				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">},</span>
+
+			<span class="nx">generate_from_scratch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">$e</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div&gt;&lt;input type=&#39;text&#39;&gt;&lt;/div&gt;&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">BASE_CLASS</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;input[type=&#39;text&#39;]&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Password&quot;</span><span class="p">,</span>
+		
+		<span class="nx">base</span><span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_BaseText</span><span class="p">,</span>
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">generate_from_dom</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_base</span><span class="p">.</span><span class="nx">generate_from_dom</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;input[type=&#39;password&#39;]&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">},</span>
+
+			<span class="nx">generate_from_scratch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">$e</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div&gt;&lt;input type=&#39;password&#39;&gt;&lt;/div&gt;&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">BASE_CLASS</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;input[type=&#39;password&#39;]&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+	
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;TextArea&quot;</span><span class="p">,</span>
+		
+		<span class="nx">base</span><span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_BaseText</span><span class="p">,</span>
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">generate_from_dom</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_base</span><span class="p">.</span><span class="nx">generate_from_dom</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;textarea&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">},</span>
+
+			<span class="nx">generate_from_scratch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">$e</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div&gt;&lt;textarea&gt;&lt;/textarea&gt;&lt;/div&gt;&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">BASE_CLASS</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;textarea&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+	
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;_BaseControl&quot;</span><span class="p">,</span>
+		
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			
+			<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+				<span class="nx">sexy</span><span class="o">:</span> <span class="kc">true</span>
+			<span class="p">},</span>
+			
+			<span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span> <span class="o">=</span> <span class="c1">//this.elements.input;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_init_label</span><span class="p">();</span>
+				
+				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">sexy</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">sexy_input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div class=&#39;sexy-control sexy-&quot;</span><span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_name</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">+</span><span class="s2">&quot;&#39;&gt;&lt;/div&gt;&quot;</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">sexy_input</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">me</span><span class="o">:</span> <span class="k">this</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+						<span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span><span class="p">){</span>
+							<span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span><span class="p">.</span><span class="nx">set_val</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">));</span>
+						<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+							<span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">set_val</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">get_val</span><span class="p">()</span> <span class="o">!==</span> <span class="s2">&quot;true&quot;</span><span class="p">);</span>
+						<span class="p">}</span>
+					<span class="p">});</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_sexy_update</span><span class="p">();</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;change&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">me</span><span class="o">:</span> <span class="k">this</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">_sexy_update</span><span class="p">();</span>
+					<span class="p">});</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">hide</span><span class="p">().</span><span class="nx">before</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">sexy_input</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+			</pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>looks for a nearby label for this control
+if there is a label whose "for" attribute
+corresponds to the control's "id" attribute
+that's the label regardless of where it is in the DOM,
+otherwise, we will for the label that is a sibling
+of the control element </p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">_init_label</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">me</span><span class="p">,</span> <span class="nx">label_set</span><span class="p">,</span> <span class="nx">$label</span><span class="p">;</span>
+				
+				<span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+				<span class="nx">label_set</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+				
+				<span class="kd">function</span> <span class="nx">try_to_set_label</span><span class="p">()</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">((</span><span class="nx">$label</span> <span class="k">instanceof</span> <span class="nx">$</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">$label</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+						<span class="k">if</span> <span class="p">(</span><span class="nx">$label</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;for&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">me</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">))</span> <span class="p">{</span>
+							<span class="nx">$label</span> <span class="o">=</span> <span class="nx">$label</span><span class="p">.</span><span class="nx">detach</span><span class="p">();</span>
+							<span class="k">if</span> <span class="p">(</span><span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">label</span><span class="p">)</span> <span class="p">{</span>
+								<span class="nx">$label</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">label</span><span class="p">);</span>
+							<span class="p">}</span>
+							<span class="nx">label_set</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+							<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+						<span class="p">}</span>
+					<span class="p">}</span>
+					<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+				<span class="p">}</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">))</span> <span class="p">{</span>
+					<span class="nx">$label</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;label[for=&#39;&quot;</span><span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">+</span><span class="s2">&quot;&#39;]&quot;</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">try_to_set_label</span><span class="p">())</span> <span class="p">{</span>
+					<span class="nx">$label</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">);</span>
+					<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">$label</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">$label</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">.</span><span class="nx">prev</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">);</span>
+					<span class="p">}</span>
+					<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">try_to_set_label</span><span class="p">())</span> <span class="p">{</span>
+						<span class="nx">$label</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">);</span>
+						<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">$label</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+							<span class="nx">$label</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">prev</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">);</span>
+						<span class="p">}</span>
+						<span class="nx">try_to_set_label</span><span class="p">();</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+				
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">label_set</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">label</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">$label</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;label for=&#39;&quot;</span><span class="o">+</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span><span class="s2">&quot;&#39;&gt;&quot;</span><span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">label</span> <span class="o">+</span><span class="s2">&quot;&lt;/label&gt;&quot;</span><span class="p">);</span>
+					<span class="nx">label_set</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="p">}</span>
+				
+				<span class="k">if</span> <span class="p">(</span><span class="nx">label_set</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">$label</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">me</span><span class="o">:</span> <span class="k">this</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+						<span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span><span class="p">){</span>
+							<span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span><span class="p">.</span><span class="nx">set_val</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">));</span>
+						<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+							<span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">set_val</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">get_val</span><span class="p">()</span> <span class="o">!==</span> <span class="s2">&quot;true&quot;</span><span class="p">);</span>
+						<span class="p">}</span>
+					<span class="p">});</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="nx">$label</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+			
+			<span class="nx">_sexy_update</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span><span class="p">.</span><span class="nx">_sexy_update</span><span class="p">))</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span><span class="p">.</span><span class="nx">_sexy_update</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">));</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">sexy_input</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">sexy_input</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">get_val</span><span class="p">()</span> <span class="o">===</span> <span class="s2">&quot;true&quot;</span> <span class="o">?</span> <span class="s2">&quot;addClass&quot;</span> <span class="o">:</span> <span class="s2">&quot;removeClass&quot;</span><span class="p">](</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">ACTIVE_CLASS</span><span class="p">);</span>
+			<span class="p">},</span>
+			
+			<span class="nx">get_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s2">&quot;checked&quot;</span><span class="p">)</span> <span class="o">?</span> <span class="s2">&quot;true&quot;</span> <span class="o">:</span> <span class="s2">&quot;false&quot;</span><span class="p">;</span>
+			<span class="p">},</span>
+
+			<span class="nx">_set_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s2">&quot;checked&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s2">&quot;checked&quot;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+		
+			<span class="nx">set_enabled</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">enabled</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_BaseText</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">set_enabled</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+	
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Radio&quot;</span><span class="p">,</span>
+		
+		<span class="nx">base</span><span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_BaseControl</span><span class="p">,</span>
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">generate_from_dom</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_base</span><span class="p">.</span><span class="nx">generate_from_dom</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;input[type=&#39;radio&#39;]&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">},</span>
+
+			<span class="nx">generate_from_scratch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">$e</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div&gt;&lt;input type=&#39;radio&#39;&gt;&lt;/div&gt;&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">BASE_CLASS</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;input[type=&#39;radio&#39;]&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+	
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Checkbox&quot;</span><span class="p">,</span>
+		
+		<span class="nx">base</span><span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_BaseControl</span><span class="p">,</span>
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">generate_from_dom</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_base</span><span class="p">.</span><span class="nx">generate_from_dom</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;input[type=&#39;checkbox&#39;]&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">},</span>
+
+			<span class="nx">generate_from_scratch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">$e</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div&gt;&lt;input type=&#39;checkbox&#39;&gt;&lt;/div&gt;&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">BASE_CLASS</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;input[type=&#39;checkbox&#39;]&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;_BaseControlSet&quot;</span><span class="p">,</span>
+		
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span> <span class="o">=</span> <span class="nx">$</span><span class="p">({});</span>
+			<span class="p">},</span>
+			
+			<span class="nx">generate_from_dom</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">me</span><span class="p">;</span>
+				<span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+				
+				<span class="nx">field</span><span class="p">.</span><span class="nx">_Base</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">generate_from_dom</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">field</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">_name</span><span class="p">].</span><span class="nx">CONTAINER_CLASS</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">inputs</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;input[type=&#39;&quot;</span><span class="o">+</span> <span class="nx">field</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">_name</span><span class="p">].</span><span class="nx">INPUT_TYPE</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">+</span><span class="s2">&quot;&#39;]&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">fields</span> <span class="o">=</span> <span class="p">[];</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">inputs</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+					<span class="kd">var</span> <span class="nx">$f</span><span class="p">,</span> <span class="nx">my_subfield_options</span><span class="p">,</span> <span class="nx">my_options</span><span class="p">;</span>
+					<span class="nx">$f</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+					<span class="nx">my_subfield_options</span> <span class="o">=</span> <span class="p">{};</span>
+					
+					<span class="k">if</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">subfield_options</span><span class="p">){</span>
+						<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">subfield_options</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">){</span>
+							<span class="k">if</span><span class="p">(</span><span class="nx">$f</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">j</span><span class="p">.</span><span class="nx">selector</span><span class="p">).</span><span class="nx">length</span><span class="p">){</span>
+								<span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">my_subfield_options</span><span class="p">,</span> <span class="nx">j</span><span class="p">.</span><span class="nx">options</span><span class="p">);</span>
+							<span class="p">}</span>
+						<span class="p">});</span>
+					<span class="p">}</span>
+
+					<span class="nx">my_options</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">my_subfield_options</span><span class="p">,</span>
+						<span class="p">{</span><span class="nx">$e</span><span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">prep_element</span><span class="p">(</span><span class="nx">$f</span><span class="p">).</span><span class="nx">$e</span><span class="p">,</span> <span class="nx">set</span><span class="o">:</span><span class="nx">me</span><span class="p">}</span>
+					<span class="p">);</span>
+
+					<span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="k">new</span> <span class="nx">field</span><span class="p">[</span><span class="nx">field</span><span class="p">[</span><span class="nx">me</span><span class="p">.</span><span class="nx">_name</span><span class="p">].</span><span class="nx">INPUT_TYPE</span><span class="p">](</span><span class="nx">my_options</span><span class="p">)</span> <span class="p">);</span>
+				<span class="p">});</span>
+			<span class="p">},</span>
+			
+			<span class="nx">_set_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">fields</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">f</span><span class="p">.</span><span class="nx">set_val</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">f</span><span class="p">.</span><span class="nx">set_val</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">});</span>
+			<span class="p">},</span>
+			
+			<span class="nx">_sexy_update</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">fields</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">f</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">sexy_input</span><span class="p">)</span> <span class="p">{</span>
+						<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+					<span class="p">}</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">f</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">sexy_input</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">ACTIVE_CLASS</span><span class="p">);</span>
+					<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+						<span class="nx">f</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">sexy_input</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">ACTIVE_CLASS</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">});</span>
+			<span class="p">},</span>
+			
+			<span class="nx">set_enabled</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">enabled</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">fields</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">f</span><span class="p">.</span><span class="nx">set_enabled</span><span class="p">(</span><span class="nx">enabled</span><span class="p">);</span>
+				<span class="p">});</span>
+				<span class="k">return</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_BaseText</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">set_enabled</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;RadioSet&quot;</span><span class="p">,</span>
+		
+		<span class="nx">props</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">CONTAINER_CLASS</span><span class="o">:</span> <span class="s2">&quot;tc-radio-set&quot;</span><span class="p">,</span>
+			<span class="nx">INPUT_TYPE</span><span class="o">:</span> <span class="s2">&quot;Radio&quot;</span>
+		<span class="p">},</span>
+		
+		<span class="nx">base</span><span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_BaseControlSet</span><span class="p">,</span>
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">generate_from_scratch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>TODO</p>             </td>             <td class="code">               <div class="highlight"><pre>				<span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;RadioSet.generate_from_scratch is not yet implemented&#39;</span><span class="p">);</span>
+			<span class="p">},</span>
+			
+			<span class="nx">get_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">val</span><span class="p">;</span>
+				
+				<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">fields</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">get_val</span><span class="p">()</span> <span class="o">===</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">val</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">);</span>
+						<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+					<span class="p">}</span>
+				<span class="p">});</span>
+				
+				<span class="k">return</span> <span class="nx">val</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;CheckboxSet&quot;</span><span class="p">,</span>
+		
+		<span class="nx">props</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">CONTAINER_CLASS</span><span class="o">:</span> <span class="s2">&quot;tc-checkbox-set&quot;</span><span class="p">,</span>
+			<span class="nx">INPUT_TYPE</span><span class="o">:</span> <span class="s2">&quot;Checkbox&quot;</span>
+		<span class="p">},</span>
+		
+		<span class="nx">base</span><span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_BaseControlSet</span><span class="p">,</span>
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">generate_from_scratch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>TODO</p>             </td>             <td class="code">               <div class="highlight"><pre>				<span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;CheckboxSet.generate_from_scratch is not fully implemented&#39;</span><span class="p">);</span>
+			<span class="p">},</span>
+
+			<span class="nx">get_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">val</span><span class="p">;</span>
+				<span class="nx">val</span> <span class="o">=</span> <span class="p">[];</span>
+				
+				<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">fields</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">get_val</span><span class="p">()</span> <span class="o">===</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">val</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">));</span>
+					<span class="p">}</span>
+				<span class="p">});</span>
+
+				<span class="k">return</span> <span class="nx">val</span><span class="p">;</span>
+			<span class="p">},</span>
+			
+			<span class="nx">_set_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">me</span><span class="p">;</span>
+				<span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+				
+				<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">val</span><span class="p">))</span> <span class="p">{</span>
+					
+					<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">fields</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">f</span><span class="p">.</span><span class="nx">set_val</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+					<span class="p">});</span>
+					
+					<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">val</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">fields</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">j</span><span class="p">,</span> <span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+							<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+								<span class="nx">f</span><span class="p">.</span><span class="nx">set_val</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+							<span class="p">}</span>
+						<span class="p">});</span>
+					<span class="p">});</span>
+					
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_base</span><span class="p">.</span><span class="nx">_set_val</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+	
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Select&quot;</span><span class="p">,</span>
+		
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			
+			<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+				<span class="nx">empty_val</span><span class="o">:</span> <span class="s2">&quot;-1&quot;</span><span class="p">,</span>
+				<span class="nx">value_list</span><span class="o">:</span> <span class="p">{}</span>
+			<span class="p">},</span>
+			
+			<span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span><span class="p">;</span>
+			<span class="p">},</span>
+			
+			<span class="nx">generate_from_dom</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_base</span><span class="p">.</span><span class="nx">generate_from_dom</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;select&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+			<span class="p">},</span>
+
+			<span class="nx">generate_from_scratch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">$e</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div&gt;&lt;select&gt;&lt;/select&gt;&lt;/div&gt;&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">BASE_CLASS</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;select&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">value_list</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">populate</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">value_list</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+			</pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>(chainable)</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">populate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value_list</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">buf</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">empty</span><span class="p">();</span>
+				
+				<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">value_list</span><span class="p">))</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">value_list</span><span class="p">());</span>
+					<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+				<span class="p">}</span>
+				
+				<span class="nx">buf</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+				<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">value_list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">buf</span> <span class="o">+=</span> <span class="s2">&quot;&lt;option value=&#39;&quot;</span><span class="o">+</span> <span class="nx">value</span> <span class="o">+</span><span class="s2">&quot;&#39;&gt;&quot;</span><span class="o">+</span> <span class="nx">text</span> <span class="o">+</span><span class="s2">&quot;&lt;/option&gt;&quot;</span><span class="p">;</span>
+				<span class="p">});</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">buf</span><span class="p">);</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+			<span class="p">},</span>
+			
+			<span class="nx">get_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">$option</span><span class="p">;</span>
+				<span class="nx">$option</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;option:selected&quot;</span><span class="p">);</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">$option</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">return</span> <span class="nx">$option</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">empty_val</span><span class="p">;</span>
+			<span class="p">},</span>
+			
+			<span class="nx">_set_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;option[value=&quot;</span><span class="o">+</span> <span class="nx">val</span> <span class="o">+</span><span class="s2">&quot;]&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+		
+			<span class="nx">set_enabled</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">enabled</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">enabled</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;disabled&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">removeAttr</span><span class="p">(</span><span class="s2">&quot;disabled&quot;</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+	
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Upload&quot;</span><span class="p">,</span>
+		
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+			
+			<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+				<span class="nx">url</span><span class="o">:</span><span class="kc">null</span>
+			<span class="p">},</span>
+			
+			<span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				
+			<span class="p">},</span>
+			
+			<span class="nx">generate_from_dom</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">me</span><span class="p">,</span> <span class="nx">random</span><span class="p">;</span>
+
+				<span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">_base</span><span class="p">.</span><span class="nx">generate_from_dom</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+
+				<span class="nx">random</span> <span class="o">=</span> <span class="nx">NI</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">NI</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span><span class="mi">99999</span><span class="p">),</span><span class="mi">0</span><span class="p">);</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">iframe_id</span> <span class="o">=</span> <span class="s1">&#39;upload_iframe&#39;</span><span class="o">+</span><span class="nx">random</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">form_id</span> <span class="o">=</span> <span class="s1">&#39;upload_form&#39;</span><span class="o">+</span><span class="nx">random</span><span class="p">;</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;input[type=file]&#39;</span><span class="p">);</span>
+
+				<span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">loader</span><span class="p">){</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">loader</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">loader</span><span class="p">)</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">loader</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Loading...&lt;/p&gt;&#39;</span><span class="p">);</span>
+				<span class="p">}</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">loader</span><span class="p">.</span><span class="nx">css</span><span class="p">({</span>
+					<span class="nx">display</span><span class="o">:</span><span class="s1">&#39;none&#39;</span>
+				<span class="p">}).</span><span class="nx">appendTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+
+				<span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">trigger</span><span class="p">){</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">trigger</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">trigger</span><span class="p">);</span>
+
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">trigger</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,{},</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">d</span><span class="p">){</span>
+						<span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+						<span class="nx">me</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">css</span><span class="p">({</span>
+							<span class="nx">opacity</span><span class="o">:</span><span class="mf">0.0</span>
+						<span class="p">}).</span><span class="nx">show</span><span class="p">().</span><span class="nx">focus</span><span class="p">().</span><span class="nx">click</span><span class="p">().</span><span class="nx">hide</span><span class="p">();</span>
+					<span class="p">});</span>
+
+					<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">css</span><span class="p">({</span>
+						<span class="nx">display</span><span class="o">:</span><span class="s1">&#39;none&#39;</span>
+					<span class="p">});</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">trigger</span><span class="p">);</span>
+				<span class="p">}</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">iframe</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;iframe&gt;&lt;/iframe&gt;&#39;</span><span class="p">)</span>
+					<span class="p">.</span><span class="nx">attr</span><span class="p">({</span>
+						<span class="nx">id</span><span class="o">:</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">iframe_id</span><span class="p">,</span>
+						<span class="nx">name</span><span class="o">:</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">iframe_id</span><span class="p">,</span>
+						<span class="nx">src</span><span class="o">:</span><span class="s1">&#39;&#39;</span>
+					<span class="p">}).</span><span class="nx">css</span><span class="p">({</span>
+						<span class="nx">display</span><span class="o">:</span><span class="s1">&#39;none&#39;</span>
+					<span class="p">});</span>
+				
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">form</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;form action=&quot;&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">url</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&lt;/form&gt;&#39;</span><span class="p">)</span>
+					<span class="p">.</span><span class="nx">attr</span><span class="p">({</span>
+						<span class="nx">id</span><span class="o">:</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">form_id</span><span class="p">,</span>
+						<span class="nx">name</span><span class="o">:</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">form_id</span><span class="p">,</span>
+						<span class="nx">action</span><span class="o">:</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+						<span class="nx">method</span><span class="o">:</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+						<span class="nx">enctype</span><span class="o">:</span><span class="s1">&#39;multipart/form-data&#39;</span><span class="p">,</span>
+						<span class="nx">target</span><span class="o">:</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">iframe_id</span>
+					<span class="p">});</span>
+				
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">form</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">form</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">parent</span><span class="p">();</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">form</span><span class="p">;</span>
+
+				<span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">additional_values</span><span class="p">){</span>
+					<span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">additional_values</span><span class="p">){</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;&#39;</span><span class="o">+</span><span class="nx">i</span><span class="o">+</span><span class="s1">&#39;&quot; value=&quot;&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">additional_values</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&lt;/input&gt;&#39;</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,{},</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">d</span><span class="p">){</span>
+					<span class="nx">e</span><span class="p">.</span><span class="nx">stopPropagation</span><span class="p">();</span>
+					<span class="nx">e</span><span class="p">.</span><span class="nx">stopImmediatePropagation</span><span class="p">();</span>
+
+					<span class="k">if</span><span class="p">(</span><span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">trigger</span><span class="p">){</span>
+						<span class="nx">me</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">trigger</span><span class="p">.</span><span class="nx">hide</span><span class="p">();</span>
+					<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+						<span class="nx">me</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">hide</span><span class="p">();</span>
+					<span class="p">}</span>
+					<span class="nx">me</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">loader</span><span class="p">.</span><span class="nx">show</span><span class="p">();</span>
+					<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">form_id</span><span class="p">).</span><span class="nx">submit</span><span class="p">();</span>
+				<span class="p">});</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">iframe</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;load&#39;</span><span class="p">,{},</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">d</span><span class="p">){</span>
+					<span class="nx">me</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">loader</span><span class="p">.</span><span class="nx">hide</span><span class="p">();</span>
+					<span class="k">if</span><span class="p">(</span><span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">trigger</span><span class="p">){</span>
+						<span class="nx">me</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">trigger</span><span class="p">.</span><span class="nx">show</span><span class="p">();</span>
+					<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+						<span class="nx">me</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">show</span><span class="p">();</span>
+					<span class="p">}</span>
+					<span class="nx">me</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,{</span><span class="nx">data</span><span class="o">:</span><span class="nx">$</span><span class="p">.</span><span class="nx">parseJSON</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">contentDocument</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">textContent</span><span class="p">)});</span>
+				<span class="p">});</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">iframe</span><span class="p">);</span>
+
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+	
+	
+<span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">jQuery</span><span class="p">));</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

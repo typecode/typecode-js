@@ -1,0 +1,322 @@
+<!DOCTYPE html>  <html> <head>   <title>tc.field.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="tc.field.autocomplete.html">                 tc.field.autocomplete.js               </a>                                           <a class="source" href="tc.field.dropdown.html">                 tc.field.dropdown.js               </a>                                           <a class="source" href="tc.field.hint.html">                 tc.field.hint.js               </a>                                           <a class="source" href="tc.field.html">                 tc.field.js               </a>                                           <a class="source" href="tc.field.std.html">                 tc.field.std.js               </a>                                           <a class="source" href="tc.field.validator.html">                 tc.field.validator.js               </a>                                           <a class="source" href="tc.seed.html">                 tc.seed.js               </a>                                           <a class="source" href="tc.validation.html">                 tc.validation.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               tc.field.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*    _____                    _____          </span>
+<span class="cm">     /\    \                  /\    \         </span>
+<span class="cm">    /::\    \                /::\    \        </span>
+<span class="cm">    \:::\    \              /::::\    \       </span>
+<span class="cm">     \:::\    \            /::::::\    \      </span>
+<span class="cm">      \:::\    \          /:::/\:::\    \     </span>
+<span class="cm">       \:::\    \        /:::/  \:::\    \    </span>
+<span class="cm">       /::::\    \      /:::/    \:::\    \   </span>
+<span class="cm">      /::::::\    \    /:::/    / \:::\    \  </span>
+<span class="cm">     /:::/\:::\    \  /:::/    /   \:::\    \ </span>
+<span class="cm">    /:::/  \:::\____\/:::/____/     \:::\____\</span>
+<span class="cm">   /:::/    \::/    /\:::\    \      \::/    /</span>
+<span class="cm">  /:::/    / \/____/  \:::\    \      \/____/ </span>
+<span class="cm"> /:::/    /            \:::\    \             </span>
+<span class="cm">/:::/    /              \:::\    \            </span>
+<span class="cm">\::/    /                \:::\    \           </span>
+<span class="cm"> \/____/                  \:::\    \          </span>
+<span class="cm">                           \:::\    \         </span>
+<span class="cm">                            \:::\____\        </span>
+<span class="cm">                             \::/    /        </span>
+<span class="cm">                              \/____/         </span>
+<span class="cm">                             TYPE/CODE        </span>
+<span class="cm">                         From 2010 till ∞     */</span>
+
+
+<span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+	
+	<span class="kd">var</span> <span class="nx">NI</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">NI</span><span class="p">,</span>
+	    <span class="nx">field</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">extensions</span><span class="o">:</span> <span class="p">{}</span> <span class="p">};</span>
+	</pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+constants</p>             </td>             <td class="code">               <div class="highlight"><pre>	
+	<span class="nx">field</span><span class="p">.</span><span class="nx">co</span> <span class="o">=</span> <span class="p">{</span>
+		
+		<span class="nx">BASE_CLASS</span><span class="o">:</span> <span class="s2">&quot;tc-field&quot;</span><span class="p">,</span>
+		<span class="nx">LABEL_CLASS</span><span class="o">:</span> <span class="s2">&quot;tc-field-label&quot;</span><span class="p">,</span>
+		<span class="nx">HINT_CLASS</span><span class="o">:</span> <span class="s2">&quot;tc-field-hint&quot;</span><span class="p">,</span>
+		<span class="nx">MSG_CLASS</span><span class="o">:</span> <span class="s2">&quot;tc-field-message&quot;</span><span class="p">,</span>
+		
+		<span class="nx">MULTI_CLASS</span><span class="o">:</span> <span class="s2">&quot;tc-multiple&quot;</span><span class="p">,</span>
+		<span class="nx">NESTED_CLASS</span><span class="o">:</span> <span class="s2">&quot;tc-nested&quot;</span><span class="p">,</span>
+		
+		<span class="nx">ACTIVE_CLASS</span><span class="o">:</span> <span class="s2">&quot;state-active&quot;</span><span class="p">,</span>
+		<span class="nx">DISABLED_CLASS</span><span class="o">:</span> <span class="s2">&quot;state-disabled&quot;</span><span class="p">,</span>
+		<span class="nx">EMPTY_CLASS</span><span class="o">:</span> <span class="s2">&quot;state-empty&quot;</span><span class="p">,</span>
+		<span class="nx">OPEN_CLASS</span><span class="o">:</span> <span class="s2">&quot;state-open&quot;</span><span class="p">,</span>
+		
+		<span class="nx">VALUE</span><span class="o">:</span> <span class="s2">&quot;data-value&quot;</span><span class="p">,</span>
+		<span class="nx">TEXT</span><span class="o">:</span> <span class="s2">&quot;data-text&quot;</span><span class="p">,</span>
+		
+		<span class="nx">SET_VAL_EVENT</span><span class="o">:</span> <span class="s2">&quot;tc-field-event-set-val&quot;</span><span class="p">,</span>
+		<span class="nx">RESET_EVENT</span><span class="o">:</span> <span class="s2">&quot;tc-field-reset&quot;</span><span class="p">,</span>
+		<span class="nx">VALIDATE_EVENT</span><span class="o">:</span><span class="s2">&quot;tc-field-validate&quot;</span>
+
+	<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+utils, factories, etc</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">field</span><span class="p">.</span><span class="nx">get_display_text</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$f</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">$f</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">TEXT</span><span class="p">)</span> <span class="o">?</span> 					<span class="c1">// TEXT = data-text</span>
+			<span class="nx">$f</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">TEXT</span><span class="p">)</span> <span class="o">:</span> <span class="nx">$f</span><span class="p">.</span><span class="nx">text</span><span class="p">();</span>
+	<span class="p">};</span>
+	</pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>synthesize a new field type</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+			<span class="nx">name</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+			<span class="nx">props</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="c1">// static</span>
+			<span class="nx">base</span><span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">_Base</span><span class="p">,</span>
+			<span class="nx">proto</span><span class="o">:</span> <span class="p">{}</span>
+		<span class="p">},</span> <span class="nx">options</span><span class="p">);</span>
+		
+		<span class="nx">field</span><span class="p">[</span><span class="nx">o</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">user_options</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_base</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">base</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">$e</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">elements</span> <span class="o">=</span> <span class="p">{};</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">events</span> <span class="o">=</span> <span class="p">{};</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">internal</span> <span class="o">=</span> <span class="p">{</span>
+				<span class="nx">o</span><span class="o">:</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">base</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">options</span> <span class="o">||</span> <span class="p">{}),</span> 
+					<span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">||</span> <span class="p">{}),</span> 
+					<span class="nx">user_options</span><span class="p">)</span>
+			<span class="p">};</span>
+			
+			<span class="k">this</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">$e</span> <span class="o">?</span> <span class="s2">&quot;generate_from_dom&quot;</span> <span class="o">:</span> <span class="s2">&quot;generate_from_scratch&quot;</span><span class="p">](</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">);</span>
+			
+			<span class="k">this</span><span class="p">.</span><span class="nx">_init</span><span class="p">();</span>
+			
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">;</span>
+			<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>I feel like this if statement is unneccessary that it's checking to see 
+if there's any event<em>receiver, meaning that some field would be injecting event</em>receiver or not,
+either case, even if we make this explicit, whatever it is injected, it will overwrite this value.</p>             </td>             <td class="code">               <div class="highlight"><pre>			
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">handlers</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">add_handlers</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">handlers</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">event_data</span><span class="p">,</span> <span class="p">{</span><span class="nx">me</span><span class="o">:</span> <span class="k">this</span><span class="p">}));</span>
+			<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Adding handlers if user specifies any handlers, if not don't add anything.</p>             </td>             <td class="code">               <div class="highlight"><pre>			
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">set_val</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">val</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+			<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Checking if there is a val option.     </p>             </td>             <td class="code">               <div class="highlight"><pre>			
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">extensions</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">apply_extensions</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">internal</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">extensions</span><span class="p">);</span>
+			<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Checking if there are extensions option.</p>             </td>             <td class="code">               <div class="highlight"><pre>			
+			<span class="k">return</span><span class="p">;</span>
+		<span class="p">};</span>
+		<span class="nx">field</span><span class="p">[</span><span class="nx">o</span><span class="p">.</span><span class="nx">name</span><span class="p">].</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">o</span><span class="p">.</span><span class="nx">base</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">proto</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">props</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">props</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">props</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">field</span><span class="p">[</span><span class="nx">o</span><span class="p">.</span><span class="nx">name</span><span class="p">][</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="nx">v</span><span class="p">;</span>
+			<span class="p">});</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="nx">field</span><span class="p">[</span><span class="nx">o</span><span class="p">.</span><span class="nx">name</span><span class="p">];</span>
+	<span class="p">};</span>
+
+	<span class="nx">field</span><span class="p">.</span><span class="nx">prep_element</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">preprocess</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">$f</span><span class="p">,</span> <span class="nx">$e</span><span class="p">,</span> <span class="nx">is_std</span><span class="p">,</span> <span class="nx">is_fset</span><span class="p">,</span> <span class="nx">field_type</span><span class="p">,</span> <span class="nx">$f_nodeName</span><span class="p">;</span>
+		
+		<span class="nx">$f</span> <span class="o">=</span> <span class="p">(</span><span class="nx">element</span> <span class="k">instanceof</span> <span class="nx">$</span><span class="p">)</span> <span class="o">?</span> <span class="nx">element</span> <span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span> <span class="c1">//This means, if first condition satisfies then use the first or second.</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Checking to see if $f is a jquery object. If it isn't, 
+wrap it with $() so it will get treated as jQuery object.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">preprocess</span><span class="p">))</span> <span class="p">{</span>
+			<span class="nx">$f</span> <span class="o">=</span> <span class="nx">preprocess</span><span class="p">(</span><span class="nx">$f</span><span class="p">)</span> <span class="o">||</span> <span class="nx">$f</span><span class="p">;</span>
+		<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Checking to see if preprocess is a function
+If true then preprocess $f.
+But, where is function preprocess... No where....</p>             </td>             <td class="code">               <div class="highlight"><pre>		
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">$f</span> <span class="k">instanceof</span> <span class="nx">$</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">$f</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>throw new Error("Missing field element");</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s2">&quot;error preparing field element&quot;</span><span class="p">);</span>
+			<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>This one is saying that if $f still isn't instance of jQuery object 
+or $f is UND then spit out an error message and return UND.</p>             </td>             <td class="code">               <div class="highlight"><pre>		</pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>if the element is not a generic field container
+assume it's a "standard" field (see tc.field.std.js)
+(this approach is questionable)
+is<em>std = !($f.hasClass(field.co.BASE</em>CLASS));</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">$f_nodeName</span> <span class="o">=</span> <span class="nx">$f</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">nodeName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
+		<span class="k">if</span> <span class="p">((</span><span class="nx">$f_nodeName</span> <span class="o">==</span> <span class="s2">&quot;input&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">$f_nodeName</span> <span class="o">==</span> <span class="s2">&quot;textarea&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">$f_nodeName</span> <span class="o">==</span> <span class="s2">&quot;select&quot;</span><span class="p">))</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>The three conditions that makes something a field.</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">is_std</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="nx">is_std</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="p">}</span>
+		</pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>If $f does not have a class name as "tc-field", 
+then it is considered as a standard field.
+But I think it should be more critical before determining it's "standard".</p>             </td>             <td class="code">               <div class="highlight"><pre>		</pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>if the jQuery collection contains multiple DOM elements
+it is a field "set"</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">is_fset</span> <span class="o">=</span> <span class="nx">$f</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>If there are more than one 
+In what kind of circumstances that this would be considered as a set?
+Wouldn't $f.length always be equal to 1?
+Because $("#my-dropdown") could only exist as a single thing.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="k">if</span> <span class="p">(</span><span class="nx">is_std</span><span class="p">)</span> <span class="p">{</span>
+			
+			<span class="nx">$f</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">$f</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">BASE_CLASS</span><span class="p">)))</span> <span class="p">{</span>
+					<span class="nx">$f</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">wrap</span><span class="p">(</span><span class="s2">&quot;&lt;div class=&#39;&quot;</span><span class="o">+</span> <span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">BASE_CLASS</span> <span class="o">+</span><span class="s2">&quot;&#39;&gt;&quot;</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">});</span>
+			<span class="nx">$e</span> <span class="o">=</span> <span class="nx">$f</span><span class="p">.</span><span class="nx">parent</span><span class="p">();</span> <span class="c1">// Making $f parent to $e so that we have access to it.</span>
+			
+			<span class="k">switch</span> <span class="p">(</span><span class="nx">$f_nodeName</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Checking which type the standard field it would be.</span>
+				<span class="k">case</span> <span class="s2">&quot;input&quot;</span><span class="o">:</span>
+					<span class="k">switch</span> <span class="p">(</span><span class="nx">$f</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">?</span> <span class="nx">$f</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">:</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="p">{</span>
+						<span class="k">case</span> <span class="s2">&quot;text&quot;</span><span class="o">:</span>
+							<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;TextInput&quot;</span><span class="p">;</span>
+							<span class="k">break</span><span class="p">;</span>
+						<span class="k">case</span> <span class="s2">&quot;password&quot;</span><span class="o">:</span>
+							<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;Password&quot;</span><span class="p">;</span>
+							<span class="k">break</span><span class="p">;</span>
+						<span class="k">case</span> <span class="s2">&quot;radio&quot;</span><span class="o">:</span>
+							<span class="nx">field_type</span> <span class="o">=</span> <span class="nx">is_fset</span> <span class="o">?</span> <span class="s2">&quot;RadioSet&quot;</span> <span class="o">:</span> <span class="s2">&quot;Radio&quot;</span><span class="p">;</span>
+							<span class="k">break</span><span class="p">;</span>
+						<span class="k">case</span> <span class="s2">&quot;checkbox&quot;</span><span class="o">:</span>
+							<span class="nx">field_type</span> <span class="o">=</span> <span class="nx">is_fset</span> <span class="o">?</span> <span class="s2">&quot;CheckboxSet&quot;</span> <span class="o">:</span> <span class="s2">&quot;Checkbox&quot;</span><span class="p">;</span>
+							<span class="k">break</span><span class="p">;</span>
+						<span class="k">case</span> <span class="s2">&quot;file&quot;</span><span class="o">:</span>
+							<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;Upload&quot;</span><span class="p">;</span>
+							<span class="k">break</span><span class="p">;</span>
+						<span class="k">case</span> <span class="s2">&quot;hidden&quot;</span><span class="o">:</span>
+							<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;TextInput&quot;</span><span class="p">;</span>
+							<span class="k">break</span><span class="p">;</span>
+					<span class="p">}</span>
+					<span class="k">break</span><span class="p">;</span>
+				<span class="k">case</span> <span class="s2">&quot;textarea&quot;</span><span class="o">:</span>
+					<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;TextArea&quot;</span><span class="p">;</span>
+					<span class="k">break</span><span class="p">;</span>
+				<span class="k">case</span> <span class="s2">&quot;select&quot;</span><span class="o">:</span>
+					<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;Select&quot;</span><span class="p">;</span>
+					<span class="k">break</span><span class="p">;</span>
+			<span class="p">}</span>			
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>It's not a standard field.</p>             </td>             <td class="code">               <div class="highlight"><pre>			
+			<span class="nx">$e</span> <span class="o">=</span> <span class="nx">$f</span><span class="p">;</span> <span class="c1">// So $e is $f. Which means, potentially could use just $f </span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>instead of making new variable.(Something to keep in mind)</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="k">if</span> <span class="p">(</span><span class="nx">$e</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">Dropdown</span><span class="p">.</span><span class="nx">CONTAINER_CLASS</span><span class="p">))</span> <span class="p">{</span> 	<span class="c1">// CONTAINER_CLASS: tc-dropdown</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">$e</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">MULTI_CLASS</span><span class="p">))</span> <span class="p">{</span>				<span class="c1">// MULTI_CLASS: tc-multiple</span>
+					<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;MultiDropdown&quot;</span><span class="p">;</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">$e</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">NESTED_CLASS</span><span class="p">)){</span>		<span class="c1">// NESTED_CLASS: tc-nested</span>
+					<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;NestedDropdown&quot;</span><span class="p">;</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;Dropdown&quot;</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">+</span> <span class="nx">element</span> <span class="o">+</span><span class="s2">&quot; requires tc-dropdown class to create the dropdown if it&#39;s a multi dropdown then include tc-multiple as well.&quot;</span><span class="p">);</span>		
+				<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;_Base&quot;</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p>$e.remove(); <br />
+return;</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">field_type</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <p>throw new Error("field.new_instance: failed to determine field type");</p>             </td>             <td class="code">               <div class="highlight"><pre>			</pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <p>console.error("Could not determine the field_type, falling back to generic implementation");</p>             </td>             <td class="code">               <div class="highlight"><pre>			
+			<span class="nx">field_type</span> <span class="o">=</span> <span class="s2">&quot;_Base&quot;</span><span class="p">;</span>
+			
+		<span class="p">}</span>
+		
+		<span class="k">return</span> <span class="p">{</span>
+			<span class="nx">$e</span><span class="o">:</span> <span class="nx">$e</span><span class="p">,</span>
+			<span class="nx">$f</span><span class="o">:</span> <span class="nx">$f</span><span class="p">,</span>
+			<span class="nx">field_type</span><span class="o">:</span> <span class="nx">field_type</span>
+		<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <p>After preparing everything, return few options.</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="p">};</span>
+	</pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p>field factory</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">field</span><span class="p">.</span><span class="nx">new_instance</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">field_info</span><span class="p">;</span>
+		
+		<span class="kd">var</span> <span class="nx">defaults</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="nx">element</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="c1">// ($ obj or selector)</span>
+			<span class="nx">preprocess</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+			<span class="nx">options</span><span class="o">:</span> <span class="p">{}</span> <span class="c1">// gets passed through to the field instance</span>
+		<span class="p">};</span>
+		
+		<span class="nx">o</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">defaults</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <p>Whatever the user has designated what options will be inserted into defaults settings,
+which will be stored in o object.
+so to reach element, shouldn't it be o.defaults.element? little confused.</p>             </td>             <td class="code">               <div class="highlight"><pre>		
+		<span class="nx">field_info</span> <span class="o">=</span> <span class="nx">field</span><span class="p">.</span><span class="nx">prep_element</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">element</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">preprocess</span><span class="p">);</span>
+		</pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <p>field<em>info is stored with, $e, $f, is</em>std, is<em>set.
+field</em>info is stored with UND if user incorrectly input the id.</p>             </td>             <td class="code">               <div class="highlight"><pre>		
+		<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">field_info</span><span class="p">){</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;field not found&#39;</span><span class="p">);</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
+			<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <p>This is seeing if $f was named correctly </p>             </td>             <td class="code">               <div class="highlight"><pre>			
+		<span class="k">return</span> <span class="k">new</span> <span class="nx">field</span><span class="p">[</span><span class="nx">field_info</span><span class="p">.</span><span class="nx">field_type</span><span class="p">](</span><span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="p">{</span><span class="nx">$e</span><span class="o">:</span> <span class="nx">field_info</span><span class="p">.</span><span class="nx">$e</span><span class="p">}));</span>
+		
+	<span class="p">};</span>
+		</pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <p>::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+base field</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <p>all field types inherit from _Base</p>             </td>             <td class="code">               <div class="highlight"><pre>	
+	<span class="nx">field</span><span class="p">.</span><span class="nx">synthesize</span><span class="p">({</span>
+		<span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;_Base&quot;</span><span class="p">,</span>
+		<span class="nx">base</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">prototype</span><span class="o">:</span> <span class="p">{</span>
+				<span class="nx">options</span><span class="o">:</span> <span class="p">{}</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>		
+			<span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+				<span class="nx">$e</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+				<span class="nx">val</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+				<span class="nx">label</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+				<span class="nx">handlers</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+				<span class="nx">event_data</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+				<span class="nx">extensions</span><span class="o">:</span> <span class="kc">null</span>
+			<span class="p">},</span>
+			
+			<span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{},</span></pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <p>(chainable)</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">apply_extensions</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">extensions</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;old.apply_extensions&#39;</span><span class="p">);</span>
+				<span class="kd">var</span> <span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>		<span class="c1">// What is this?</span>
+				<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">extensions</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">extension</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">extensions</span><span class="p">[</span><span class="nx">extension</span><span class="p">]))</span> <span class="p">{</span>
+						<span class="nx">me</span><span class="p">.</span><span class="nx">internal</span><span class="p">[</span><span class="nx">extension</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">field</span><span class="p">.</span><span class="nx">extensions</span><span class="p">[</span><span class="nx">extension</span><span class="p">](</span><span class="nx">me</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">});</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+			<span class="p">},</span>
+
+			<span class="nx">generate_from_dom</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">$e</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">$e</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">BASE_CLASS</span><span class="p">);</span>	<span class="c1">// BASE_CLASS: tc-field.</span>
+			<span class="p">},</span>
+
+			<span class="nx">generate_from_scratch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{},</span></pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <p>(chainable)</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">append_to</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">NI</span><span class="p">.</span><span class="nx">ex</span><span class="p">.</span><span class="nx">isHeadless</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">))</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">$e</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">.</span><span class="nx">detach</span><span class="p">();</span>
+				<span class="p">}</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">$</span><span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">append</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">instanceof</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">append</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">);</span>
+				<span class="p">}</span>
+
+				<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+			<span class="p">},</span>
+
+			<span class="nx">get_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+			<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-32">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-32">&#182;</a>               </div>               <p>(chainable)</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">set_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">,</span> <span class="nx">prevent_change</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">;</span>
+				<span class="nx">from</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get_val</span><span class="p">();</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_set_val</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>		<span class="c1">// Execute this if statement when _set_val() function does not return false.</span>
+					<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">prevent_change</span><span class="p">)</span> <span class="p">{</span>				<span class="c1">// Also checking if prevent_change parameter is passed.</span>
+						<span class="nx">to</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get_val</span><span class="p">();</span>
+						<span class="k">if</span> <span class="p">(</span><span class="nx">from</span> <span class="o">!==</span> <span class="nx">to</span><span class="p">)</span> <span class="p">{</span>
+							<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;change&quot;</span><span class="p">,</span> <span class="p">{</span>
+								<span class="nx">from</span><span class="o">:</span> <span class="nx">from</span><span class="p">,</span>
+								<span class="nx">to</span><span class="o">:</span> <span class="nx">to</span>
+							<span class="p">});</span>
+						<span class="p">}</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			
+				<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">SET_VAL_EVENT</span><span class="p">);</span>	<span class="c1">// SET_VAL_EVENT = tc-field-event-set-val</span>
+
+				<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+			<span class="p">},</span>
+
+			<span class="nx">_set_val</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{},</span>
+
+			<span class="nx">reset</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">set_val</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">co</span><span class="p">.</span><span class="nx">RESET_EVENT</span><span class="p">);</span>
+			<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-33">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-33">&#182;</a>               </div>               <p>(chainable)</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">fn</span><span class="p">,</span> <span class="nx">replace</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">replace</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">.</span><span class="nx">unbind</span><span class="p">(</span><span class="nx">type</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">event_receiver</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">fn</span><span class="p">);</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+			<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-34">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-34">&#182;</a>               </div>               <p>(chainable)</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">add_handlers</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">handlers</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">replace</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">handlers</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">handlers</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">replace</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+			<span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-35">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-35">&#182;</a>               </div>               <p>(chainable)</p>             </td>             <td class="code">               <div class="highlight"><pre>			<span class="nx">set_enabled</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">enabled</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+			<span class="p">},</span>
+
+			<span class="nx">destroy</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">$e</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-36">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-36">&#182;</a>               </div>               <p>::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nx">NI</span><span class="p">.</span><span class="nx">field</span> <span class="o">=</span> <span class="nx">field</span><span class="p">;</span>
+	
+<span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">jQuery</span><span class="p">));</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
