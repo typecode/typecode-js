@@ -7,8 +7,8 @@
 		
 		<title>TypeCode Javascript Library</title>
 
+		<link rel="stylesheet" href="./temp/docs/docco.css">
 		<link rel="stylesheet" href="typecodelib.css">
-		<link rel="stylesheet" href="./docs/docco.css">
 		<style type="text/css" media="screen">
 
 		</style>
@@ -362,7 +362,8 @@ in each handling functions.</p>             </td>             <td class="code"> 
 						}
 					}
 				});
-				
+				console.log(dropdown);
+
 				var dropdown2 = NI.field.new_instance({
 					element: "#my-dropdown2",
 					options: {
@@ -433,6 +434,8 @@ in each handling functions.</p>             </td>             <td class="code"> 
 						val: ""
 					}
 				});
+				console.log(input);
+
 				$("#field-btn").click(function(e){
 					e.preventDefault();
 					$(".content").hide();
@@ -446,6 +449,7 @@ in each handling functions.</p>             </td>             <td class="code"> 
 				$(".accordion").each(function() {
 					accordion($(this));
 				});
+
 			});
 
 
