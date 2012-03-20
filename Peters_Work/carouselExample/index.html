@@ -8,36 +8,70 @@
 		<title>Carousel Example</title>
 		
 		<style type="text/css" media="screen">
+			body {
+				font-family: helvetica;
+			}
 			a {
 				text-decoration: none;
 				color:black;
 			}
+			h1 {
+				text-align: center;
+			}
+			.my-carousel {
+				position:relative;
+			}
 			.viewport {
 				overflow:hidden;
 				position:relative;
+				margin: 0 auto;
 			}
 			.scroll {
 				position:absolute;
 				width:20000em;
+			}
+			.panel {
+				float: left;
+			}
+			.btn {
+				position:absolute;
+				top:255px;
+				width: 26px;
+				height:91px;
+			}
+			.btn span {
+				display: none;
+			}
+			.btn-prev {
+				left:300px;
+				background: url("images/prev.png") no-repeat top left;
+			}
+			.btn-next {
+				left: 1090px;
+				background: url("images/next.png") no-repeat top left;
+			}
+			.btn-prev:hover, .btn-next:hover{
+				background-position: bottom left;
 			}
 		</style>
 		
 	</head>
 	
 	<body>
-		
-		<h1>Carousel Example</h1>
-		<div class="my-carousel">My Carousel
+		<header>
+			<h1>Carousel Example</h1>
+		</header>
+		<div class="my-carousel">
 			<div class="viewport">
 				<div class="scroll">
 					<div class="panel"><img src="images/1.jpg"></div>
-					<div class="panel"></div>
-					<div class="panel"></div>
-					<div class="panel"></div>
-					<div class="panel"></div>
-					<div class="panel"></div>
-					<div class="panel"></div>
-					<div class="panel"></div>
+					<div class="panel"><img src="images/2.jpg"></div>
+					<div class="panel"><img src="images/3.jpg"></div>
+					<div class="panel"><img src="images/4.jpg"></div>
+					<div class="panel"><img src="images/5.jpg"></div>
+					<div class="panel"><img src="images/6.jpg"></div>
+					<div class="panel"><img src="images/7.jpg"></div>
+					<div class="panel"><img src="images/8.jpg"></div>
 				</div>
 			</div>
 		</div>
@@ -52,16 +86,12 @@
 		<!-- Example Application -->
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready(function() {
-				/*var carousel,prevBtn,nextBtn,carouselGenerator;
-
-
+				var carousel,prevBtn,nextBtn,carouselGenerator;
 				carouselGenerator = NI.Carousel.Generator;
-				carousel = carouselGenerator.carousel();
-				prevBtn = carouselGenerator.prevBtn();
-				nextBtn = carouselGenerator.nextBtn();
+				carousel = $('.my-carousel');
+				
 
-
-				carousel.append(prevBtn, nextBtn);
+				/*
 				$("body").append(carousel);
 
 				$btn.click(function(e){
@@ -70,8 +100,18 @@
 				*/
 
 				var myCarousel = new NI.Carousel({
-					container: ".my-carousel"
+					container: carousel,
+					viewportDimensions: {
+						width: 600,
+						height: 600
+					}
 				});
+
+				prevBtn = carouselGenerator.prevBtn(myCarousel);
+				nextBtn = carouselGenerator.nextBtn(myCarousel);
+
+				carousel.append(prevBtn, nextBtn);
+
 
 			}); //End of Document ready.
 		</script>
