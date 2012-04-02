@@ -6,6 +6,8 @@
 		<meta charset="utf-8">
 		
 		<title>Carousel Example</title>
+
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		
 		<style type="text/css" media="screen">
 			body {
@@ -53,6 +55,11 @@
 			.btn-prev:hover, .btn-next:hover{
 				background-position: bottom left;
 			}
+			#test {
+				width: 300px;
+				height: 300px;
+				background-color: red;
+			}
 		</style>
 		
 	</head>
@@ -75,9 +82,16 @@
 				</div>
 			</div>
 		</div>
+		<a href="#" class="erase">erase</a>
+		<div id="target"></div>
+
+
 		<!-- jQuery 1.6.3, Hosted on Google CDN -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
 		
+		<!-- jQuery Cross Domain Ajax -->
+		<script src="./jquery.xdomainajax.js"></script>
+
 		
 		<!-- Type/Code Libraries -->
 		<script src="../../lib/tc.seed.js" type="text/javascript" charset="utf-8"></script>
@@ -85,6 +99,8 @@
 		
 		<!-- Example Application -->
 		<script type="text/javascript" charset="utf-8">
+			google.load("feeds", "1"); //Load Google Ajax Feed API (version 1)
+			
 			$(document).ready(function() {
 				var carousel,prevBtn,nextBtn,carouselGenerator;
 				carouselGenerator = NI.Carousel.Generator;
@@ -107,11 +123,57 @@
 					}
 				});
 
+				carousel.append(myCarousel.registerNextBtn(),myCarousel.registerPrevBtn());
+				/*
 				prevBtn = carouselGenerator.prevBtn(myCarousel);
 				nextBtn = carouselGenerator.nextBtn(myCarousel);
 
 				carousel.append(prevBtn, nextBtn);
+				*/
 
+				$(".erase").click(function(e){
+					e.preventDefault();
+					myCarousel.remove(myCarousel.info().$current);
+					if (myCarousel.info().total == 0){
+						$('.btn').remove();
+						alert('no more images');
+					}
+					console.log(myCarousel.info().$current);
+				});
+
+				//:::::::::::::::::::::::::::::::::::::::::::
+				//Google Feed Api
+				//:::::::::::::::::::::::::::::::::::::::::::
+
+				var feedContainer = document.getElementById('target');
+			    var feedUrl = "http://www.movies.com/rss-feeds/top-ten-box-office-rss";
+			    var feedLimit = 10;
+			    var rssOutput = "<h1>Top Ten Box Office</h1><ul>";
+			      
+			    function rssFeedSetup() {
+			    	var feedPointer = new google.feeds.Feed(feedUrl);
+			    	feedPointer.setNumEntries(feedLimit);
+			    	feedPointer.load(displayFeed);
+			    }
+
+			   	function displayFeed(result) {
+			    	if(!result.error) {
+			        	var theFeeds = result.feed.entries;
+			        	for (var i=0; i<theFeeds.length; i++) {
+			      	  		rssOutput += "<li><a href=" + theFeeds[i].link + "'>" + theFeeds[i].title + "</a>" + "</li>";
+			        	}
+			          	rssOutput += "<ul>";
+			          	feedContainer.innerHTML = rssOutput;
+			    	} else{
+			        	console.error("Error fetching feeds!");
+			    	}
+			    	console.log(result);
+			        //console.log(theFeeds[0].enclosure);
+			    }
+
+			    window.onload = function() {
+			    	rssFeedSetup();
+			    }
 
 			}); //End of Document ready.
 		</script>
