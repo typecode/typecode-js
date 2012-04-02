@@ -148,6 +148,20 @@
 			</div>
 		</div>
 		
+		<div id="my-dropdown2" class="t tc-dropdown">
+			<div class="display"></div>
+			<div class="menu">
+				<div data-value="-1" class="item state-empty">Select another Nut</div>
+				
+				<div data-value="1" class="item"><!--<input type="checkbox">-->Almonds</div>
+				<div data-value="2" class="item"><!--<input type="checkbox">-->Cashews</div>
+				<div data-value="3" class="item"><!--<input type="checkbox">-->Pistachios</div>
+				<div data-value="4" class="item"><!--<input type="checkbox">-->Walnuts</div>
+				<div data-value="5" class="item"><!--<input type="checkbox">-->Pecans</div>
+				<div data-value="6" class="item"><!--<input type="checkbox">-->Hazlenuts</div>
+			</div>
+		</div>
+		
 		<select id="my-select">
 			<div class="menu">
 				<option value="-1">Select a Nut</option>
@@ -194,7 +208,6 @@
 				console.log(NI.field);
 			
 				$(function() {
-					
 					
 					var input = NI.field.new_instance({
 						element: "#my-input",
@@ -245,39 +258,57 @@
 						}
 					});
 					console.log(dropdown);
-				});
-				
-				var textarea = NI.field.new_instance({
-					element: "#my-textarea",
-					options: {
-						extensions: {
-							Hint: {
-								content: "Enter a Comment",
-								css: {
-									top: 5,
-									left: 5
+					
+					var dropdown2 = NI.field.new_instance({
+						element: "#my-dropdown2",
+						options: {
+							handlers: {
+								change: function(e, d) {
+									if (d) { 
+										console.info("change from "+ d.from +" to "+ d.to);
+									}
 								}
 							}
 						}
-					}
-				});
-				console.log(textarea);
-				
-				var select = NI.field.new_instance({
-					element: "#my-select",
-					options: {
+					});
+					console.log(dropdown2);
 					
-					}
-				});
-				console.log(select);
+					
+					var textarea = NI.field.new_instance({
+						element: "#my-textarea",
+						options: {
+							extensions: {
+								Hint: {
+									content: "Enter a Comment",
+									css: {
+										top: 5,
+										left: 5
+									}
+								}
+							}
+						}
+					});
+					console.log(textarea);
 				
-				var checkbox = NI.field.new_instance({
-					element: "#my-checkbox",
-					options: {
-						label: "label!"
-					}
+					var select = NI.field.new_instance({
+						element: "#my-select",
+						options: {
+					
+						}
+					});
+					console.log(select);
+				
+					var checkbox = NI.field.new_instance({
+						element: "#my-checkbox",
+						options: {
+							label: "label!"
+						}
+					});
+					console.log(checkbox);
+					
 				});
-				console.log(checkbox);
+				
+				
 			
 			}(this, this.jQuery));
 		</script>
