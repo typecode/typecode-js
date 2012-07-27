@@ -1,0 +1,9 @@
+body {
+	background-color: #fcfcfc;
+	font-family: Georgia, serif;
+}
+
+.page {
+	margin: auto;
+	width: 960px;
+}
