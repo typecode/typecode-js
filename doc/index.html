@@ -14,7 +14,9 @@
 					<h2>Intro</h2>
 				</header>
 
-				<p>The Typecode-JS Javascript library consists of a variety of utilities, modules, and small frameworks that can be used to build rich UIs in web applications. All the code uses <a href="http://jquery.com" target="_blank">jQuery</a> internally. All the individual components also expect the seed file (<code>tc.seed.js</code>) to be loaded first. A few components depend on other parts of the library to be loaded first, which isx noted on a case by case basis, in a comment at the top of a given component file.</p>
+				<p>The Typecode-JS Javascript library consists of a variety of utilities, modules, and small frameworks that can be used to build rich UIs in web applications. All the code uses <a href="http://jquery.com" target="_blank">jQuery</a> internally. All the individual components also expect the seed file (<code>tc.seed.js</code>) to be loaded first. A few components depend on other parts of the library to be loaded first, which is noted on a case by case basis, in a comment at the top of a given component file.</p>
+
+				<p>This document is <em>not</em> an exhaustive documentation of the entire library, but is rather intended to provide both a high level overview and details of its most important features.</p>
 			</section>
 
 			<section id="seed">
@@ -42,11 +44,11 @@
 
 				<p>The object <code>NI.ex</code> contains a handful of functions for examining and verifying variables.</p>
 
-				<p><code>NI.app</code> houses some functions that were originally designed to help bootstrap an application, but most of these facilities are actually now provided by a newer and seperate module, <a href=""><code>NI.App</code></a>. One exception is the function <code>NI.app.getConsole</code>, which can be called to setup a dummy <code>console</code> object to deal with environments (like old versions of Internet Explorer) that don't necessarily have a global <code>console</code> available. This is discussed in further detail in the <a href=""><code>NI.App</code> section</a>.</p>
+				<p><code>NI.app</code> houses some functions that were originally designed to help bootstrap an application, but most of these facilities are actually now provided by a newer and seperate module, <a href="#app"><code>NI.App</code></a>. One exception is the function <code>NI.app.getConsole</code>, which can be called to setup a dummy <code>console</code> object to deal with environments (like old versions of Internet Explorer) that don't necessarily have a global <code>console</code> available. At the beginning of our application code, we often redefine the global <code>console</code> as the result of calling <code>NI.app.getConsole(true)</code>, which will either be the actual <code>console</code> if it exists, or the dummy (passing <code>false</code> will force a dummy to be returned regardless of the availibility of the real one, which can be used to prevent all <code>log</code> statements from showing up).</p>
 
 				<p>A handful of miscelaneous functions can be found in <code>NI.fn</code>. These were originally pretty experimental and aren't being used a lot throughout the library components right now.</p>
 
-				<p><code>NI.co</code> is used for storing constants. Although there's no mechanism in place to actually enforce this, variables in <code>NI.co</code> should be treated as read-only, and by convention have names in all capital letters. Throughout the library, some other modules (fox example, <a href=""><code>NI.field</code></a>) define their own <code>co</code> namespaces to hold constants specific to themselves.</p>
+				<p><code>NI.co</code> is used for storing constants. Although there's no mechanism in place to actually enforce this, variables in <code>NI.co</code> should be treated as read-only, and by convention have names in all capital letters. Throughout the library, some other modules (fox example, <a href="#field"><code>NI.field</code></a>) define their own <code>co</code> namespaces to hold constants specific to themselves.</p>
 
 				<p><code>NI.math</code> stores math-related util functions.</p>
 			</section>
@@ -56,11 +58,93 @@
 					<h2>Patterns Accross Components</h2>
 				</header>
 
-				<p>The majority of the components in Typecode-JS are constructor functions that take one argument when they are instantiated. The convention we use is to call this argument <code>options</code>. It's an object that the user passes in that defines configuration parameters for the given component. It is typically merged with a set of defaults that the component defines. Sometimes certain config params are required to be passed in, and sometimes they really are optional. Internally, a given component usually has a private variable named <code>o</code>, which is the result of merging the passed in <code>options</code> with the defaults.</p>
+				<p>The majority of the components in Typecode-JS are constructor functions that take one argument when they are instantiated. The convention we use is to call this argument <code>options</code>. It's an object that the user passes in that defines configuration parameters for the given component. It is typically merged with a set of defaults that the component defines. Sometimes certain config params are required to be passed in, and sometimes they really are optional. Internally, a given component usually has a variable named <code>o</code>, which is the result of merging the passed in <code>options</code> with the defaults.</p>
 
-				<p>A lot of the instantiable components in the library manipulate, create, and/or refer to HTML elements that are either already in or eventually get added to the <abbr>DOM</abbr>. For example, an <a href=""><code>NI.Carousel</code></a> <q>carousel</q> refers to an HTML container element (such as a <code>div</code>) that has elements inside of it representing its individual panels. Typically, components of this nature keep a variable named <code>$e</code>, which is a jQuery object representing the outermost element that the component affects. (The dollar sign in variable names is just a convention we use to signify that the variable is a jQuery object). Many of the components that have an <code>$e</code> element allow that element to be explicitly passed in through the <code>options</code> object. In some cases, you can alternatively pass in an option named <code>selector</code>, which is a jQuery selector that the component will use to find and define its <code>$e</code> variable. This pattern is currently not fully consistent throughout the library, but it's what we've generaly been moving to.</p>
+				<p>A lot of the instantiable components in the library manipulate, create, and/or refer to HTML elements that are either already in or eventually get added to the <abbr>DOM</abbr>. For example, an <a href="#overlay"><code>NI.Overlay</code></a> <q>overlay</q> refers to an HTML container element (such as a <code>&lt;div&gt;</code>) that holds whatever content is being displayed in a pop-up. Typically, components of this nature keep a variable named <code>$e</code>, which is a jQuery object representing the outermost element that the component affects. (The dollar sign in variable names is just a convention we use to signify that the variable is a jQuery object). Many of the components that have an <code>$e</code> element allow that element to be explicitly passed in through the <code>options</code> object. In some cases, you can alternatively pass in an option named <code>selector</code>, which is a jQuery selector that the component will use to find and define its <code>$e</code> variable. This pattern is currently not fully consistent throughout the library, but it's what we've generaly been moving to.</p>
 
-				<p>We're generally good about <em>not</em> defining the visual styling of elements used throughout the library. Occasionally, you will see some javascript code in Typecode-JS that does explicitly set css properties on certain elements. We only do this when the elements require those properties to do what they're supposed to. These properties tend to be things like <code>display</code> or <code>position</code> and never affect the visual appearance of anything.</p>
+				<p>We're generally good about <em>not</em> defining the visual styling of elements used throughout the library. Occasionally, you will see some javascript code in Typecode-JS that does explicitly set css properties on certain elements. We only do this when the elements require those properties to do what they're supposed to. These properties tend to be things like <code>display</code> or <code>position</code> and never affect the visual design of anything.</p>
+			</section>
+
+			<section id="app">
+				<header>
+					<h2>App</h2>
+					<div class="meta">
+						<h3>Files</h3>
+						<ul>
+							<li>tc.app.js</li>
+						</ul>
+					</div>
+				</header>
+
+				<p>In a large application, it's useful to break things down into a set of discrete, loosely coupled modules. This allows all the individual modules to be developed in isolation, loaded on the page and instantiated in pretty much any order, modified without easily breaking other parts of the system, and so on. However, it's often the case, that multiple modules need to communicate with each other. Our strategy for achieving this is to pass all our app-specific modules a reference to the same object (our convention is to call it <code>app</code>) that has an events system, which the modules can then use to listen for and trigger events. You can do this with an <code>NI.App</code> instance.</p>
+ 
+				<pre><code>var app = new NI.App();
+
+var someModule = new SomeModule({
+	app: app
+});
+
+var someOtherModule = new SomeOtherModule({
+	app: app
+});</code></pre>
+
+				<p>The <code>NI.App</code> object will contain a property named <code>events</code>, which exposes <a href="http://api.jquery.com/category/events/" target="_blank">jQuery's events interface</a>, including the functions <a href="http://api.jquery.com/trigger/" target="_blank"><code>trigger()</code></a> and <a href="http://api.jquery.com/bind/" target="_blank"><code>bind()</code></a>.</p>
+
+				<p>Here's an example implementation of <code>SomeModule</code> that uses the <code>NI.App</code> instance to communicate with <code>SomeOtherModule</code>:</p>
+
+				<pre><code>function SomeModule(options) {
+	options.app.events.trigger("stuff_happened_event", {
+		stuff: "some arbitrary data"
+	});
+}</code></pre>
+
+				<p>&hellip;and an example implementation of <code>SomeOtherModule</code> that might in turn react to the event that <code>SomeModule</code> generated:</p>
+
+				<pre><code>function SomeOtherModule(options) {
+	options.app.events.bind("stuff_happened_event", function(e, d) {
+		if (d.stuff) {
+			console.log(d.stuff);
+		}
+	});
+}</code></pre>
+
+				<p>This approach means that modules can trigger events without having to be concerned about the other modules in the system that are handling them (or whether those events are even being handled at all). We can also add new components to the system whenever we want that handle events that are already being triggered, without having to change the code that does the actual triggering.</p>
+
+				<h3>Features</h3>
+
+				<p>An <code>NI.App</code> provides a way for you to define and instantiate modules throughout your app, while still ensuring that they can be included in any order and all have easy access to the same <code>app</code> object. When an <code>NI.App</code> is instantiated, the <code>options</code> object passed into it can contain an array of functions named <code>features</code>. If this is present, the <code>NI.App</code> will loop through each <q>feature</q> function and invoke it, passing in a reference to itself. This means that you can first define feature functions anywhere in the page, and activate them all at once with the same <code>NI.App</code> at a later point.</p>
+
+				<pre><code>var features = [];
+
+[ &hellip; ]
+
+features.push(function(app) {
+	// this will be invoked only once we actually instantiate the app
+	new SomeModule({
+		app: app
+	});
+});
+
+[ &hellip; ]
+
+// we usually wait for the document to be ready
+// before initializing the app
+$(document).ready(function() {
+	new NI.App({
+		features: features
+	});
+});</code></pre>
+
+				<p>It's common to have a bunch of <abbr>HTML</abbr> templates for your application/website that inherit from the same base template and reuse the header and footer parts. With this setup, we can initialize an empty <code>features</code> array in the header and instantiate the actual <code>app</code> object in the footer. Then, anywhere in between the header and footer, any code to be run that is specific to individual templates can be pushed onto the <code>features</code>, without having to redo any <code>app</code> setup.</p>
+
+				<aside>
+					<p>We've found this approach to work really well in situations where we have highly modular templates reusing the same header and footer. It's nice to be able to include modules very near to the <abbr>HTML</abbr> elements they refer to, and it's often the case that the server only needs to render a piece of code according to some template logic (for example, if the user is authenticated or an admin, or something) It's also common to need to pass parameters to the modules that are derived from template variables (object id's, <abbr>CSRF</abbr> tokens, etc). On the other hand, dispersing lots of javascript throughout the <code>&lt;body&gt;</code> of the <abbr>HTML</abbr> doc can slow down the perceived load time of the page (because rendering is blocked by loading <code>&lt;script&gt;</code>s) and make it more challenging to combine scripts into one compressed file. We generally keep our <q>feature</q> functions really small. They should instantiate modules, but not do much work beyond that.</p>
+				</aside>
+
+				<h3>Convenience Objects</h3>
+
+				<p>In addition to its <code>events</code> object, an <code>NI.App</code> instance starts out with two objects, named <code>classes</code> and <code>runtime</code>. It's not necessary to use these, they are provided as a pattern for grouping all the parts of your application in a common place. When we define modules, we tend to add referenes to them to the <code>classes</code> object (<q>classes</q> is a bit of misnomer, should've really been named <q>modules</q> because that's what we call them everywhere else, derp). <code>classes</code> can be passed in as an option to the <code>NI.App</code> instance, otherwise it defaults to an empty object. When we instantiate modules, we store references to the actual instances on the <code>runtime</code> object.</p>
+
 			</section>
 
 			<section id="overlay">
@@ -74,7 +158,7 @@
 					</div>
 				</header>
 
-				<p>An <code>NI.Overlay</code> instance is used to show and hide content in a modal overlay. We typically use it for things like confirm/cancel dialogs and lightbox-esque slideshows, but it can be used to render arbitrary content in a container on top of the HTML page.</p>
+				<p>An <code>NI.Overlay</code> instance is used to show and hide content in a modal overlay. We typically use it for things like confirm/cancel dialogs and lightbox-esque slideshows, but it can really be used to render arbitrary content in a container on top of the HTML page.</p>
 				<p><code>NI.Overlay</code> creates its own <code>$e</code> element (with <code>display: none;</code> by default) and automatically appends it to the <abbr>DOM</abbr>. By default, overlays are just appended to the <code>&lt;body&gt;</code>, but if you want to append it to some more specific element you can pass in a <code>context</code> option, which is a selector to the element where the overlay will be inserted. For example, let's say we have a <code>&lt;div id="page-wrapper"&gt;</code> and we want to create an overlay whose elements live inside it.</p>
 
 				<pre><code>var overlay = new NI.Overlay({
@@ -87,16 +171,90 @@
 
 				<pre><code>overlay.setBody("&lt;p&gt;Welcome to my app!&lt;p&gt;");</code></pre>
 
-				<p>There are analogous functions for setting the header and footer content: <code>setHeader()</code>, <code>setFooter()</code>. You can change a given region of content at any later point just by calling the corresponding setter function again. The content you set will always replace any content that was already there. If you need, you can get a jQuery object representing a given region of the overlay's current content by calling <code>getHeader()</code>, <code>getBody()</code>, or <code>getFooter()</code> on the instance.</p>
+				<p>There are analogous functions for setting the header and footer content: <code>setHeader()</code>, <code>setFooter()</code>. You can change a given region of content at any later point just by calling the corresponding setter function again. <em>The content you set will always replace any content that was already there</em>. If you need, you can get a jQuery object representing a given region of the overlay's current content by calling <code>getHeader()</code>, <code>getBody()</code>, or <code>getFooter()</code> on the instance.</p>
 
 				<p>The overlay starts out in a closed state, which means it's hidden. To actually cause it be shown, you open it by calling <code>open()</code> on the instance&hellip;</p>
 
 				<pre><code>overlay.open();</code></pre>
 
-				<p>&hellip;and once it's in an opened state, you can call <code>close()</code> to close it.</p> 
+				<p>&hellip;and once it's in an opened state, you can call <code>close()</code> to close it.</p>
+
+				<p>In some cases, it makes sense to reuse the same overlay instance to show different content whenever it's opened, rather than instantiating a new overlay everytime you want to show something in a pop-up. For example, if your application often needs to display confirm/cancel dialogs, but the content of those dialogs tends to vary, you could take this approach:</p>
+
+				<pre><code>var dialog = new NI.Overlay();
+
+dialog.setBody("&lt;p&gt;Are you sure you want to cancel?&lt;p&gt;");
+dialog.open();
+
+[ &hellip; ]
+
+dialog.close();
+
+[ &hellip; ]
+
+dialog.setBody("&lt;p&gt;Thank you!&lt;p&gt;");
+dialog.open();</code></pre>
+
+				<p>The <code>open()</code> function also gives you the option of passing in overlay content on the fly, if you don't want to explicitly have to call one of the content setters beforehand. Content is passed to <code>open()</code> as an object with any combo of <code>hd</code>, <code>bd</code>, and <code>ft</code> properties, associating parts of content with header, body, and footer regions respectively.</p>
+
+				<pre><code>dialog.open({
+	hd: "&lt;h1&gt;Confirm Cancel&lt;h1&gt;",
+	bd: "&lt;p&gt;Are you sure you want to cancel?&lt;p&gt;"
+});</code></pre>
+
+				<p>We've found this usage to be very common, so by default an overlay will actually <em>empty out its contents whenever it is closed</em>. This can be turned off by passing the option <code>autoflush</code> as <code>false</code> when instantiating the overlay.</p>
+
+				<pre><code>new NI.Overlay({
+	autoflush: false
+});</code></pre>
 
 			</section>
 
+			<section id="field">
+				<header>
+					<h2>Field</h2>
+					<div class="meta">
+						<h3>Files</h3>
+						<ul>
+							<li>tc.field.js</li>
+							<li>field/tc.field.std.js</li>
+						</ul>
+					</div>
+				</header>
+
+				
+			</section>
+
+			<section id="merlin">
+				<header>
+					<h2>Merlin</h2>
+					<div class="meta">
+						<h3>Files</h3>
+						<ul>
+							<li>tc.merlin.js</li>
+							<li>merlin/tc.merlin.data.js</li>
+						</ul>
+					</div>
+				</header>
+
+				
+			</section>
+
+			<!--
+			<section id="hashchange">
+				<header>
+					<h2>Hashchange Broker</h2>
+					<div class="meta">
+						<h3>Files</h3>
+						<ul>
+						
+						</ul>
+					</div>
+				</header>
+
+				
+			</section>
+			-->
 
 
 		</article>
