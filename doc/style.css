@@ -1,0 +1,9 @@
+.page {
+	margin: auto;
+	width: 800px;
+}
+
+pre {
+	padding: 5px;
+	background-color: #eeeeee;
+}
