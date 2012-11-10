@@ -107,9 +107,13 @@ typecode-js v 0.1
 		},
 		
 		getConsole: function(debug) {
+<<<<<<< HEAD
+			if (debug && typeof window.console !== "undefined") {
+=======
 			if (debug && typeof window.console !== "undefined" &&
 				typeof window.console.debug !== "undefined") {
 				
+>>>>>>> 56ef44ebc94eeab2e805403cb2f3c09e97bded6f
 				return window.console;
 			}
 			if (!fakeConsole) {
