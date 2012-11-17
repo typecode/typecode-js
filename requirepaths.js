@@ -22,6 +22,7 @@ require = {
 		'NIfield.Validator': 'lib/field/Validator',
 
 		'NIflippanel': 'lib/flippanel',
+		'NIfullscreen': 'lib/fullscreen',
 		'NIGoogleAnalytics': 'lib/GoogleAnalytics',
 		'NIgoogleanalyticsheader': 'lib/googleanalyticsheader',
 
