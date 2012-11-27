@@ -19,5 +19,5 @@ Okay, this is not a big deal or anything, but for the sake of code consistency, 
 *	Spaces, not tabs. 4 spaces per indentation.
 *	No restriction for line length, but suggested ballpark is 100 characters. 
 *	Use under_scores for variable names (including functions). Use hy-phens for CSS class names.
-*	Constructor functions (i.e. intended to be used with <code>new</code> operator), begin with a Capital letter.
+*	Constructor functions (i.e. intended to be used with <code>new</code> operator) are an exception to the underscore rule. They are CamelCase and begin with a Capital letter.
 *	Prefer single quotes (i.e. first use single quotes, then double when needed).
