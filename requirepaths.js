@@ -27,6 +27,9 @@ require = {
 		'NIgoogleanalyticsheader': 'lib/googleanalyticsheader',
 
 		'NIMerlin': 'lib/Merlin',
+		'NIMerlin.Autosave': 'lib/merlin/MerlinAutosave',
+		'NIMerlin.CSRF': 'lib/merlin/MerlinCSRF',
+		'NIMerlin.Data': 'lib/merlin/MerlinData',
 
 		'NIOverlay': 'lib/Overlay',
 		'NIseed': 'lib/seed',
