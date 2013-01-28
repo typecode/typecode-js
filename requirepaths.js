@@ -35,6 +35,8 @@ require = {
 		'NIseed': 'lib/seed',
 		'NISocialRotator': 'lib/SocialRotator',
 		'NITooltip': 'lib/Tooltip',
-		'NIvalidation': 'lib/validation'
+		'NIvalidation': 'lib/validation',
+
+		'NIPushstateHelper': 'lib/PushstateHelper'
 	}
 };
