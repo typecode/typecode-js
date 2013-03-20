@@ -2,6 +2,8 @@ require = {
 	paths: {
 		'jquery': 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min',
 
+		'hashchange': 'thirdparty/jquery.hashchange',
+
 		'NIanim': 'lib/anim',
 		'NIAnimator': 'lib/Animator',
 		'NIApp': 'lib/App',
@@ -37,6 +39,9 @@ require = {
 		'NITooltip': 'lib/Tooltip',
 		'NIvalidation': 'lib/validation',
 
-		'NIPushstateHelper': 'lib/PushstateHelper'
+		'NIpushstateHelper': 'lib/pushstateHelper'
+	},
+	shim: {
+		'hashchange': ['jquery']
 	}
 };
