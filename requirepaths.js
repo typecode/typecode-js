@@ -39,7 +39,7 @@ require = {
 		'NITooltip': 'lib/Tooltip',
 		'NIvalidation': 'lib/validation',
 
-		'NIpushstateHelper': 'lib/pushstate'
+		'NIpushstateHelper': 'lib/pushstateHelper'
 	},
 	shim: {
 		'hashchange': ['jquery']
