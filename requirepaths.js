@@ -1,6 +1,8 @@
 require = {
 	paths: {
 		'jquery': 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min',
+		'jquery_migrate': 'http://code.jquery.com/jquery-migrate-1.2.1.js',
+		'hashchange': 'thirdparty/jquery-migrate-1.2.1.min',
 
 		'NIanim': 'lib/anim',
 		'NIAnimator': 'lib/Animator',
@@ -38,5 +40,9 @@ require = {
 		'NIvalidation': 'lib/validation',
 
 		'NIPushstateHelper': 'lib/PushstateHelper'
+	},
+	shim: {
+		jquery_migrate: ['jquery'],
+		hashchange: ['jquery', 'jquery_migrate']
 	}
 };
